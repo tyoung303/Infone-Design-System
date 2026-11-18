@@ -1,0 +1,42 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="Model compare" subtitle="能力矩阵：模型为列、属性为行；勾/横线/文本三种取值，推荐列用 quiet tint" viewport="760x400" -->
+<html lang="zh-Hans">
+<head>
+<script data-infone-theme-bootstrap>if(new URLSearchParams(location.search).get("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")</script>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../tokens.css">
+<script src="../../runtime/ds-bundle.js"></script>
+<style>body{margin:0;background:var(--th-bg)}.wrap{box-sizing:border-box;padding:20px;width:720px}</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="../../runtime/react.production.min.js"></script>
+<script src="../../runtime/react-dom.production.min.js"></script>
+<script src="../../runtime/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+const { ModelCompare } = window.TokenHubDesignSystem_019e20;
+function Demo() {
+  return (
+    <div className="wrap">
+      <ModelCompare
+        highlight="claude-sonnet-4"
+        models={[
+          { name: "claude-sonnet-4", meta: "Anthropic · 200K", icon: "ri-anthropic-fill", color: "var(--color-fg)" },
+          { name: "gpt-4o-mini", meta: "OpenAI · 128K", icon: "ri-openai-fill", color: "var(--color-fg)" },
+          { name: "deepseek-v3", meta: "DeepSeek · 64K", icon: "ri-cpu-line", color: "var(--th-cat-5-fg)" },
+        ]}
+        rows={[
+          { label: "输入价 / 1M", values: { "claude-sonnet-4": "$3.00", "gpt-4o-mini": "$0.15", "deepseek-v3": "$0.27" } },
+          { label: "视觉输入", values: { "claude-sonnet-4": true, "gpt-4o-mini": true, "deepseek-v3": false } },
+          { label: "工具调用", values: { "claude-sonnet-4": true, "gpt-4o-mini": true, "deepseek-v3": true } },
+          { label: "推理模式", values: { "claude-sonnet-4": true, "gpt-4o-mini": false, "deepseek-v3": true } },
+          { label: "p95 延迟", values: { "claude-sonnet-4": "1.4s", "gpt-4o-mini": "0.7s", "deepseek-v3": "2.1s" } },
+        ]}
+      />
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<Demo />);
+</script>
+</body>
+</html>

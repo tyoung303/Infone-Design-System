@@ -1,0 +1,79 @@
+<!doctype html>
+<!-- @dsCard group="Colors" name="Color · Semantic roles" subtitle="表面/文字/交互 + 状态三档（bg tint · fg 文字 · solid 填充）+ 中性数据墨色" viewport="760x1600" -->
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<title>Semantic Roles</title>
+<link rel="stylesheet" href="preview.css">
+<style>
+table.tokens{width:100%;border-collapse:collapse;font-family:var(--th-font-ui);font-size:12px;background:var(--th-white);border-radius:var(--th-radius-md);overflow:hidden;border:var(--th-border-card)}
+table.tokens tr+tr td{border-top:0.5px solid var(--color-border)}
+table.tokens td{padding:8px 14px;vertical-align:middle}
+table.tokens td.k{width:32%;color:var(--color-fg);font-weight:500;font-family:var(--th-font-mono)}
+table.tokens td.s{width:36px}
+table.tokens td.h{width:15%;color:var(--color-fg-muted);font-family:var(--th-font-mono)}
+table.tokens td.d{color:var(--color-fg-muted)}
+table.tokens tr.grp td{background:var(--th-bg);color:var(--color-fg);font-weight:600;font-family:var(--th-font-cn);font-size:11px;letter-spacing:.04em}
+.chip{display:inline-block;width:22px;height:22px;border-radius:6px;border:1px solid rgba(0,0,0,.06);vertical-align:middle}
+.note{margin:12px 0 0;font-size:12px;line-height:1.7;color:var(--color-fg-muted)}
+.note b{color:var(--color-fg);font-weight:600}
+</style>
+</head>
+<body>
+<div class="card">
+  <table class="tokens" id="t"></table>
+  <p class="note"><b>状态色有三档，不是两档。</b><code>-bg</code> 是 tint 底，<code>-fg</code> 是这层底上的<b>文字/图标</b>（刻意压暗、低彩度），<code>-solid</code> 是被<b>填充的形状</b>：进度条、环、圆点、时间轴节点、破坏性按钮。缺了第三档，组件只能拿 <code>-fg</code> 去填 8px 的进度条，结果就是一条土黄色的条。规则：<b>不要在 -solid 上放文字，不要用 -fg 去填形状。</b></p>
+  <p class="note"><b>「一个量被切开」用堆叠构成色阶，不是分类色板。</b>TokenMeter、环形图、分段计量条的各段是<b>同一个总量的组成部分</b>，必须读成「一个总量被切开」。手挑 <code>chart-1/3/5</code> 会得到互不相干的靛蓝 + 紫 + 绿（像三个独立指标），而 <code>chart-1</code> 是整个色环里最暗的一档，8px 的条因此显得又重又闷。<code>--color-stack-*</code> 是一段连续冷色弧（色相 218→168）配递进明度，整体更亮更透气；<code>--color-stack-0</code> 是中性余量段（缓存、未计费、其他）——刻意最浅，因为那是你<b>不付费</b>的部分。上限 4 段 + 余量，再多就该用图表而不是计量条。</p>
+  <p class="note"><b>微图表用中性数据墨色</b>（<code>--color-data-line</code>），不是 <code>--th-gray-300</code> —— 后者是「弱化文字」的灰，画成 1.5px 的线会被读成禁用态。线本身是重点时才升级到 <code>--th-chart-*</code> 槽位，永不借用状态色或品牌色。</p>
+</div>
+<script>
+const rows=[
+ ["grp","表面与文字"],
+ ["--color-bg","App canvas behind cards"],
+ ["--color-surface","Cards, sidebar, nav, inputs"],
+ ["--color-surface-quiet","最浅一档回撤 — 轻量强调块/摘要行"],
+ ["--color-surface-inset","卡内下沉面板 — 代码、日志、脚注"],
+ ["--color-surface-well","最深一档 — 嵌套在 inset 里的内容/合计行"],
+ ["--color-border","0.5px card outline"],
+ ["--color-divider","0.5px nav underline, hairlines"],
+ ["--color-fg","Primary text, icons"],
+ ["--color-fg-muted","Section headings, meta"],
+ ["--color-fg-subtle","Captions, placeholder"],
+ ["grp","交互色（只给可点击的东西）"],
+ ["--color-accent","Brand mark, accent dots, focus"],
+ ["--color-accent-soft","Active sidebar item tint"],
+ ["--color-cta","Primary action fill"],
+ ["--color-link","Inline links, code-path"],
+ ["grp","状态色 · bg tint（chip / banner / toast 底）"],
+ ["--color-success-bg",""],["--color-warning-bg",""],["--color-danger-bg",""],["--color-info-bg",""],
+ ["grp","状态色 · fg 文字（放在上面那层 tint 上，≥4.5:1）"],
+ ["--color-success-fg",""],["--color-warning-fg",""],["--color-danger-fg",""],["--color-info-fg",""],
+ ["grp","状态色 · solid 填充（进度条 / 环 / 圆点 / 破坏性按钮）"],
+ ["--color-success-solid",""],["--color-warning-solid",""],["--color-danger-solid",""],["--color-info-solid",""],
+ ["grp","中性数据墨色（微图表与轨道）"],
+ ["--color-data-line","Sparkline 描边、未强调系列"],
+ ["--color-data-track","进度条 / 环的空白轨道"],
+ ["grp","堆叠构成色阶（一个量被切开：TokenMeter、环形图、分段计量条）"],
+ ["--color-stack-1","第 1 段（最浅）"],
+ ["--color-stack-2","第 2 段"],
+ ["--color-stack-3","第 3 段"],
+ ["--color-stack-4","第 4 段（最深）"],
+ ["--color-stack-0","中性余量段 — 缓存 / 未计费 / 其他"],
+];
+const cv=document.createElement("canvas");cv.width=cv.height=1;const cx=cv.getContext("2d");
+const probe=document.createElement("span");document.body.appendChild(probe);
+function hex(token){
+  probe.style.background="var("+token+")";
+  cx.clearRect(0,0,1,1);cx.fillStyle=getComputedStyle(probe).backgroundColor;cx.fillRect(0,0,1,1);
+  const[r,g,b,a]=cx.getImageData(0,0,1,1).data;
+  if(a<250)return"α "+Math.round(a/2.55)+"%";
+  return"#"+[r,g,b].map(v=>v.toString(16).padStart(2,"0")).join("").toUpperCase();
+}
+document.getElementById("t").innerHTML=rows.map(([k,d])=>
+  k==="grp"?`<tr class="grp"><td colspan="4">${d}</td></tr>`
+  :`<tr><td class="s"><span class="chip" style="background:var(${k})"></span></td><td class="k">${k}</td><td class="h">${hex(k)}</td><td class="d">${d}</td></tr>`
+).join("");
+probe.remove();
+</script>
+</body>
+</html>

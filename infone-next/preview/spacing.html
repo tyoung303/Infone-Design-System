@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>InfOne 基础规范与模式</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="shell.css">
+</head>
+<body>
+<main>
+  <header class="page-header">
+    <span class="eyebrow">INFONE DESIGN SYSTEM</span>
+    <h1>InfOne 基础规范与模式</h1>
+    <p>集中查看动效、交互模式、密度、圆角、阴影、间距与层级规则。</p>
+  </header>
+  <section class="content-group" aria-labelledby="motion-system">
+    <header class="group-header"><h2 id="motion-system">动效规范</h2><span>1</span></header>
+    <div class="grid"><article class="card"><header class="card-header"><h3>动效时机与节奏</h3><p>六个允许动的时刻和三档时长，保持反馈明确、克制。</p></header><div class="preview-frame"><iframe loading="lazy" title="动效时机与节奏" src="foundation-cards/motion-timing.html" style="height:640px"></iframe></div></article></div>
+  </section>
+  <section class="content-group" aria-labelledby="interaction-patterns">
+    <header class="group-header"><h2 id="interaction-patterns">交互模式</h2><span>4</span></header>
+    <div class="grid">
+      <article class="card"><header class="card-header"><h3>品牌色接入</h3><p>由一个主色生成完整梯度，并通过三项对比度门槛。</p></header><div class="preview-frame"><iframe loading="lazy" title="品牌色接入" src="foundation-cards/pattern-brand-onboarding.html" style="height:430px"></iframe></div></article>
+      <article class="card"><header class="card-header"><h3>品牌换肤</h3><p>只覆盖品牌 token 和 Logo，保持灰阶、字体、圆角与阴影一致。</p></header><div class="preview-frame"><iframe loading="lazy" title="品牌换肤" src="foundation-cards/pattern-brand-theming.html" style="height:340px"></iframe></div></article>
+      <article class="card"><header class="card-header"><h3>确认删除</h3><p>明确复述对象名，并区分取消与破坏性主操作。</p></header><div class="preview-frame"><iframe loading="lazy" title="确认删除" src="foundation-cards/pattern-confirm-delete.html" style="height:360px"></iframe></div></article>
+      <article class="card"><header class="card-header"><h3>表单布局</h3><p>统一字段节奏、标签位置和底部操作对齐方式。</p></header><div class="preview-frame"><iframe loading="lazy" title="表单布局" src="foundation-cards/pattern-form-layout.html" style="height:560px"></iframe></div></article>
+    </div>
+  </section>
+  <section class="content-group" aria-labelledby="space-system">
+    <header class="group-header"><h2 id="space-system">空间与层级</h2><span>5</span></header>
+    <div class="grid">
+      <article class="card"><header class="card-header"><h3>界面密度</h3><p>comfortable 与 compact 两档，只收紧几何，不缩小字号。</p></header><div class="preview-frame"><iframe loading="lazy" title="界面密度" src="foundation-cards/density-scale.html" style="height:620px"></iframe></div></article>
+      <article class="card"><header class="card-header"><h3>圆角阶梯</h3><p>只使用 4、6、8px；卡片与控件为 6px，只有模态浮层升到 8px。</p></header><div class="preview-frame"><iframe loading="lazy" title="圆角阶梯" src="foundation-cards/radius-scale.html" style="height:200px"></iframe></div></article>
+      <article class="card"><header class="card-header"><h3>阴影与海拔</h3><p>仅保留 nav、soft、modal 三档；卡片静置态与主按钮 hover 不使用阴影。</p></header><div class="preview-frame"><iframe loading="lazy" title="阴影与海拔" src="foundation-cards/shadow-scale.html" style="height:200px"></iframe></div></article>
+      <article class="card"><header class="card-header"><h3>间距阶梯</h3><p>4–48px 的统一空间刻度及其对应使用场景。</p></header><div class="preview-frame"><iframe loading="lazy" title="间距阶梯" src="foundation-cards/spacing-scale.html" style="height:330px"></iframe></div></article>
+      <article class="card"><header class="card-header"><h3>层级顺序</h3><p>导航、下拉、遮罩、弹窗、提示与通知的 z-index 顺序。</p></header><div class="preview-frame"><iframe loading="lazy" title="层级顺序" src="foundation-cards/zindex-scale.html" style="height:220px"></iframe></div></article>
+    </div>
+  </section>
+</main>
+</body>
+</html>

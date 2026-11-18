@@ -1,0 +1,46 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="PageHeader" subtitle="页面头 — 单行标题 + 元信息 + 操作，取代问候语区块" viewport="900x330" -->
+<html lang="zh-Hans">
+<head>
+<script data-infone-theme-bootstrap>if(new URLSearchParams(location.search).get("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")</script>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../tokens.css">
+<script src="../../runtime/ds-bundle.js"></script>
+<style>body{margin:0;padding:24px;background:var(--th-bg)}.card{background:var(--th-white);border:var(--th-border-card);border-radius:var(--th-radius-md);box-shadow:var(--th-shadow-card);padding:var(--th-card-pad)}.wrap{display:flex;flex-direction:column;gap:20px}.cap{font-size:var(--th-text-2xs);color:var(--color-fg-subtle);margin-bottom:6px}</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="../../runtime/react.production.min.js"></script>
+<script src="../../runtime/react-dom.production.min.js"></script>
+<script src="../../runtime/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+const { PageHeader, Button, Tag, StatusChip } = window.TokenHubDesignSystem_019e20;
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <div className="wrap">
+    <div>
+      <div className="cap">列表页 — 标题 + 元信息 + 主操作</div>
+      <PageHeader
+        title="令牌管理"
+        meta={<><span>共 128 个</span><span>·</span><span>更新于 14:02</span></>}
+        divider
+        actions={<><Button variant="secondary" size="sm" icon="ri-download-2-line">导出</Button><Button size="sm" icon="ri-add-line">新建令牌</Button></>}
+      />
+    </div>
+    <div>
+      <div className="cap">详情页 — 返回 + 状态 + 元信息</div>
+      <PageHeader
+        title="production-web"
+        onBack={() => {}}
+        tags={<><StatusChip tone="success">已激活</StatusChip><Tag>全部模型</Tag></>}
+        meta={<><span>创建于 2026-05-12</span><span>·</span><span>最近调用 3 分钟前</span></>}
+        actions={<Button variant="secondary" size="sm" icon="ri-edit-line">编辑</Button>}
+      />
+    </div>
+    <div className="card" data-density="compact">
+      <div className="cap">compact — 卡内小节标题</div>
+      <PageHeader density="compact" title="调用明细" meta={<span>近 7 天</span>} actions={<Button variant="ghost" size="sm" icon="ri-refresh-line">刷新</Button>} />
+    </div>
+  </div>
+);</script>
+</body>
+</html>

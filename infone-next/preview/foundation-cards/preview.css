@@ -1,0 +1,78 @@
+@import url("../../tokens.css");
+
+/* Preview-card chrome. The asset name + frame are rendered OUTSIDE
+   the iframe by the Design System tab, so each card body just sits flush. */
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--color-bg);
+  font-family: var(--th-font-cn);
+  color: var(--color-fg);
+}
+.card {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 100%;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: var(--color-bg);
+}
+.card.flush {
+  padding: 0;
+}
+.row {
+  display: flex;
+  gap: 12px;
+  align-items: stretch;
+}
+.row.center { align-items: center; }
+.col { display: flex; flex-direction: column; gap: 8px; }
+
+.swatch {
+  flex: 1;
+  border-radius: var(--th-radius-sm);
+  border: 0.5px solid var(--color-border);
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 76px;
+  position: relative;
+  overflow: hidden;
+  background: #fff;
+}
+.swatch .fill {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.swatch .label, .swatch .meta {
+  position: relative;
+  z-index: 1;
+  font-family: var(--th-font-ui);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+}
+.swatch .label { font-weight: 600; color: var(--color-fg); }
+.swatch .meta  { color: var(--color-fg-muted); font-feature-settings: "tnum"; }
+.swatch.dark .label, .swatch.dark .meta { color: #fff; }
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: var(--th-gray-50);
+  color: var(--th-gray-500);
+  font-family: var(--th-font-ui);
+  font-size: 11px;
+  font-weight: 500;
+}
+.divider {
+  height: 1px;
+  background: var(--color-divider);
+  width: 100%;
+}

@@ -1,0 +1,193 @@
+<!doctype html>
+<!-- @dsCard group="UI Kit" name="Login" subtitle="登录页 · InfOne SSO + 首页背景. Static reference recreation — see the Login template for the reusable version" -->
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<title>TokenHub · 登录</title>
+<link rel="stylesheet" href="shared.css">
+<link rel="icon" href="../../assets/tokenhub-logo.svg">
+<template id="__bundler_thumbnail" data-bg-color="#F4F5F7">
+  <svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg">
+    <rect width="400" height="280" fill="#F4F5F7"/>
+    <g transform="translate(140,72)">
+      <rect width="120" height="120" rx="28" fill="#3B83FF"/>
+      <text x="60" y="78" text-anchor="middle" font-family="Inter, sans-serif"
+            font-weight="700" font-size="40" fill="#FFFFFF">登录</text>
+    </g>
+  </svg>
+</template>
+<style>
+  body { background: var(--th-bg); }
+  .login-shell {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  /* Hero-style soft blobs (same vocabulary as the marketing page) */
+  .login-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .login-content {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 24px 40px;
+  }
+  .login-foot {
+    position: relative;
+    z-index: 1;
+    padding: 24px;
+    text-align: center;
+    font-family: var(--th-font-ui);
+    font-size: 12px;
+    color: var(--color-fg-muted);
+  }
+</style>
+</head>
+<body>
+<style>
+html,body{height:auto!important;min-height:100%;overflow-y:auto!important}.infone-ui-kit-nav{position:relative;z-index:2147483646;display:flex;align-items:center;justify-content:center;gap:4px;height:56px;padding:8px;border-bottom:1px solid #e2e5ea;background:#fff;font:13px/1 var(--th-font-ui,system-ui,sans-serif)}.infone-ui-kit-nav a{padding:10px 18px;border-radius:8px;color:#4a5058;text-decoration:none}.infone-ui-kit-nav a[aria-current=page]{background:#e3eeff;color:#1f62e0;font-weight:600}@media print{.infone-ui-kit-nav{display:none!important}}
+</style><nav class="infone-ui-kit-nav" aria-label="应用界面套件"><a href="login.html" aria-current="page">登录</a><a href="console/index.html">控制台</a><a href="console/playground.html">演练场</a></nav>
+<div id="root"></div>
+
+<script src="../runtime/react.production.min.js"></script>
+<script src="../runtime/react-dom.production.min.js"></script>
+<script src="../runtime/babel.min.js"></script>
+
+<script type="text/babel">
+function LoginApp() {
+  return (
+    <div className="login-shell">
+      {/* Soft blob backdrop — mirrors the marketing hero */}
+      <div className="login-blob" style={{ left: "8%",  top: "10%", width: 420, height: 420, background: "rgba(88,182,248,0.22)" }} />
+      <div className="login-blob" style={{ right: "6%", top: "20%", width: 480, height: 480, background: "color-mix(in srgb, var(--th-teal-500) 18%, transparent)" }} />
+      <div className="login-blob" style={{ left: "34%",top: "52%", width: 360, height: 360, background: "color-mix(in srgb, var(--th-teal-300) 18%, transparent)" }} />
+
+      <main className="login-content">
+        {/* Brand lockup */}
+        <div style={loginStyles.brand}>
+          <svg width="36" height="50" viewBox="0 0 139 198" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="TokenHub">
+            <path d="M69.1699 9.6579C69.1699 6.09413 73.4788 4.30953 75.9986 6.82969L134.33 65.17V130.33L69.1699 65.17V9.6579Z" fill="#3B83FF"></path>
+            <path d="M4 65.1699L69.17 130.33V185.843C69.17 189.407 64.8614 191.191 62.3416 188.671L4 130.33V65.1699Z" fill="#3B83FF"></path>
+            <path opacity="0.8" d="M134.33 65.1699V130.33L104.578 160.082C103.016 161.644 100.484 161.644 98.9215 160.082L69.1699 130.33L134.33 65.1699Z" fill="#1F62E0"></path>
+            <path opacity="0.8" d="M33.7516 35.4094C35.3136 33.8469 37.8466 33.8467 39.4089 35.4089L69.17 65.1701L4 130.33V65.1701L33.7516 35.4094Z" fill="#85B5FF"></path>
+          </svg>
+          <span style={loginStyles.wm}>TokenHub</span>
+        </div>
+
+        {/* Card */}
+        <div style={loginStyles.card}>
+          <h1 style={loginStyles.title}>登&nbsp;&nbsp;录</h1>
+
+          <button
+            type="button"
+            style={loginStyles.cta}
+            onClick={() => { window.location.href = "console/index.html"; }}
+          >
+            <span style={loginStyles.ctaIconWrap}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3 3 8l9 5 9-5-9-5Zm-7.5 9L12 16l7.5-4M4.5 16 12 20l7.5-4" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/></svg>
+            </span>
+            <span style={loginStyles.ctaLabel}>使用&nbsp;InfOne&nbsp;继续</span>
+          </button>
+
+          <p style={loginStyles.helper}>
+            点击上方按钮即视为同意
+            <a href="#" style={loginStyles.helperLink}>服务条款</a>
+            与
+            <a href="#" style={loginStyles.helperLink}>隐私政策</a>
+          </p>
+        </div>
+      </main>
+
+      <footer className="login-foot">TokenHub © 2026</footer>
+    </div>
+  );
+}
+
+const loginStyles = {
+  brand: {
+    display: "inline-flex", alignItems: "center", gap: 14,
+    marginBottom: 32,
+  },
+  wm: {
+    fontFamily: "var(--th-font-brand)",
+    fontWeight: 700,
+    fontSize: 24,
+    letterSpacing: "-0.01em",
+    color: "var(--color-fg)",
+  },
+
+  card: {
+    width: 440, maxWidth: "calc(100% - 32px)",
+    background: "#FFFFFF80",
+    border: "none",
+    borderRadius: 18,
+    boxShadow: "0 20px 60px rgba(15,18,23,0.08)",
+    padding: "44px 40px 36px",
+    display: "flex", flexDirection: "column", gap: 32,
+    alignItems: "center",
+  },
+  title: {
+    margin: 0,
+    fontFamily: "var(--th-font-cn)",
+    fontSize: 24, fontWeight: 700,
+    color: "var(--color-fg)",
+    letterSpacing: "0.3em",
+    textIndent: "0.3em",
+  },
+
+  cta: {
+    appearance: "none",
+    display: "flex", alignItems: "center",
+    width: "100%",
+    height: 48, padding: "0 18px",
+    background: "var(--th-white)",
+    border: "0.5px solid var(--color-border)",
+    borderRadius: "var(--th-radius-sm)",
+    color: "var(--color-fg)",
+    fontFamily: "var(--th-font-cn)",
+    fontSize: 13, fontWeight: 500,
+    cursor: "pointer",
+    transition: "background .15s ease, border-color .15s ease, transform .08s ease",
+    position: "relative",
+  },
+  ctaIconWrap: {
+    width: 28, height: 28,
+    display: "inline-flex", alignItems: "center", justifyContent: "center",
+    color: "var(--color-fg)",
+    fontSize: 14,
+  },
+  ctaLabel: {
+    flex: 1, textAlign: "center",
+    paddingRight: 28,
+  },
+
+  helper: {
+    margin: 0,
+    fontSize: 12,
+    color: "var(--color-fg-muted)",
+    textAlign: "center",
+    fontFamily: "var(--th-font-cn)",
+  },
+  helperLink: {
+    color: "var(--color-fg)",
+    textDecoration: "none",
+    margin: "0 4px",
+    borderBottom: "0.5px solid var(--color-border)",
+  },
+};
+
+ReactDOM.createRoot(document.getElementById("root")).render(<LoginApp />);
+</script>
+</body>
+</html>

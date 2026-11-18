@@ -1,0 +1,46 @@
+<!doctype html>
+<!-- @dsCard group="Colors" name="Dark theme" subtitle="data-theme=&quot;dark&quot; — same tokens, redeclared surfaces" viewport="700x260" -->
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<title>Dark theme</title>
+<link rel="stylesheet" href="preview.css">
+<style>
+.panel{display:flex;gap:16px;padding:20px 16px}
+.side{flex:1;border-radius:var(--th-radius-md);padding:20px;display:flex;flex-direction:column;gap:14px;background:var(--th-bg)}
+.label{font-family:var(--th-font-ui);font-size:11px;color:var(--color-fg-muted);text-transform:uppercase;letter-spacing:0.04em}
+.mini-card{background:var(--th-white);border:var(--th-border-card);border-radius:var(--th-radius-md);padding:16px;display:flex;flex-direction:column;gap:10px;box-shadow:var(--th-shadow-card)}
+.mini-title{font-size:13px;font-weight:600;color:var(--color-fg)}
+.mini-sub{font-size:12px;color:var(--color-fg-muted)}
+.mini-btn{display:inline-flex;align-items:center;height:30px;padding:0 14px;border-radius:999px;background:var(--th-teal-500);color:#FFFFFF;font-size:12px;font-weight:500;width:fit-content}
+.mini-tag{display:inline-flex;align-items:center;height:22px;padding:0 10px;border-radius:999px;background:var(--th-teal-50);color:var(--th-teal-700, var(--th-teal-500));font-size:11px;width:fit-content}
+[data-theme="dark"] .mini-card{background-color:#333333;border:1px solid #000000}
+[data-theme="dark"] .mini-title{color:#FFFFFF}
+[data-theme="dark"] .mini-sub{color:#B9B3B3}
+</style>
+</head>
+<body>
+<div class="card flush">
+<div class="panel">
+<div class="side">
+<span class="label">Light (default)</span>
+<div class="mini-card">
+<span class="mini-title">账户余额</span>
+<span class="mini-sub">¥300.00 · 可用</span>
+<span class="mini-tag">已激活</span>
+<span class="mini-btn">获取秘钥</span>
+</div>
+</div>
+<div class="side" data-theme="dark">
+<span class="label">data-theme="dark"</span>
+<div class="mini-card">
+<span class="mini-title">账户余额</span>
+<span class="mini-sub">¥300.00 · 可用</span>
+<span class="mini-tag">已激活</span>
+<span class="mini-btn">获取秘钥</span>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

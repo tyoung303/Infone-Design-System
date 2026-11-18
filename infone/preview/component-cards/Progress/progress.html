@@ -1,0 +1,27 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="Progress" subtitle="额度 / 用量进度条 — accent、warning、danger 语气 + sm 细条" viewport="700x260" -->
+<html lang="zh-Hans">
+<head>
+<script data-infone-theme-bootstrap>if(new URLSearchParams(location.search).get("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")</script>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../tokens.css">
+<script src="../../runtime/ds-bundle.js"></script>
+<style>body{margin:0}.panel{box-sizing:border-box;padding:24px 26px;display:flex;flex-direction:column;gap:20px;background:var(--th-white);border:var(--th-border-card);border-radius:var(--th-radius-md);margin:24px}</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="../../runtime/react.production.min.js"></script>
+<script src="../../runtime/react-dom.production.min.js"></script>
+<script src="../../runtime/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+const { Progress } = window.TokenHubDesignSystem_019e20;
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <div className="panel">
+    <Progress label="本月额度" caption="¥120.00 / ¥300.00" value={40} />
+    <Progress label="请求配额" value={86} showValue tone="warning" />
+    <Progress value={62} size="sm" />
+  </div>
+);
+</script>
+</body>
+</html>

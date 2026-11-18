@@ -1,0 +1,22 @@
+{
+  "name": "infone-design-spec",
+  "private": true,
+  "scripts": {
+    "sync": "node infone/scripts/sync-recipes.mjs --write",
+    "check:sync": "node infone/scripts/sync-recipes.mjs",
+    "check:boundaries": "node harness/check-boundaries.mjs --scope=working-tree",
+    "verify": "node harness/verify.mjs --fix --scope=working-tree",
+    "verify:agent": "node harness/verify.mjs --fix --scope=working-tree",
+    "verify:commit": "node harness/verify.mjs --scope=staged",
+    "verify:ci": "node harness/verify.mjs --scope=full",
+    "verify:repository:ci": "node harness/verify.mjs --scope=full --self-tests --report=.harness-output/repository",
+    "test:harness": "node --test test/harness/*.test.mjs",
+    "setup:hooks": "node harness/install-hooks.mjs",
+    "prepare": "node harness/install-hooks.mjs",
+    "sync:next": "node infone-next/scripts/sync-recipes.mjs --write",
+    "check:sync:next": "node infone-next/scripts/sync-recipes.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

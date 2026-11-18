@@ -1,0 +1,96 @@
+<!doctype html>
+<!-- @dsCard group="Motion" name="Timing & Moments" subtitle="动效时机表 — 六个允许动的时刻，三档时长" viewport="960x640" -->
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../tokens.css">
+<style>
+body{margin:0;padding:24px;background:var(--th-bg);font-family:var(--th-font-cn)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.demo{background:var(--th-white);border:var(--th-border-card);border-radius:var(--th-radius-md);box-shadow:var(--th-shadow-card);padding:16px;display:flex;flex-direction:column;gap:10px;min-height:150px}
+.h{display:flex;align-items:baseline;justify-content:space-between;gap:8}
+.h b{font-size:var(--th-text-sm);font-weight:600}
+.h span{font-family:var(--th-font-mono);font-size:var(--th-text-2xs);color:var(--color-fg-subtle)}
+.d{font-size:var(--th-text-xs);color:var(--color-fg-muted);line-height:1.6}
+.stage{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;background:var(--th-bg);border-radius:var(--th-radius-sm);padding:10px}
+.tile{background:var(--th-white);border:0.5px solid var(--color-border);border-radius:var(--th-radius-sm);height:26px;flex:1;max-width:52px}
+.bar{height:8px;border-radius:999px;background:var(--th-gray-50);width:100%}
+.pill{height:var(--th-ctl-h);padding:0 16px;border-radius:var(--th-radius-sm);background:var(--color-cta);color:var(--color-cta-fg);font-size:var(--th-text-base);display:inline-flex;align-items:center;cursor:pointer;user-select:none}
+.line{height:10px;border-radius:3px;width:100%}
+.replay{align-self:flex-start;height:26px;padding:0 10px;border-radius:var(--th-radius-xs);border:0.5px solid var(--color-border);background:var(--th-white);color:var(--color-fg-muted);font-family:var(--th-font-cn);font-size:var(--th-text-2xs);cursor:pointer}
+.table{margin-top:16px;background:var(--th-white);border:var(--th-border-card);border-radius:var(--th-radius-md);padding:16px}
+table{width:100%;border-collapse:collapse;font-size:var(--th-text-xs)}
+th{text-align:left;font-weight:500;color:var(--color-fg-muted);padding:0 12px 8px 0}
+td{padding:5px 12px 5px 0;border-top:0.5px solid var(--color-border)}
+td.tk{font-family:var(--th-font-mono)}
+.rule{font-size:var(--th-text-xs);color:var(--color-fg-muted);line-height:1.7;margin:14px 0 0}
+.rule b{color:var(--color-fg);font-weight:600}
+</style>
+</head>
+<body>
+<div class="grid" id="stage">
+  <div class="demo">
+    <div class="h"><b>1 · 内容入场</b><span>.th-in — 280ms ease-out</span></div>
+    <div class="d">卡片、面板、结果出现：位移 6px + 淡入。</div>
+    <div class="stage"><div class="th-in" style="width:100%"><div class="line" style="background:var(--th-gray-50);margin-bottom:6px"></div><div class="line" style="width:60%;background:var(--th-gray-50)"></div></div></div>
+  </div>
+  <div class="demo">
+    <div class="h"><b>2 · 列表入场</b><span>.th-stagger — +28ms/项</span></div>
+    <div class="d">表格行、卡片网格逐项进入，最多 12 项。</div>
+    <div class="stage th-stagger"><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div></div>
+  </div>
+  <div class="demo">
+    <div class="h"><b>3 · 浮层入场</b><span>.th-in-overlay — 280ms spring</span></div>
+    <div class="d">仅浮在页面之上的东西：弹窗、抽屉、Toast。</div>
+    <div class="stage"><div class="th-in-overlay" style="width:80%;background:var(--th-white);border:0.5px solid var(--color-border);border-radius:var(--th-radius-lg);box-shadow:var(--th-shadow-modal);padding:10px 12px;font-size:var(--th-text-xs)">令牌已创建</div></div>
+  </div>
+  <div class="demo">
+    <div class="h"><b>4 · 按压反馈</b><span>.th-press — 150ms scale(0.98)</span></div>
+    <div class="d">所有可点击表面，只缩不变色。按一下试试。</div>
+    <div class="stage"><span class="pill th-press">新建令牌</span></div>
+  </div>
+  <div class="demo">
+    <div class="h"><b>5 · 悬停浮起</b><span>.th-lift — 200ms</span></div>
+    <div class="d">只给卡片和磁贴，不给按钮和表格行。</div>
+    <div class="stage"><div class="th-lift" style="width:100%;height:56px;background:var(--th-white);border:0.5px solid var(--color-border);border-radius:var(--th-radius-md);box-shadow:var(--th-shadow-card)"></div></div>
+  </div>
+  <div class="demo">
+    <div class="h"><b>6 · 等待 / 流式</b><span>.th-shimmer .th-spin .th-caret</span></div>
+    <div class="d">骨架微光、加载自转、流式光标；不确定进度用 .th-indeterminate。</div>
+    <div class="stage" style="flex-direction:column;gap:8px;align-items:stretch">
+      <div class="bar th-shimmer"></div>
+      <div style="display:flex;align-items:center;gap:8px;font-size:var(--th-text-xs);color:var(--color-fg-muted)"><i class="ri-loader-4-line th-spin"></i>正在生成<span class="th-caret"></span></div>
+      <div class="bar th-indeterminate" style="background:var(--th-gray-50)"></div>
+    </div>
+  </div>
+</div>
+<button class="replay" id="replay" style="margin-top:12px">重播入场动效</button>
+
+<div class="table">
+  <table>
+    <tr><th>token</th><th>值</th><th>用在哪</th></tr>
+    <tr><td class="tk">--th-dur-1</td><td>150ms</td><td>hover、颜色、图标旋转</td></tr>
+    <tr><td class="tk">--th-dur-2</td><td>200ms</td><td>展开收起、宽度、布局位移</td></tr>
+    <tr><td class="tk">--th-dur-3</td><td>280ms</td><td>入场：弹窗、抽屉、列表项</td></tr>
+    <tr><td class="tk">--th-dur-count</td><td>560ms</td><td>数字 count-up — 唯一允许超过 280ms 的动效</td></tr>
+    <tr><td class="tk">--th-stagger</td><td>28ms</td><td>列表逐项延迟步长</td></tr>
+    <tr><td class="tk">--th-ease</td><td>0.2, 0.7, 0.2, 1</td><td>默认：hover 与淡入</td></tr>
+    <tr><td class="tk">--th-ease-out</td><td>0.16, 1, 0.3, 1</td><td>入场：快出慢停</td></tr>
+    <tr><td class="tk">--th-ease-spring</td><td>0.34, 1.3, 0.36, 1</td><td>浮层：轻微过冲，绝不弹跳</td></tr>
+  </table>
+  <p class="rule">
+    <b>只有这六个时刻允许动。</b>其余一切静止：无视差、无滚动驱动、无常驻循环动画（等待态除外）、无跨页转场库。<br>
+    <b>数字动画属于数据，不属于装饰。</b>只在挂载或数值变化时跑一次，560ms 三次缓出，不循环。<br>
+    <b>无障碍是硬门槛。</b><code>prefers-reduced-motion: reduce</code> 下全部入场、微光、count-up 停用；组件在 JS 里也读同一条查询。
+  </p>
+</div>
+<script>
+document.getElementById("replay").addEventListener("click", () => {
+  const stage = document.getElementById("stage");
+  const clone = stage.cloneNode(true);
+  stage.replaceWith(clone);
+  clone.id = "stage";
+});
+</script>
+</body>
+</html>

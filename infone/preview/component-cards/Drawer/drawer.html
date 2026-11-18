@@ -1,0 +1,30 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="Drawer" subtitle="右侧滑出详情面板 — 令牌详情、日志详情" viewport="700x420" -->
+<html lang="zh-Hans">
+<head>
+<script data-infone-theme-bootstrap>if(new URLSearchParams(location.search).get("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")</script>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../tokens.css">
+<script src="../../runtime/ds-bundle.js"></script>
+<style>body{margin:0;height:420px;overflow:hidden}</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="../../runtime/react.production.min.js"></script>
+<script src="../../runtime/react-dom.production.min.js"></script>
+<script src="../../runtime/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+const { Drawer, Button, CopyField, StatusChip } = window.TokenHubDesignSystem_019e20;
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <Drawer open title="令牌详情" description="chat-prod · 创建于 2026-06-02" width={360}
+    footer={<React.Fragment><Button variant="ghost" size="sm">关闭</Button><Button size="sm">编辑</Button></React.Fragment>}>
+    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+      <StatusChip tone="success">已启用</StatusChip>
+      <StatusChip tone="info">不限额</StatusChip>
+    </div>
+    <CopyField label="密钥" value="sk-Xk92mPqL7vN3wRt8aB5cD1eF6gH0jZ4y" secret />
+  </Drawer>
+);
+</script>
+</body>
+</html>

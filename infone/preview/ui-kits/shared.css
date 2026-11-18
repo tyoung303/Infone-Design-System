@@ -1,0 +1,43 @@
+/* Shared UI-kit chrome that loads the design system tokens
+   and the Remix Icon font. Imported by both kits. */
+@import url("../../tokens.css");
+@import url("../../fonts/remixicon.css");
+
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  background: var(--th-bg);
+  color: var(--color-fg);
+  font-family: var(--th-font-cn);
+  font-size: 13px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+button { font: inherit; cursor: pointer; }
+/* Control-label integrity — mirrors styles.css (these pages don't load it) */
+button, [role="button"], [role="tab"], .tk-btn { white-space: nowrap; }
+button, .tk-btn { flex-shrink: 0; }
+
+/* Generic atoms used by both UI kits.
+   .tk-btn is the CSS-only equivalent of components/Button/Button.jsx (used because these
+   legacy ui_kits pages predate the React Button component and don't load the compiled bundle).
+   Same spec, two renderers — keep every value below identical to Button.jsx's variants/sizes. */
+.tk-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--th-font-cn); font-weight: 500; font-size: 13px;
+  border-radius: var(--th-radius-pill);
+  height: 32px; padding: 0 16px;
+  border: 1px solid transparent;
+  background: var(--color-cta);
+  color: var(--color-cta-fg);
+  cursor: pointer; user-select: none;
+  white-space: nowrap; flex-shrink: 0;
+  transition: transform .08s ease, box-shadow .2s ease, background .2s ease, opacity .2s ease;
+}
+.tk-btn:hover  { background: color-mix(in srgb, var(--color-cta) 88%, black); }
+.tk-btn:active { transform: scale(0.98); }
+.tk-btn.sm     { height: 28px; padding: 0 12px; font-size: 12px; }
+.tk-btn.secondary { background: var(--th-white); color: var(--color-fg); border-color: var(--color-border); }
+.tk-btn.secondary:hover { background: var(--th-gray-50); box-shadow: none; }
+.tk-btn.ghost  { background: transparent; color: var(--color-fg); }
+.tk-btn.ghost:hover { background: var(--th-gray-50); box-shadow: none; }

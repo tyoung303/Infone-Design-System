@@ -1,0 +1,28 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="DateRangePicker" subtitle="日期选择 — 区间 / 单日期，月历网格" viewport="700x420" -->
+<html lang="zh-Hans">
+<head>
+<script data-infone-theme-bootstrap>if(new URLSearchParams(location.search).get("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")</script>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../tokens.css">
+<link rel="stylesheet" href="../../../fonts/remixicon.css">
+<script src="../../runtime/ds-bundle.js"></script>
+<style>body{margin:0;background:var(--th-bg)}.panel{box-sizing:border-box;width:calc(100% - 48px);height:372px;padding:var(--th-space-8) var(--th-space-8);display:flex;gap:var(--th-space-8);align-items:flex-start;background:var(--color-surface);border:var(--th-border-card);border-radius:var(--th-radius-md);margin:var(--th-space-8)}.group{display:flex;flex-direction:column;gap:var(--th-space-2)}.label{color:var(--color-fg-muted);font-size:var(--th-text-xs)}.error{margin:var(--th-space-8);padding:var(--th-space-4);font-family:var(--th-font-cn);font-size:var(--th-text-sm);color:var(--color-danger-fg);background:var(--color-danger-soft);border:0.5px solid var(--color-danger-border);border-radius:var(--th-radius-sm)}</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="../../runtime/react.production.min.js"></script>
+<script src="../../runtime/react-dom.production.min.js"></script>
+<script src="../../runtime/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+const { DateRangePicker } = window.TokenHubDesignSystem_019e20 || {};
+function Demo() {
+  if (!DateRangePicker) return <div className="error">DateRangePicker 组件未加载</div>;
+  const [range, setRange] = React.useState({ start: "2026-07-06", end: "2026-07-20" });
+  const [day, setDay] = React.useState({ start: "2026-07-15", end: "2026-07-15" });
+  return <div className="panel"><div className="group"><span className="label">区间 · md · 展开</span><DateRangePicker value={range} onChange={setRange} defaultOpen /></div><div className="group"><span className="label">单日期 · sm</span><DateRangePicker mode="single" size="sm" value={day} onChange={setDay} /></div></div>;
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<Demo />);
+</script>
+</body>
+</html>

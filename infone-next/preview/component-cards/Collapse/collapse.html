@@ -1,0 +1,28 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="Collapse" subtitle="折叠面板 — FAQ、高级设置" viewport="700x300" -->
+<html lang="zh-Hans">
+<head>
+<script data-infone-theme-bootstrap>if(new URLSearchParams(location.search).get("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")</script>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../tokens.css">
+<script src="../../runtime/ds-bundle.js"></script>
+<style>body{margin:0}.panel{box-sizing:border-box;padding:24px 26px;background:var(--th-white);border:var(--th-border-card);border-radius:var(--th-radius-md);margin:24px}</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="../../runtime/react.production.min.js"></script>
+<script src="../../runtime/react-dom.production.min.js"></script>
+<script src="../../runtime/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+const { Collapse, StatusChip } = window.TokenHubDesignSystem_019e20;
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <div style={{ margin: 24 }}>
+    <Collapse accordion defaultOpenKeys={["1"]} items={[
+      { key: "1", label: "如何获取 API Key？", content: "进入「API Keys」页面，点击右上角「创建密钥」。密钥仅在创建时完整展示一次，请妥善保存。" },
+      { key: "2", label: "计费方式是怎样的？", extra: <StatusChip tone="info">按量计费</StatusChip>, content: "按输入 / 输出 token 分别计价，每小时汇总一次并从账户余额中扣除。" },
+      { key: "3", label: "支持哪些模型？", content: "接入 DeepSeek、Qwen、GLM、Kimi 等主流厂商模型，可在模型广场查看完整列表与价格。" },
+    ]} />
+  </div>
+);</script>
+</body>
+</html>

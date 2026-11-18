@@ -1,0 +1,33 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="MetricStrip" subtitle="指标条 — 一行装下 3–5 个 KPI，替代单数字卡堆叠" viewport="900x300" -->
+<html lang="zh-Hans">
+<head>
+<script data-infone-theme-bootstrap>if(new URLSearchParams(location.search).get("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")</script>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../tokens.css">
+<script src="../../runtime/ds-bundle.js"></script>
+<style>body{margin:0;padding:24px;background:var(--th-bg)}.wrap{display:flex;flex-direction:column;gap:8px}.cap{font-size:var(--th-text-2xs);color:var(--color-fg-subtle)}</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="../../runtime/react.production.min.js"></script>
+<script src="../../runtime/react-dom.production.min.js"></script>
+<script src="../../runtime/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+const { MetricStrip } = window.TokenHubDesignSystem_019e20;
+const items = [
+  { label: "今日调用", value: 42318, suffix: "次", icon: "ri-pulse-line", delta: 12.4, series: [12,18,15,22,26,24,31] },
+  { label: "Token 消耗", value: 8.62, suffix: "M", icon: "ri-database-2-line", delta: -3.1, deltaTone: "inverse", series: [30,28,26,27,22,20,19] },
+  { label: "本月费用", value: 1204.5, prefix: "¥", icon: "ri-money-cny-circle-line", delta: 6.8, deltaTone: "inverse", caption: "预算 ¥2,000" },
+  { label: "平均延迟", value: 412, suffix: "ms", icon: "ri-timer-line", delta: -8.2, deltaTone: "inverse", series: [520,498,470,455,441,428,412] },
+];
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <div className="wrap">
+    <div className="cap">comfortable · 默认</div>
+    <MetricStrip items={items} />
+    <div className="cap" style={{ marginTop: 8 }}>compact · 列表 / 日志页</div>
+    <MetricStrip items={items} density="compact" />
+  </div>
+);</script>
+</body>
+</html>

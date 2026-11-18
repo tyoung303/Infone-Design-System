@@ -1,0 +1,13 @@
+#!/bin/sh
+set -eu
+
+repository_root=$(git rev-parse --show-toplevel)
+cd "$repository_root"
+
+if ! command -v npm >/dev/null 2>&1; then
+  echo "ERROR: npm is required to run the design-spec commit gate." >&2
+  exit 1
+fi
+
+echo "Running design-spec commit gate..."
+npm run verify:commit

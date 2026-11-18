@@ -1,0 +1,1607 @@
+{
+  "schemaVersion": 1,
+  "designSystem": "infone",
+  "namespace": "TokenHubDesignSystem_019e20",
+  "usage": [
+    "生成主流程分两阶段且顺序不可颠倒：阶段一先按页面骨架判断树定档（D/D+/B/C）搭出导航与内容区骨架壳，档位定后不改；阶段二再对内容区元素走下列组件取材规则。骨架未定不进入组件阶段。",
+    "先识别界面语义，再按语义匹配具名组件和页面模式；不按外观或 CSS 类名匹配。",
+    "实现前读取匹配的组件或页面说明，并保留其默认结构、尺寸、状态、密度与交互行为。",
+    "React 技术栈使用 React 章节，独立 HTML 使用 HTML 章节；静态 HTML 同样采用组件 HTML recipe，不因非 React 而自行重画组件。",
+    "缺能力先用现有 props/slots/组合；仍不足时新增向后兼容的可选能力，不 fork 近似实现。",
+    "只有目录中确无匹配组件且现有组件无法合理组合时才自绘；自绘取最近似组件的 token 与几何，并在交付时报告自绘部分与原因。",
+    "使用 token 不能替代组件复用；同职责结构优先调用现有组件，确有扩展需求时可以在保留组件语义和 token 绑定的前提下增加样式或向后兼容的可选能力。",
+    "交付前做轻量检查：确认已查找同职责组件、自绘只用于真实缺失能力、颜色与关键几何绑定 token。不要仅因存在页面样式或扩展类名判失败。"
+  ],
+  "components": [
+    {
+      "name": "AccountCard",
+      "category": "identity",
+      "description": "276×170 white card — title row + stacked data rows",
+      "status": "active",
+      "recipePath": "recipes/components/AccountCard.md",
+      "apiPath": "recipes/components/AccountCard.md",
+      "reactPath": "recipes/components/AccountCard.md",
+      "htmlPath": "recipes/components/AccountCard.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "AgentTimeline",
+      "category": "ai",
+      "description": "一次 agent 运行的轨迹：思考/工具调用/输出/错误 + 耗时 + 可展开原始报文",
+      "status": "active",
+      "recipePath": "recipes/components/AgentTimeline.md",
+      "apiPath": "recipes/components/AgentTimeline.md",
+      "reactPath": "recipes/components/AgentTimeline.md",
+      "htmlPath": "recipes/components/AgentTimeline.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Avatar",
+      "category": "identity",
+      "description": "圆形头像 — 首字符 / 图片 / 兜底图标，pink / brand-blue / gray 三种底色",
+      "status": "active",
+      "recipePath": "recipes/components/Avatar.md",
+      "apiPath": "recipes/components/Avatar.md",
+      "reactPath": "recipes/components/Avatar.md",
+      "htmlPath": "recipes/components/Avatar.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Badge",
+      "category": "identity",
+      "description": "计数 / 小红点 — 语气由状态决定：未读 danger、待办 warning、已完成 success、纯信息 info、无紧迫 neutral",
+      "status": "active",
+      "recipePath": "recipes/components/Badge.md",
+      "apiPath": "recipes/components/Badge.md",
+      "reactPath": "recipes/components/Badge.md",
+      "htmlPath": "recipes/components/Badge.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Banner",
+      "category": "feedback",
+      "description": "Persistent inline alert — info/success/warning/danger, stays until dismissed",
+      "status": "active",
+      "recipePath": "recipes/components/Banner.md",
+      "apiPath": "recipes/components/Banner.md",
+      "reactPath": "recipes/components/Banner.md",
+      "htmlPath": "recipes/components/Banner.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Button",
+      "category": "action",
+      "description": "按钮动作层级 — primary / secondary / ghost / link / danger；sm=28px / md=32px，与输入控件同尺寸对齐",
+      "status": "active",
+      "recipePath": "recipes/components/Button.md",
+      "apiPath": "recipes/components/Button.md",
+      "reactPath": "recipes/components/Button.md",
+      "htmlPath": "recipes/components/Button.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。",
+        "自然语言中的“小号/紧凑按钮”映射为 size=\"sm\"。",
+        "同一操作组最多一个主要按钮。",
+        "破坏性确认使用 variant=\"danger\"，业务页面不要手写红色按钮。",
+        "表格行操作优先使用 ghost 或 link。"
+      ]
+    },
+    {
+      "name": "Cascader",
+      "category": "input",
+      "description": "级联选择 — sm=28px / md=32px",
+      "status": "active",
+      "recipePath": "recipes/components/Cascader.md",
+      "apiPath": "recipes/components/Cascader.md",
+      "reactPath": "recipes/components/Cascader.md",
+      "htmlPath": "recipes/components/Cascader.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。",
+        "仅选择一条路径；跨分支多选与深层筛选使用 Select mode=\"auto\"，不要混用两种数组语义。"
+      ]
+    },
+    {
+      "name": "Chart",
+      "category": "data",
+      "description": "统一图表组件 — 20 种图形，系列色恒取 --th-chart-1…12，网格取 --color-data-track",
+      "status": "active",
+      "recipePath": "recipes/components/Chart.md",
+      "apiPath": "recipes/components/Chart.md",
+      "reactPath": "recipes/components/Chart.md",
+      "htmlPath": "recipes/components/Chart.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。",
+        "根据要回答的问题选择图表类型。",
+        "只使用图表 token，不借用状态色或交互色。"
+      ]
+    },
+    {
+      "name": "Checkbox",
+      "category": "input",
+      "description": "18px box — brand-blue fill, check glyph",
+      "status": "active",
+      "recipePath": "recipes/components/Checkbox.md",
+      "apiPath": "recipes/components/Checkbox.md",
+      "reactPath": "recipes/components/Checkbox.md",
+      "htmlPath": "recipes/components/Checkbox.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "CodeBlock",
+      "category": "ai",
+      "description": "IBM Plex Mono 代码块 — 可选头部标签 + 复制按钮",
+      "status": "active",
+      "recipePath": "recipes/components/CodeBlock.md",
+      "apiPath": "recipes/components/CodeBlock.md",
+      "reactPath": "recipes/components/CodeBlock.md",
+      "htmlPath": "recipes/components/CodeBlock.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Collapse",
+      "category": "display",
+      "description": "折叠面板 — FAQ、高级设置",
+      "status": "active",
+      "recipePath": "recipes/components/Collapse.md",
+      "apiPath": "recipes/components/Collapse.md",
+      "reactPath": "recipes/components/Collapse.md",
+      "htmlPath": "recipes/components/Collapse.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "CopyField",
+      "category": "display",
+      "description": "单行可复制值 — sm=28px / md=32px",
+      "status": "active",
+      "recipePath": "recipes/components/CopyField.md",
+      "apiPath": "recipes/components/CopyField.md",
+      "reactPath": "recipes/components/CopyField.md",
+      "htmlPath": "recipes/components/CopyField.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "CostBreakdown",
+      "category": "data",
+      "description": "成本构成：占比条 + 金额 + 份额，合计行使用浅层摘要背景",
+      "status": "active",
+      "recipePath": "recipes/components/CostBreakdown.md",
+      "apiPath": "recipes/components/CostBreakdown.md",
+      "reactPath": "recipes/components/CostBreakdown.md",
+      "htmlPath": "recipes/components/CostBreakdown.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "DataTable",
+      "category": "data",
+      "description": "语义化数据表格 — 无底色表头与排序图标，支持 comfortable/compact 密度、hover、斑马纹、列级热度、卡内嵌与多列 tree 层级记录",
+      "status": "active",
+      "recipePath": "recipes/components/DataTable.md",
+      "apiPath": "recipes/components/DataTable.md",
+      "reactPath": "recipes/components/DataTable.md",
+      "htmlPath": "recipes/components/DataTable.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。",
+        "外层卡片已经提供标题、边框、圆角或工具栏时使用 embedded。",
+        "高密度操作列表使用 compact 密度。",
+        "可排序表头必须保留真实按钮与 aria-sort；窄屏横向滚动由组件内部承载。",
+        "层级记录包含状态、负责人、数量、时间或操作等多列属性时使用 variant=tree；tree 只配置数据层级，不能单独启用树表。"
+      ]
+    },
+    {
+      "name": "DateRangePicker",
+      "category": "input",
+      "description": "日期范围 — sm=28px / md=32px",
+      "status": "active",
+      "recipePath": "recipes/components/DateRangePicker.md",
+      "apiPath": "recipes/components/DateRangePicker.md",
+      "reactPath": "recipes/components/DateRangePicker.md",
+      "htmlPath": "recipes/components/DateRangePicker.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Descriptions",
+      "category": "data",
+      "description": "描述列表 — 模型详情、账户信息",
+      "status": "active",
+      "recipePath": "recipes/components/Descriptions.md",
+      "apiPath": "recipes/components/Descriptions.md",
+      "reactPath": "recipes/components/Descriptions.md",
+      "htmlPath": "recipes/components/Descriptions.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Divider",
+      "category": "display",
+      "description": "分割线 — 水平 / 带文字 / 垂直 / 虚线",
+      "status": "active",
+      "recipePath": "recipes/components/Divider.md",
+      "apiPath": "recipes/components/Divider.md",
+      "reactPath": "recipes/components/Divider.md",
+      "htmlPath": "recipes/components/Divider.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Drawer",
+      "category": "feedback",
+      "description": "右侧滑出详情面板 — 令牌详情、日志详情",
+      "status": "active",
+      "recipePath": "recipes/components/Drawer.md",
+      "apiPath": "recipes/components/Drawer.md",
+      "reactPath": "recipes/components/Drawer.md",
+      "htmlPath": "recipes/components/Drawer.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Dropdown",
+      "category": "action",
+      "description": "操作菜单 — sm=28px / md=32px",
+      "status": "active",
+      "recipePath": "recipes/components/Dropdown.md",
+      "apiPath": "recipes/components/Dropdown.md",
+      "reactPath": "recipes/components/Dropdown.md",
+      "htmlPath": "recipes/components/Dropdown.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。",
+        "保持 button 触发器、menu/menuitem 语义、方向键导航、Escape 与关闭后焦点恢复能力完整。"
+      ]
+    },
+    {
+      "name": "EmptyState",
+      "category": "display",
+      "description": "Icon tile + title + description + CTA — graphic=dots/arcs/grid 提供抽象几何背景",
+      "status": "active",
+      "recipePath": "recipes/components/EmptyState.md",
+      "apiPath": "recipes/components/EmptyState.md",
+      "reactPath": "recipes/components/EmptyState.md",
+      "htmlPath": "recipes/components/EmptyState.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Form",
+      "category": "input",
+      "description": "表单校验 — 规则式校验：必填 / 格式 / 自定义",
+      "status": "active",
+      "recipePath": "recipes/components/Form.md",
+      "apiPath": "recipes/components/Form.md",
+      "reactPath": "recipes/components/Form.md",
+      "htmlPath": "recipes/components/Form.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "FormItem",
+      "category": "input",
+      "description": "rule-based validation: required / pattern / length / custom validator",
+      "status": "active",
+      "recipePath": "recipes/components/Form.md",
+      "apiPath": "recipes/components/Form.md",
+      "reactPath": "recipes/components/Form.md",
+      "htmlPath": "recipes/components/Form.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Heatgrid",
+      "category": "data",
+      "description": "活跃度/用量强度网格 — 单一暖色调阶梯，7 列成周，可固定 min/max",
+      "status": "active",
+      "recipePath": "recipes/components/Heatgrid.md",
+      "apiPath": "recipes/components/Heatgrid.md",
+      "reactPath": "recipes/components/Heatgrid.md",
+      "htmlPath": "recipes/components/Heatgrid.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "InputNumber",
+      "category": "input",
+      "description": "数字输入 — sm=28px / md=32px",
+      "status": "active",
+      "recipePath": "recipes/components/InputNumber.md",
+      "apiPath": "recipes/components/InputNumber.md",
+      "reactPath": "recipes/components/InputNumber.md",
+      "htmlPath": "recipes/components/InputNumber.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "LogoLockup",
+      "category": "identity",
+      "description": "供应商/模型标识组合 — 图标或真实 logo + 名称 + 分类色胶囊，模型广场/对比表通用",
+      "status": "active",
+      "recipePath": "recipes/components/LogoLockup.md",
+      "apiPath": "recipes/components/LogoLockup.md",
+      "reactPath": "recipes/components/LogoLockup.md",
+      "htmlPath": "recipes/components/LogoLockup.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Markdown",
+      "category": "ai",
+      "description": "Full markdown element styling + all Mermaid diagram types",
+      "status": "active",
+      "recipePath": "recipes/components/Markdown.md",
+      "apiPath": "recipes/components/Markdown.md",
+      "reactPath": "recipes/components/Markdown.md",
+      "htmlPath": "recipes/components/Markdown.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。",
+        "插入前清理不可信的 HTML 与 Mermaid SVG。"
+      ]
+    },
+    {
+      "name": "MetricStrip",
+      "category": "data",
+      "description": "指标条 — 一行装下 3–5 个 KPI，替代单数字卡堆叠",
+      "status": "active",
+      "recipePath": "recipes/components/MetricStrip.md",
+      "apiPath": "recipes/components/MetricStrip.md",
+      "reactPath": "recipes/components/MetricStrip.md",
+      "htmlPath": "recipes/components/MetricStrip.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。",
+        "使用 3–4 个有意义的指标，省略没有信息量的指标。",
+        "放在外层卡片中时使用 embedded。"
+      ]
+    },
+    {
+      "name": "Modal",
+      "category": "feedback",
+      "description": "响应式对话框，提供遮罩、标题/正文/底部插槽、焦点约束与关闭后焦点恢复",
+      "status": "active",
+      "recipePath": "recipes/components/Modal.md",
+      "apiPath": "recipes/components/Modal.md",
+      "reactPath": "recipes/components/Modal.md",
+      "htmlPath": "recipes/components/Modal.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。",
+        "保持 dialog 语义、焦点约束、Escape 与关闭后焦点恢复能力完整。"
+      ]
+    },
+    {
+      "name": "ModelCompare",
+      "category": "ai",
+      "description": "能力矩阵：模型为列、属性为行；勾/横线/文本三种取值，推荐列用 quiet tint",
+      "status": "active",
+      "recipePath": "recipes/components/ModelCompare.md",
+      "apiPath": "recipes/components/ModelCompare.md",
+      "reactPath": "recipes/components/ModelCompare.md",
+      "htmlPath": "recipes/components/ModelCompare.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "ModelDetailModal",
+      "category": "display",
+      "description": "Info / API endpoints / grouped pricing with currency toggle",
+      "status": "active",
+      "recipePath": "recipes/components/ModelDetailModal.md",
+      "apiPath": "recipes/components/ModelDetailModal.md",
+      "reactPath": "recipes/components/ModelDetailModal.md",
+      "htmlPath": "recipes/components/ModelDetailModal.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "ModelPriceCard",
+      "category": "display",
+      "description": "Vendor tile + price lines + billing tag, select/copy actions",
+      "status": "active",
+      "recipePath": "recipes/components/ModelPriceCard.md",
+      "apiPath": "recipes/components/ModelPriceCard.md",
+      "reactPath": "recipes/components/ModelPriceCard.md",
+      "htmlPath": "recipes/components/ModelPriceCard.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "NavRail",
+      "category": "navigation",
+      "description": "Full-height left rail — brand + nav + account (skeleton tier D), icon or hover-peek collapse",
+      "status": "active",
+      "recipePath": "recipes/components/NavRail.md",
+      "apiPath": "recipes/components/NavRail.md",
+      "reactPath": "recipes/components/NavRail.md",
+      "htmlPath": "recipes/components/NavRail.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。",
+        "TopNav 与 NavRail 顶部品牌行共用 --th-space-12（48px，含底部分隔线），采用 border-box 与 flex-shrink:0；组合时顶部齐平、内容垂直居中、底边对齐，不随密度或收起状态改变。"
+      ]
+    },
+    {
+      "name": "PageHeader",
+      "category": "navigation",
+      "description": "页面头 — 单行标题 + 元信息 + 操作，取代问候语区块",
+      "status": "active",
+      "recipePath": "recipes/components/PageHeader.md",
+      "apiPath": "recipes/components/PageHeader.md",
+      "reactPath": "recipes/components/PageHeader.md",
+      "htmlPath": "recipes/components/PageHeader.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。",
+        "内容区页面标题使用 PageHeader；已有 TopNav 并使用 pageTitle 时省略重复 PageHeader，元信息与页面操作放内容工具栏。不要把完整 PageHeader 嵌入 TopNav。"
+      ]
+    },
+    {
+      "name": "Pager",
+      "category": "navigation",
+      "description": "Text pagination — neutral current-page pill, ellipsis collapse",
+      "status": "active",
+      "recipePath": "recipes/components/Pager.md",
+      "apiPath": "recipes/components/Pager.md",
+      "reactPath": "recipes/components/Pager.md",
+      "htmlPath": "recipes/components/Pager.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Popconfirm",
+      "category": "action",
+      "description": "气泡确认 — 删除密钥、危险操作",
+      "status": "active",
+      "recipePath": "recipes/components/Popconfirm.md",
+      "apiPath": "recipes/components/Popconfirm.md",
+      "reactPath": "recipes/components/Popconfirm.md",
+      "htmlPath": "recipes/components/Popconfirm.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Progress",
+      "category": "data",
+      "description": "额度 / 用量进度条 — accent、warning、danger 语气 + sm 细条",
+      "status": "active",
+      "recipePath": "recipes/components/Progress.md",
+      "apiPath": "recipes/components/Progress.md",
+      "reactPath": "recipes/components/Progress.md",
+      "htmlPath": "recipes/components/Progress.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "RadioGroup",
+      "category": "input",
+      "description": "18px dot — brand-blue fill when selected",
+      "status": "active",
+      "recipePath": "recipes/components/RadioGroup.md",
+      "apiPath": "recipes/components/RadioGroup.md",
+      "reactPath": "recipes/components/RadioGroup.md",
+      "htmlPath": "recipes/components/RadioGroup.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "RingGauge",
+      "category": "data",
+      "description": "环形进度 — 配额/完成度/评分，tone=heat 时颜色随数值走热度色阶",
+      "status": "active",
+      "recipePath": "recipes/components/RingGauge.md",
+      "apiPath": "recipes/components/RingGauge.md",
+      "reactPath": "recipes/components/RingGauge.md",
+      "htmlPath": "recipes/components/RingGauge.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "ScrollArea",
+      "category": "display",
+      "description": "Overlay Scrollbar — viewport convenience wrapper, no layout width reserved",
+      "status": "active",
+      "recipePath": "recipes/components/ScrollArea.md",
+      "apiPath": "recipes/components/ScrollArea.md",
+      "reactPath": "recipes/components/ScrollArea.md",
+      "htmlPath": "recipes/components/ScrollArea.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Scrollbar",
+      "category": "display",
+      "description": "Reusable overlay scrollbar for external scrolling viewports — supports hover, always and scroll reveal",
+      "status": "active",
+      "recipePath": "recipes/components/Scrollbar.md",
+      "apiPath": "recipes/components/Scrollbar.md",
+      "reactPath": "recipes/components/Scrollbar.md",
+      "htmlPath": "recipes/components/Scrollbar.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需要自持滚动 viewport 的组件直接复用 Scrollbar，不要重新实现滚动条本体。",
+        "Scrollbar 必须挂在不滚动的定位 shell 内，targetRef 指向内部滚动 viewport。"
+      ]
+    },
+    {
+      "name": "SearchBox",
+      "category": "input",
+      "description": "搜索框 — sm=28px / md=32px，支持清除、加载、禁用和错误状态",
+      "status": "active",
+      "recipePath": "recipes/components/SearchBox.md",
+      "apiPath": "recipes/components/SearchBox.md",
+      "reactPath": "recipes/components/SearchBox.md",
+      "htmlPath": "recipes/components/SearchBox.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "关键词搜索使用 SearchBox，不要用 TextField 加裸搜索图标重画。",
+        "列表工具栏使用 size=sm；表单、详情和松弛区域使用 size=md。",
+        "搜索框负责输入、回车提交、清除、加载、禁用和错误；成功、无结果与请求失败内容由结果区组件表达。"
+      ]
+    },
+    {
+      "name": "SectionCard",
+      "category": "display",
+      "description": "标题区固定 var(--th-text-sm)/600 的通用卡片外壳 — 任何模块标题都从这里取，不再各写各的字号",
+      "status": "active",
+      "recipePath": "recipes/components/SectionCard.md",
+      "apiPath": "recipes/components/SectionCard.md",
+      "reactPath": "recipes/components/SectionCard.md",
+      "htmlPath": "recipes/components/SectionCard.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Segmented",
+      "category": "navigation",
+      "description": "分段控制器 — sm=28px / md=32px",
+      "status": "active",
+      "recipePath": "recipes/components/Segmented.md",
+      "apiPath": "recipes/components/Segmented.md",
+      "reactPath": "recipes/components/Segmented.md",
+      "htmlPath": "recipes/components/Segmented.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。",
+        "sm / md 容器背景统一使用 --color-surface-inset，选中滑块使用 --color-surface；页面与组合组件保留此默认配色，不覆盖为 --color-surface-quiet 或 --color-nav-selected。"
+      ]
+    },
+    {
+      "name": "Select",
+      "category": "input",
+      "description": "普通 / 级联 / 深层筛选 — 28px / 32px；auto 按 1 / 2–3 / ≥4 级选型，搜索与父子多选联动",
+      "status": "active",
+      "recipePath": "recipes/components/Select.md",
+      "apiPath": "recipes/components/Select.md",
+      "reactPath": "recipes/components/Select.md",
+      "htmlPath": "recipes/components/Select.md",
+      "generationRules": [
+        "实现前阅读 Select 的 API、模式契约和交互规则；直接复用正式组件，不复制试用页实现。",
+        "既有普通单选不传 mode，保持 string value / onChange；层级筛选优先 mode=\"auto\"，使用叶节点 ID 数组。",
+        "按完整 options 树最大深度选型：1 级普通单选、2–3 级级联多选、≥4 级最多两列的深层导航；根为第 1 级，搜索和浏览不得改变模式。",
+        "级联与深层默认展示第一层，勾选与浏览分离，父级选满才勾选，部分选择为空框加已选数量，禁用分支不计入。",
+        "触发器 28/32px、左右 padding 12px、内部 Tag 20px；鼠标点击无激活边框/光圈/灰底，保留键盘 focus-visible。",
+        "默认全部为空值占位，不出现在菜单中；有具体选择才显示清除按钮。搜索命中仅品牌色文字。",
+        "普通选择使用 combobox/listbox；层级选择使用具名 dialog 与 Checkbox、可达导航，提供 Escape、键盘导航、搜索定位和已选项管理。",
+        "异步加载需数据适配器保证完整子树选择，不能仅勾选已加载节点；不得假设本组件提供后端加载能力。"
+      ]
+    },
+    {
+      "name": "Skeleton",
+      "category": "feedback",
+      "description": "Shimmering placeholder blocks — line / row / card / avatar",
+      "status": "active",
+      "recipePath": "recipes/components/Skeleton.md",
+      "apiPath": "recipes/components/Skeleton.md",
+      "reactPath": "recipes/components/Skeleton.md",
+      "htmlPath": "recipes/components/Skeleton.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Slider",
+      "category": "input",
+      "description": "滑块 — 模型参数 temperature / top_p",
+      "status": "active",
+      "recipePath": "recipes/components/Slider.md",
+      "apiPath": "recipes/components/Slider.md",
+      "reactPath": "recipes/components/Slider.md",
+      "htmlPath": "recipes/components/Slider.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Sparkline",
+      "category": "data",
+      "description": "行内趋势线 — 无坐标轴/无标签，可选面积填充与末点圆点",
+      "status": "active",
+      "recipePath": "recipes/components/Sparkline.md",
+      "apiPath": "recipes/components/Sparkline.md",
+      "reactPath": "recipes/components/Sparkline.md",
+      "htmlPath": "recipes/components/Sparkline.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Statistic",
+      "category": "data",
+      "description": "统计数值 — 用量与费用总览",
+      "status": "active",
+      "recipePath": "recipes/components/Statistic.md",
+      "apiPath": "recipes/components/Statistic.md",
+      "reactPath": "recipes/components/Statistic.md",
+      "htmlPath": "recipes/components/Statistic.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "StatusChip",
+      "category": "identity",
+      "description": "Neutral chip with same-color dot — status tones (success / warning / danger / info / neutral) plus display tones (primary / purple / orange / magenta) for categorization; variant \"plain\" drops the background for a dot + toned label",
+      "status": "active",
+      "recipePath": "recipes/components/StatusChip.md",
+      "apiPath": "recipes/components/StatusChip.md",
+      "reactPath": "recipes/components/StatusChip.md",
+      "htmlPath": "recipes/components/StatusChip.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。",
+        "语义状态用 success/warning/danger/info/neutral；非状态的分类/分组用 primary/purple/orange/magenta 展示色，不要套在每个元数据字段上。",
+        "默认 variant=\"solid\"（浅灰底填充胶囊）；表格等密集场景嫌填充底太重时用 variant=\"plain\" 去背景，只留同色圆点+文字。",
+        "标签保持单行。"
+      ]
+    },
+    {
+      "name": "Steps",
+      "category": "navigation",
+      "description": "接入引导 / 流程进度 — 完成使用品牌浅底与深色勾，当前 brand-600 实心，后续置灰",
+      "status": "active",
+      "recipePath": "recipes/components/Steps.md",
+      "apiPath": "recipes/components/Steps.md",
+      "reactPath": "recipes/components/Steps.md",
+      "htmlPath": "recipes/components/Steps.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "StreamingText",
+      "category": "ai",
+      "description": "模型输出逐字流式渲染 + 光标；reduced-motion 下直接整段呈现",
+      "status": "active",
+      "recipePath": "recipes/components/StreamingText.md",
+      "apiPath": "recipes/components/StreamingText.md",
+      "reactPath": "recipes/components/StreamingText.md",
+      "htmlPath": "recipes/components/StreamingText.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Switch",
+      "category": "input",
+      "description": "36x20 toggle track — brand-blue fill when on",
+      "status": "active",
+      "recipePath": "recipes/components/Switch.md",
+      "apiPath": "recipes/components/Switch.md",
+      "reactPath": "recipes/components/Switch.md",
+      "htmlPath": "recipes/components/Switch.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Tabs",
+      "category": "navigation",
+      "description": "Underline tab row — brand-blue active indicator",
+      "status": "active",
+      "recipePath": "recipes/components/Tabs.md",
+      "apiPath": "recipes/components/Tabs.md",
+      "reactPath": "recipes/components/Tabs.md",
+      "htmlPath": "recipes/components/Tabs.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Tag",
+      "category": "identity",
+      "description": "模型标签 / 筛选条件 — 图表分类色 + 可删除",
+      "status": "active",
+      "recipePath": "recipes/components/Tag.md",
+      "apiPath": "recipes/components/Tag.md",
+      "reactPath": "recipes/components/Tag.md",
+      "htmlPath": "recipes/components/Tag.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。",
+        "用于需要快速扫读的分类；普通元数据保持为弱化文字。"
+      ]
+    },
+    {
+      "name": "TextField",
+      "category": "input",
+      "description": "输入框 — sm=28px / md=32px",
+      "status": "active",
+      "recipePath": "recipes/components/TextField.md",
+      "apiPath": "recipes/components/TextField.md",
+      "reactPath": "recipes/components/TextField.md",
+      "htmlPath": "recipes/components/TextField.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Textarea",
+      "category": "input",
+      "description": "Multi-line input — same focus ring + hint/error as Text field",
+      "status": "active",
+      "recipePath": "recipes/components/Textarea.md",
+      "apiPath": "recipes/components/Textarea.md",
+      "reactPath": "recipes/components/Textarea.md",
+      "htmlPath": "recipes/components/Textarea.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "ThinkingBlock",
+      "category": "ai",
+      "description": "AI reasoning reveal — shimmering label while active, collapsible once settled",
+      "status": "active",
+      "recipePath": "recipes/components/ThinkingBlock.md",
+      "apiPath": "recipes/components/ThinkingBlock.md",
+      "reactPath": "recipes/components/ThinkingBlock.md",
+      "htmlPath": "recipes/components/ThinkingBlock.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Timeline",
+      "category": "data",
+      "description": "时间轴 — 审计日志、发布记录",
+      "status": "active",
+      "recipePath": "recipes/components/Timeline.md",
+      "apiPath": "recipes/components/Timeline.md",
+      "reactPath": "recipes/components/Timeline.md",
+      "htmlPath": "recipes/components/Timeline.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Toast",
+      "category": "feedback",
+      "description": "Neutral default + soft-tint status notification, auto-dismiss",
+      "status": "active",
+      "recipePath": "recipes/components/Toast.md",
+      "apiPath": "recipes/components/Toast.md",
+      "reactPath": "recipes/components/Toast.md",
+      "htmlPath": "recipes/components/Toast.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "TokenMeter",
+      "category": "data",
+      "description": "输入/输出/推理/缓存 token 分段条，色取图表色阶，可对配额显示",
+      "status": "active",
+      "recipePath": "recipes/components/TokenMeter.md",
+      "apiPath": "recipes/components/TokenMeter.md",
+      "reactPath": "recipes/components/TokenMeter.md",
+      "htmlPath": "recipes/components/TokenMeter.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Tooltip",
+      "category": "feedback",
+      "description": "Dark hint bubble — hover to preview",
+      "status": "active",
+      "recipePath": "recipes/components/Tooltip.md",
+      "apiPath": "recipes/components/Tooltip.md",
+      "reactPath": "recipes/components/Tooltip.md",
+      "htmlPath": "recipes/components/Tooltip.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "TopNav",
+      "category": "navigation",
+      "description": "48px 顶栏 — 域级导航、可选 15px 紧凑页面标题",
+      "status": "active",
+      "recipePath": "recipes/components/TopNav.md",
+      "apiPath": "recipes/components/TopNav.md",
+      "reactPath": "recipes/components/TopNav.md",
+      "htmlPath": "recipes/components/TopNav.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。",
+        "已有 TopNav 的页面允许使用 pageTitle 展示页面标题，统一为 --th-text-md（15px）、600 字重的紧凑单行 h1；不将标题伪装成导航项。",
+        "使用 pageTitle 后省略重复 PageHeader；页内搜索、筛选、时间范围和页面操作仍放内容工具栏。未传 pageTitle 时保持既有用法。",
+        "TopNav 与 NavRail 顶部品牌行共用 --th-space-12（48px，含底部分隔线），采用 border-box 与 flex-shrink:0；组合时顶部齐平、内容垂直居中、底边对齐，不随密度或收起状态改变。"
+      ]
+    },
+    {
+      "name": "Transfer",
+      "category": "input",
+      "description": "穿梭框 — 分配可用模型 / 成员",
+      "status": "active",
+      "recipePath": "recipes/components/Transfer.md",
+      "apiPath": "recipes/components/Transfer.md",
+      "reactPath": "recipes/components/Transfer.md",
+      "htmlPath": "recipes/components/Transfer.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Tree",
+      "category": "data",
+      "description": "树形控件 — 权限选择 / 紧凑层级导航，级联勾选",
+      "status": "active",
+      "recipePath": "recipes/components/Tree.md",
+      "apiPath": "recipes/components/Tree.md",
+      "reactPath": "recipes/components/Tree.md",
+      "htmlPath": "recipes/components/Tree.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。",
+        "节点同时具有状态、负责人、数量、时间或操作等多列属性时改用 DataTable variant=tree。"
+      ]
+    },
+    {
+      "name": "TrendDelta",
+      "category": "data",
+      "description": "行内涨跌指示 — tone=inverse 用于成本/延迟等",
+      "status": "active",
+      "recipePath": "recipes/components/TrendDelta.md",
+      "apiPath": "recipes/components/TrendDelta.md",
+      "reactPath": "recipes/components/TrendDelta.md",
+      "htmlPath": "recipes/components/TrendDelta.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Upload",
+      "category": "input",
+      "description": "上传 — 拖拽上传微调数据集 / 批量文件",
+      "status": "active",
+      "recipePath": "recipes/components/Upload.md",
+      "apiPath": "recipes/components/Upload.md",
+      "reactPath": "recipes/components/Upload.md",
+      "htmlPath": "recipes/components/Upload.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "UserPopover",
+      "category": "identity",
+      "description": "Account card anchored to a trigger chip — click the demo chip",
+      "status": "active",
+      "recipePath": "recipes/components/UserPopover.md",
+      "apiPath": "recipes/components/UserPopover.md",
+      "reactPath": "recipes/components/UserPopover.md",
+      "htmlPath": "recipes/components/UserPopover.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "VendorFilter",
+      "category": "identity",
+      "description": "2-col vendor chip grid with counts; size sm=28px / md=32px for filter panels",
+      "status": "active",
+      "recipePath": "recipes/components/VendorFilter.md",
+      "apiPath": "recipes/components/VendorFilter.md",
+      "reactPath": "recipes/components/VendorFilter.md",
+      "htmlPath": "recipes/components/VendorFilter.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    }
+  ],
+  "pagePatterns": [
+    {
+      "name": "ConsoleDashboard",
+      "shell": "D",
+      "title": "InfOne 页面模式：Console Dashboard",
+      "description": "InfOne 标准 console dashboard 页面组合。",
+      "patternPath": "recipes/pages/console-dashboard.md",
+      "sourcePath": "recipes/pages/console-dashboard.md"
+    },
+    {
+      "name": "DetailPage",
+      "shell": "D",
+      "title": "InfOne 页面模式：Detail Page",
+      "description": "InfOne 标准 detail page 页面组合。",
+      "patternPath": "recipes/pages/detail-page.md",
+      "sourcePath": "recipes/pages/detail-page.md"
+    },
+    {
+      "name": "EmptyStatePage",
+      "shell": "D",
+      "title": "InfOne 页面模式：Empty State Page",
+      "description": "InfOne 标准 empty state page 页面组合。",
+      "patternPath": "recipes/pages/empty-state-page.md",
+      "sourcePath": "recipes/pages/empty-state-page.md"
+    },
+    {
+      "name": "ErrorPage",
+      "shell": "C",
+      "title": "InfOne 页面模式：Error Page",
+      "description": "InfOne 标准 error page 页面组合。",
+      "patternPath": "recipes/pages/error-page.md",
+      "sourcePath": "recipes/pages/error-page.md"
+    },
+    {
+      "name": "FormPage",
+      "shell": "D",
+      "title": "InfOne 页面模式：Form Page",
+      "description": "InfOne 标准 form page 页面组合。",
+      "patternPath": "recipes/pages/form-page.md",
+      "sourcePath": "recipes/pages/form-page.md"
+    },
+    {
+      "name": "Login",
+      "shell": "C",
+      "title": "InfOne 页面模式：Login",
+      "description": "InfOne 标准 login 页面组合。",
+      "patternPath": "recipes/pages/login.md",
+      "sourcePath": "recipes/pages/login.md"
+    },
+    {
+      "name": "ModelMarketplace",
+      "shell": "D",
+      "title": "InfOne 页面模式：Model Marketplace",
+      "description": "InfOne 标准 model marketplace 页面组合。",
+      "patternPath": "recipes/pages/model-marketplace.md",
+      "sourcePath": "recipes/pages/model-marketplace.md"
+    },
+    {
+      "name": "NavRailConsole",
+      "shell": "D",
+      "title": "InfOne 页面模式：Nav Rail Console",
+      "description": "InfOne 标准 nav rail console 页面组合。",
+      "patternPath": "recipes/pages/nav-rail-console.md",
+      "sourcePath": "recipes/pages/nav-rail-console.md"
+    },
+    {
+      "name": "NavRailTopbarConsole",
+      "shell": "D+",
+      "title": "InfOne 页面模式：Nav Rail Topbar Console",
+      "description": "InfOne 标准 nav rail topbar console 页面组合。",
+      "patternPath": "recipes/pages/nav-rail-topbar-console.md",
+      "sourcePath": "recipes/pages/nav-rail-topbar-console.md"
+    },
+    {
+      "name": "PageGenerator",
+      "shell": "D",
+      "title": "InfOne 页面模式：Page Generator",
+      "description": "InfOne 标准 page generator 页面组合。",
+      "patternPath": "recipes/pages/page-generator.md",
+      "sourcePath": "recipes/pages/page-generator.md"
+    },
+    {
+      "name": "ResultPage",
+      "shell": "B",
+      "title": "InfOne 页面模式：Result Page",
+      "description": "InfOne 标准 result page 页面组合。",
+      "patternPath": "recipes/pages/result-page.md",
+      "sourcePath": "recipes/pages/result-page.md"
+    },
+    {
+      "name": "SettingsPage",
+      "shell": "D",
+      "title": "InfOne 页面模式：Settings Page",
+      "description": "InfOne 标准 settings page 页面组合。",
+      "patternPath": "recipes/pages/settings-page.md",
+      "sourcePath": "recipes/pages/settings-page.md"
+    },
+    {
+      "name": "UsageAnalytics",
+      "shell": "D",
+      "title": "InfOne 页面模式：Usage Analytics",
+      "description": "InfOne 标准 usage analytics 页面组合。",
+      "patternPath": "recipes/pages/usage-analytics.md",
+      "sourcePath": "recipes/pages/usage-analytics.md"
+    },
+    {
+      "name": "UserList",
+      "shell": "D",
+      "title": "InfOne 页面模式：User List",
+      "description": "InfOne 标准 user list 页面组合。",
+      "patternPath": "recipes/pages/user-list.md",
+      "sourcePath": "recipes/pages/user-list.md"
+    }
+  ],
+  "snippets": [
+    {
+      "kind": "component-recipe",
+      "name": "AccountCard",
+      "path": "recipes/components/AccountCard.md",
+      "description": "AccountCard 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "AgentTimeline",
+      "path": "recipes/components/AgentTimeline.md",
+      "description": "AgentTimeline 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "Avatar",
+      "path": "recipes/components/Avatar.md",
+      "description": "Avatar 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "Badge",
+      "path": "recipes/components/Badge.md",
+      "description": "Badge 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "Banner",
+      "path": "recipes/components/Banner.md",
+      "description": "Banner 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "Button",
+      "path": "recipes/components/Button.md",
+      "description": "Button 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "Cascader",
+      "path": "recipes/components/Cascader.md",
+      "description": "Cascader 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "Chart",
+      "path": "recipes/components/Chart.md",
+      "description": "Chart 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "Checkbox",
+      "path": "recipes/components/Checkbox.md",
+      "description": "Checkbox 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "CodeBlock",
+      "path": "recipes/components/CodeBlock.md",
+      "description": "CodeBlock 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "Collapse",
+      "path": "recipes/components/Collapse.md",
+      "description": "Collapse 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "CopyField",
+      "path": "recipes/components/CopyField.md",
+      "description": "CopyField 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "CostBreakdown",
+      "path": "recipes/components/CostBreakdown.md",
+      "description": "CostBreakdown 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "DataTable",
+      "path": "recipes/components/DataTable.md",
+      "description": "DataTable 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "DateRangePicker",
+      "path": "recipes/components/DateRangePicker.md",
+      "description": "DateRangePicker 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "Descriptions",
+      "path": "recipes/components/Descriptions.md",
+      "description": "Descriptions 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "Divider",
+      "path": "recipes/components/Divider.md",
+      "description": "Divider 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "Drawer",
+      "path": "recipes/components/Drawer.md",
+      "description": "Drawer 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "Dropdown",
+      "path": "recipes/components/Dropdown.md",
+      "description": "Dropdown 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "EmptyState",
+      "path": "recipes/components/EmptyState.md",
+      "description": "EmptyState 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "Form",
+      "path": "recipes/components/Form.md",
+      "description": "Form 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "Heatgrid",
+      "path": "recipes/components/Heatgrid.md",
+      "description": "Heatgrid 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "InputNumber",
+      "path": "recipes/components/InputNumber.md",
+      "description": "InputNumber 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "LogoLockup",
+      "path": "recipes/components/LogoLockup.md",
+      "description": "LogoLockup 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "Markdown",
+      "path": "recipes/components/Markdown.md",
+      "description": "Markdown 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "MetricStrip",
+      "path": "recipes/components/MetricStrip.md",
+      "description": "MetricStrip 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "Modal",
+      "path": "recipes/components/Modal.md",
+      "description": "Modal 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "ModelCompare",
+      "path": "recipes/components/ModelCompare.md",
+      "description": "ModelCompare 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "ModelDetailModal",
+      "path": "recipes/components/ModelDetailModal.md",
+      "description": "ModelDetailModal 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "ModelPriceCard",
+      "path": "recipes/components/ModelPriceCard.md",
+      "description": "ModelPriceCard 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "NavRail",
+      "path": "recipes/components/NavRail.md",
+      "description": "NavRail 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "PageHeader",
+      "path": "recipes/components/PageHeader.md",
+      "description": "PageHeader 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "Pager",
+      "path": "recipes/components/Pager.md",
+      "description": "Pager 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "Popconfirm",
+      "path": "recipes/components/Popconfirm.md",
+      "description": "Popconfirm 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "Progress",
+      "path": "recipes/components/Progress.md",
+      "description": "Progress 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "RadioGroup",
+      "path": "recipes/components/RadioGroup.md",
+      "description": "RadioGroup 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "RingGauge",
+      "path": "recipes/components/RingGauge.md",
+      "description": "RingGauge 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "ScrollArea",
+      "path": "recipes/components/ScrollArea.md",
+      "description": "ScrollArea 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "Scrollbar",
+      "path": "recipes/components/Scrollbar.md",
+      "description": "Scrollbar 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "SearchBox",
+      "path": "recipes/components/SearchBox.md",
+      "description": "SearchBox 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "SectionCard",
+      "path": "recipes/components/SectionCard.md",
+      "description": "SectionCard 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "Segmented",
+      "path": "recipes/components/Segmented.md",
+      "description": "Segmented 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "Select",
+      "path": "recipes/components/Select.md",
+      "description": "Select 普通、级联、深层模式的 API、AI 选型、React 实现与 28/32px 交互示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "Skeleton",
+      "path": "recipes/components/Skeleton.md",
+      "description": "Skeleton 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "Slider",
+      "path": "recipes/components/Slider.md",
+      "description": "Slider 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "Sparkline",
+      "path": "recipes/components/Sparkline.md",
+      "description": "Sparkline 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "Statistic",
+      "path": "recipes/components/Statistic.md",
+      "description": "Statistic 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "StatusChip",
+      "path": "recipes/components/StatusChip.md",
+      "description": "StatusChip 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "Steps",
+      "path": "recipes/components/Steps.md",
+      "description": "Steps 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "StreamingText",
+      "path": "recipes/components/StreamingText.md",
+      "description": "StreamingText 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "Switch",
+      "path": "recipes/components/Switch.md",
+      "description": "Switch 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "Tabs",
+      "path": "recipes/components/Tabs.md",
+      "description": "Tabs 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "Tag",
+      "path": "recipes/components/Tag.md",
+      "description": "Tag 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "Textarea",
+      "path": "recipes/components/Textarea.md",
+      "description": "Textarea 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "TextField",
+      "path": "recipes/components/TextField.md",
+      "description": "TextField 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "ThinkingBlock",
+      "path": "recipes/components/ThinkingBlock.md",
+      "description": "ThinkingBlock 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "Timeline",
+      "path": "recipes/components/Timeline.md",
+      "description": "Timeline 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "Toast",
+      "path": "recipes/components/Toast.md",
+      "description": "Toast 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "TokenMeter",
+      "path": "recipes/components/TokenMeter.md",
+      "description": "TokenMeter 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "Tooltip",
+      "path": "recipes/components/Tooltip.md",
+      "description": "Tooltip 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "TopNav",
+      "path": "recipes/components/TopNav.md",
+      "description": "TopNav 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "Transfer",
+      "path": "recipes/components/Transfer.md",
+      "description": "Transfer 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "Tree",
+      "path": "recipes/components/Tree.md",
+      "description": "Tree 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "TrendDelta",
+      "path": "recipes/components/TrendDelta.md",
+      "description": "TrendDelta 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "Upload",
+      "path": "recipes/components/Upload.md",
+      "description": "Upload 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "UserPopover",
+      "path": "recipes/components/UserPopover.md",
+      "description": "UserPopover 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "component-recipe",
+      "name": "VendorFilter",
+      "path": "recipes/components/VendorFilter.md",
+      "description": "VendorFilter 的 API、React 实现与独立 HTML 示例。"
+    },
+    {
+      "kind": "page-pattern",
+      "name": "ConsoleDashboard",
+      "path": "recipes/pages/console-dashboard.md",
+      "description": "InfOne Console Dashboard 页面模式。"
+    },
+    {
+      "kind": "page-pattern",
+      "name": "DetailPage",
+      "path": "recipes/pages/detail-page.md",
+      "description": "InfOne Detail Page 页面模式。"
+    },
+    {
+      "kind": "page-pattern",
+      "name": "EmptyStatePage",
+      "path": "recipes/pages/empty-state-page.md",
+      "description": "InfOne Empty State Page 页面模式。"
+    },
+    {
+      "kind": "page-pattern",
+      "name": "ErrorPage",
+      "path": "recipes/pages/error-page.md",
+      "description": "InfOne Error Page 页面模式。"
+    },
+    {
+      "kind": "page-pattern",
+      "name": "FormPage",
+      "path": "recipes/pages/form-page.md",
+      "description": "InfOne Form Page 页面模式。"
+    },
+    {
+      "kind": "page-pattern",
+      "name": "Login",
+      "path": "recipes/pages/login.md",
+      "description": "InfOne Login 页面模式。"
+    },
+    {
+      "kind": "page-pattern",
+      "name": "ModelMarketplace",
+      "path": "recipes/pages/model-marketplace.md",
+      "description": "InfOne Model Marketplace 页面模式。"
+    },
+    {
+      "kind": "page-pattern",
+      "name": "NavRailConsole",
+      "path": "recipes/pages/nav-rail-console.md",
+      "description": "InfOne Nav Rail Console 页面模式。"
+    },
+    {
+      "kind": "page-pattern",
+      "name": "NavRailTopbarConsole",
+      "path": "recipes/pages/nav-rail-topbar-console.md",
+      "description": "InfOne Nav Rail Topbar Console 页面模式。"
+    },
+    {
+      "kind": "page-pattern",
+      "name": "PageGenerator",
+      "path": "recipes/pages/page-generator.md",
+      "description": "InfOne Page Generator 页面模式。"
+    },
+    {
+      "kind": "page-pattern",
+      "name": "ResultPage",
+      "path": "recipes/pages/result-page.md",
+      "description": "InfOne Result Page 页面模式。"
+    },
+    {
+      "kind": "page-pattern",
+      "name": "SettingsPage",
+      "path": "recipes/pages/settings-page.md",
+      "description": "InfOne Settings Page 页面模式。"
+    },
+    {
+      "kind": "page-pattern",
+      "name": "UsageAnalytics",
+      "path": "recipes/pages/usage-analytics.md",
+      "description": "InfOne Usage Analytics 页面模式。"
+    },
+    {
+      "kind": "page-pattern",
+      "name": "UserList",
+      "path": "recipes/pages/user-list.md",
+      "description": "InfOne User List 页面模式。"
+    }
+  ]
+}

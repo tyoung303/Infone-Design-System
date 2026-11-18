@@ -1,0 +1,60 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="NavRail" subtitle="Full-height left rail — brand + nav + account (skeleton tier D), icon or hover-peek collapse" viewport="360x460" -->
+<html lang="zh-Hans">
+<head>
+<script data-infone-theme-bootstrap>if(new URLSearchParams(location.search).get("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")</script>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../tokens.css">
+<link rel="stylesheet" href="../../../fonts/remixicon.css">
+<script src="../../runtime/ds-bundle.js"></script>
+<style>body{margin:0;background:var(--th-bg)}.frame{height:100vh;display:flex;overflow:hidden}.stub{flex:1;min-width:0;padding:12px;display:flex;flex-direction:column;gap:12px}.stub span{border-radius:6px;background:var(--th-white);border:var(--th-border-card)}</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="../../runtime/react.production.min.js"></script>
+<script src="../../runtime/react-dom.production.min.js"></script>
+<script src="../../runtime/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+const { NavRail, Segmented } = window.TokenHubDesignSystem_019e20;
+const GROUPS = [
+  { title: "运行", items: [
+    { key: "runs", icon: "ri-play-circle-line", label: "运行记录" },
+    { key: "queue", icon: "ri-stack-line", label: "任务队列" },
+  ]},
+  { title: "接入", items: [
+    { key: "repo", icon: "ri-git-repository-line", label: "仓库接入", children: [
+      { key: "repo-github", label: "GitHub" },
+      { key: "repo-gitlab", label: "GitLab" },
+      { key: "repo-local", label: "本地仓库" },
+    ]},
+    { key: "keys", icon: "ri-key-2-line", label: "密钥与令牌" },
+  ]},
+  { title: "治理", items: [
+    { key: "team", icon: "ri-team-line", label: "团队配置" },
+    { key: "usage", icon: "ri-pie-chart-line", label: "用量与配额" },
+  ]},
+];
+function Demo() {
+  const [active, setActive] = React.useState("runs");
+  const [collapsed, setCollapsed] = React.useState(false);
+  const [mode, setMode] = React.useState("icon");
+  return (
+    <div className="frame">
+      <NavRail logoSrc="../../../assets/tokenhub-logo.svg" brand="InfOne" groups={GROUPS}
+        active={active} onChange={setActive} user="chen@infone.ai" collapseMode={mode}
+        collapsed={collapsed} onToggle={() => setCollapsed(v => !v)} />
+      {/* try clicking 仓库接入 to see the second-level disclosure */}
+      <div className="stub">
+        <Segmented size="sm" value={mode} onChange={setMode} options={[
+          { value: "icon", label: "icon 收起" },
+          { value: "hover", label: "hover 收起" },
+        ]} />
+        <span style={{flex:1}}></span>
+      </div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<Demo />);
+</script>
+</body>
+</html>

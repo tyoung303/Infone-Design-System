@@ -1,0 +1,43 @@
+<!doctype html>
+<!-- @dsCard group="Spacing" name="Radius scale" subtitle="三档 4 / 6 / 8 — 卡片与控件同为 6px，只有浮层升到 8px" viewport="700x200" -->
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<title>Radius</title>
+<link rel="stylesheet" href="preview.css">
+<style>
+  .panel { display: flex; gap: 16px; align-items: flex-end; }
+  .tile { width: 128px; background: var(--th-white); border: var(--th-border-card); border-radius: var(--th-radius-md); padding: 12px; display: flex; flex-direction: column; gap: 12px; align-items: flex-start; font-family: var(--th-font-ui); font-size: 11px; color: var(--color-fg-muted); }
+  .tile .demo { width: 100%; height: 56px; background: var(--th-teal-200); box-shadow: inset 0 0 0 1px rgba(0,0,0,.04); }
+  .tile b { color: var(--color-fg); font-weight: 600; display: block; font-family: var(--th-font-mono); font-size: 12px; }
+  .tile .note { color: var(--color-fg-muted); font-size: 10px; line-height: 1.4; display: block; }
+  .r-xs { border-radius: var(--th-radius-xs); }
+  .r-sm { border-radius: var(--th-radius-sm); }
+  .r-md { border-radius: var(--th-radius-md); }
+  .r-lg { border-radius: var(--th-radius-lg); }
+  .r-full { border-radius: var(--th-radius-full); }
+  .container { background: var(--th-bg); padding: 12px; border-radius: var(--th-radius-md); }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="container">
+    <div class="panel">
+      <div class="tile"><div class="demo r-xs"></div><div><b data-radius="--th-radius-xs"></b><span class="note">xs · tag, nav item, chip</span></div></div>
+      <div class="tile"><div class="demo r-sm"></div><div><b data-radius="--th-radius-sm"></b><span class="note">sm · button, input, select</span></div></div>
+      <div class="tile"><div class="demo r-md"></div><div><b data-radius="--th-radius-md"></b><span class="note">md · card, panel, popover</span></div></div>
+      <div class="tile"><div class="demo r-lg"></div><div><b data-radius="--th-radius-lg"></b><span class="note">lg · modal, drawer</span></div></div>
+      <div class="tile"><div class="demo r-full" style="height:56px;width:56px"></div><div><b>full</b><span class="note">avatar, dot, ring</span></div></div>
+    </div>
+  </div>
+</div>
+<script>
+/* Values are read back from the tokens at runtime — a radius edited in
+   colors_and_type.css must never leave a stale number printed on this card. */
+const cs = getComputedStyle(document.documentElement);
+document.querySelectorAll("b[data-radius]").forEach((el) => {
+  el.textContent = cs.getPropertyValue(el.dataset.radius).trim().replace("px", " px");
+});
+</script>
+</body>
+</html>

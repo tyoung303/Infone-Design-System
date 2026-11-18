@@ -1,0 +1,34 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="Thinking block" subtitle="AI reasoning reveal — shimmering label while active, collapsible once settled" viewport="720x260" -->
+<html lang="zh-Hans">
+<head>
+<script data-infone-theme-bootstrap>if(new URLSearchParams(location.search).get("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")</script>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../tokens.css">
+<script src="../../runtime/ds-bundle.js"></script>
+<style>body{margin:0;background:var(--th-bg)}.panel{box-sizing:border-box;padding:26px;display:flex;flex-direction:column;gap:16px}</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="../../runtime/react.production.min.js"></script>
+<script src="../../runtime/react-dom.production.min.js"></script>
+<script src="../../runtime/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+const { ThinkingBlock } = window.TokenHubDesignSystem_019e20;
+function Demo() {
+  const [elapsed, setElapsed] = React.useState(0);
+  React.useEffect(() => {
+    const t = setInterval(() => setElapsed((e) => (e < 6 ? e + 1 : 0)), 1000);
+    return () => clearInterval(t);
+  }, []);
+  return (
+    <div className="panel">
+      <ThinkingBlock active={true} elapsed={elapsed} text={"正在分析用户意图…\n拆解为几个子问题，逐一验证假设。"} />
+      <ThinkingBlock active={false} elapsed={8} text={"已完成的推理记录，点击标题可展开查看。"} />
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<Demo />);
+</script>
+</body>
+</html>

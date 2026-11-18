@@ -1,0 +1,1501 @@
+<!doctype html>
+<!-- @dsCard group="UI Kit — Console" name="Playground page" subtitle="操练场 — model config + AI chat. Static reference recreation (buttons use the legacy .tk-btn CSS atom, not the Button component)" viewport="1440x900" -->
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<title>TokenHub · 操练场</title>
+<link rel="stylesheet" href="../shared.css">
+<link rel="icon" href="../../../assets/tokenhub-logo.svg">
+<template id="__bundler_thumbnail">
+  <svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg">
+    <rect width="400" height="280" fill="#0F1A1F"/>
+    <g transform="translate(140,80)">
+      <rect width="120" height="120" rx="28" fill="#B4F1D6"/>
+      <text x="60" y="78" text-anchor="middle" font-family="Inter, sans-serif"
+            font-weight="700" font-size="56" fill="#0F1A1F">TH</text>
+    </g>
+  </svg>
+</template>
+<style>
+  body, button, input, select, textarea {
+    font-family: var(--th-font-cn);
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+  body { background: var(--color-bg); }
+
+  html, body { height: 100%; overflow: hidden; }
+  .app { display: flex; flex-direction: column; height: 100vh; }
+  #root { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+  /* Tier D skeleton: full-height NavRail + content column, no top bar. */
+  .shell {
+    flex: 1;
+    display: flex;
+    align-items: stretch;
+    min-height: 0;
+    overflow: hidden;
+  }
+  .pg-main {
+    flex: 1;
+    display: flex;
+    gap: 12px;
+    padding: 12px;
+    align-items: stretch;
+    min-width: 0;
+    min-height: 0;
+  }
+</style>
+</head>
+<body>
+<style>
+html,body{height:auto!important;min-height:100%;overflow-y:auto!important}.infone-ui-kit-nav{position:relative;z-index:2147483646;display:flex;align-items:center;justify-content:center;gap:4px;height:56px;padding:8px;border-bottom:1px solid #e2e5ea;background:#fff;font:13px/1 var(--th-font-ui,system-ui,sans-serif)}.infone-ui-kit-nav a{padding:10px 18px;border-radius:8px;color:#4a5058;text-decoration:none}.infone-ui-kit-nav a[aria-current=page]{background:#e3eeff;color:#1f62e0;font-weight:600}@media print{.infone-ui-kit-nav{display:none!important}}
+</style><nav class="infone-ui-kit-nav" aria-label="应用界面套件"><a href="../login.html">登录</a><a href="index.html">控制台</a><a href="playground.html" aria-current="page">演练场</a></nav>
+<div class="app">
+  <div id="root"></div>
+</div>
+
+<script src="../../runtime/react.production.min.js"></script>
+<script src="../../runtime/react-dom.production.min.js"></script>
+<script src="../../runtime/babel.min.js"></script>
+
+<script src="../../runtime/ds-bundle.js"></script>
+
+<script type="text/babel">
+/* NOTE: this is a page-local recreation, not the canonical component.
+   For new work, use components/UserPopover/UserPopover.jsx (window.<Namespace>.UserPopover) instead —
+   this file exists only so ui_kits/console/index.html stays self-contained. */
+/* UserPopover.jsx — 个人中心 popover anchored to the top-nav user chip.
+
+   Click the user chip in TopNav → renders this floating card right below
+   it. Header has avatar + name + role on the left and 退出 button on the
+   right (right-aligned per spec). Body has four labeled rows + a
+   管理账户信息 banner that hints at navigating away.
+
+   Anchor positioning uses fixed coords from the trigger's bounding rect.
+   Closes on Escape, scrim-click, or scroll/resize.
+*/
+
+const UserPopoverButton = window.TokenHubDesignSystem_019e20.Button;
+
+function UserPopover({ open, anchorEl, user, onClose, onLogout, onManageAccount }) {
+  const [pos, setPos] = React.useState(null);
+  const ref = React.useRef(null);
+
+  React.useLayoutEffect(() => {
+    if (!open || !anchorEl) return;
+    const update = () => {
+      const r = anchorEl.getBoundingClientRect();
+      const width = Math.min(360, window.innerWidth - 16);
+      const height = ref.current?.offsetHeight || 320;
+      const top = r.bottom + 8 + height > window.innerHeight ? Math.max(8, r.top - height - 8) : r.bottom + 8;
+      setPos({ top, left: Math.min(Math.max(8, r.right - width), window.innerWidth - width - 8), width });
+    };
+    update();
+    window.addEventListener("resize", update);
+    window.addEventListener("scroll", update, true);
+    return () => {
+      window.removeEventListener("resize", update);
+      window.removeEventListener("scroll", update, true);
+    };
+  }, [open, anchorEl]);
+
+  React.useEffect(() => {
+    if (!open) return;
+    const onKey = (e) => { if (e.key === "Escape") onClose?.(); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open, onClose]);
+
+  if (!open || !pos) return null;
+
+  const u = user || {};
+  const name  = u.name  || "uuvg63hyx";
+  const id    = u.id    || "10086";
+  const role  = u.role  || "普通用户";
+  const last  = u.lastLogin || "2026-05-25 14:30";
+  const initial = (name || "U").charAt(0).toUpperCase();
+
+  return (
+    <>
+      {/* Click-anywhere scrim */}
+      <div style={upStyles.scrim} onMouseDown={onClose} />
+      <div
+        ref={ref}
+        role="dialog"
+        aria-modal="false"
+        aria-label="用户账户信息"
+        className="th-user-popover"
+        style={{ ...upStyles.card, top: pos.top, left: pos.left, width: pos.width }}
+        onMouseDown={(e) => e.stopPropagation()}
+      >
+        {/* Header — avatar + identity + 退出 */}
+        <header style={upStyles.head}>
+          <span style={upStyles.avatar}>{initial}</span>
+          <div style={upStyles.identity}>
+            <div style={upStyles.name}>{name}</div>
+            <div style={upStyles.role}>{role}</div>
+          </div>
+          <UserPopoverButton variant="ghost" size="sm" icon="ri-logout-box-r-line" aria-label="退出登录" onClick={() => { onLogout?.(); window.location.href = "../login.html"; }}>
+            退出
+          </UserPopoverButton>
+        </header>
+
+        <div style={upStyles.divider} />
+
+        {/* Body — info rows */}
+        <div style={upStyles.body}>
+          <UPRow icon="ri-id-card-line"      label="用户 ID"  value={<span style={upStyles.num}>{id}</span>} />
+          <UPRow icon="ri-user-line"          label="用户名"   value={<span style={upStyles.mono}>{name}</span>} />
+          <UPRow icon="ri-shield-check-line"  label="账户状态" value={<UPStatusChip />} />
+          <UPRow icon="ri-time-line"          label="最近登录" value={<span style={upStyles.num}>{last}</span>} />
+        </div>
+
+        <div style={upStyles.divider} />
+
+        {/* Manage account banner */}
+        <button type="button" className="th-user-popover-action" style={upStyles.manageBtn} onClick={onManageAccount}>
+          <span style={upStyles.manageLeft}>
+            <i className="ri-settings-3-line" style={{ fontSize: 14 }} />
+            <span>管理账户信息</span>
+          </span>
+          <i className="ri-external-link-line" style={{ color: "var(--color-fg-muted)" }} />
+        </button>
+        <p style={upStyles.foot}>将跳转至 TokenHub 官网完成账户信息管理</p>
+      </div>
+    </>
+  );
+}
+
+function UPRow({ icon, label, value }) {
+  return (
+    <div style={upStyles.row}>
+      <span style={upStyles.rowLeft}>
+        <i className={icon} style={upStyles.rowIcon} />
+        <span style={upStyles.rowLabel}>{label}</span>
+      </span>
+      <span style={upStyles.rowValue}>{value}</span>
+    </div>
+  );
+}
+
+function UPStatusChip() {
+  return (
+    <span style={upStyles.statusChip}>已激活</span>
+  );
+}
+
+const upStyles = {
+  scrim: {
+    position: "fixed", inset: 0, zIndex: "var(--z-nav)",
+    background: "transparent",
+  },
+  card: {
+    position: "fixed",
+    zIndex: "var(--z-dropdown)",
+    boxSizing: "border-box",
+    background: "var(--color-surface-raised)",
+    border: "var(--th-border-card)",
+    borderRadius: "var(--th-radius-lg)",
+    boxShadow: "var(--th-shadow-soft)",
+    padding: "12px 12px 12px",
+    fontFamily: "var(--th-font-cn)",
+    animation: "upPop .15s cubic-bezier(0.2, 0.7, 0.2, 1)",
+  },
+
+  head: { display: "flex", alignItems: "center", gap: 12 },
+  avatar: {
+    width: 40, height: 40, borderRadius: "50%",
+    background: "var(--color-surface-selected)",
+    color: "var(--color-accent)",
+    fontFamily: "var(--th-font-ui)",
+    fontWeight: 600,
+    fontSize: 15,
+    display: "inline-flex", alignItems: "center", justifyContent: "center",
+    flexShrink: 0,
+  },
+  identity: { display: "flex", flexDirection: "column", minWidth: 0, flex: 1 },
+  name: {
+    fontFamily: "var(--th-font-ui)",
+    fontSize: 15, fontWeight: 600,
+    color: "var(--color-fg)",
+    lineHeight: 1.2,
+    overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
+  },
+  role: {
+    fontSize: 12,
+    color: "var(--color-fg-muted)",
+    marginTop: 4,
+  },
+  divider: { height: 1, background: "var(--color-border)", margin: "14px 0" },
+
+  body: { display: "flex", flexDirection: "column", gap: 12 },
+  row: {
+    display: "flex", alignItems: "center", justifyContent: "space-between",
+    gap: 12,
+  },
+  rowLeft: { display: "inline-flex", alignItems: "center", gap: 8 },
+  rowIcon: { color: "var(--color-fg-muted)", fontSize: 14 },
+  rowLabel: { fontSize: 13, color: "var(--color-fg)" },
+  rowValue: {
+    fontSize: 13,
+    color: "var(--color-fg)",
+    textAlign: "right",
+  },
+  num: {
+    fontFamily: "var(--th-font-ui)",
+    fontVariantNumeric: "tabular-nums",
+  },
+  mono: {
+    fontFamily: "var(--th-font-ui)",
+  },
+
+  statusChip: {
+    display: "inline-flex", alignItems: "center",
+    height: 22, padding: "0 10px",
+    background: "var(--color-surface-quiet)",
+    color: "var(--color-success-fg)",
+    borderRadius: "var(--th-radius-xs)",
+    fontSize: 12,
+    fontFamily: "var(--th-font-cn)",
+    whiteSpace: "nowrap",
+  },
+
+  manageBtn: {
+    appearance: "none",
+    display: "flex", alignItems: "center", justifyContent: "space-between",
+    width: "100%",
+    height: 44, padding: "0 12px",
+    background: "var(--color-surface-inset)",
+    border: "0.5px solid var(--color-border)",
+    borderRadius: "var(--th-radius-sm)",
+    color: "var(--color-fg)",
+    fontFamily: "var(--th-font-cn)",
+    fontSize: 13,
+    cursor: "pointer",
+  },
+  manageLeft: { display: "inline-flex", alignItems: "center", gap: 10 },
+
+  foot: {
+    margin: "10px 0 0",
+    fontSize: 12,
+    color: "var(--color-fg-muted)",
+    textAlign: "center",
+    fontFamily: "var(--th-font-cn)",
+  },
+};
+
+/* Animation keyframes */
+if (typeof document !== "undefined" && !document.getElementById("up-anims")) {
+  const s = document.createElement("style");
+  s.id = "up-anims";
+  s.textContent = `
+    @keyframes upPop {
+      from { opacity: 0; transform: translateY(-4px) scale(.98); }
+      to   { opacity: 1; transform: translateY(0)    scale(1);    }
+    }
+  `;
+  document.head.appendChild(s);
+}
+
+window.ConsoleUserPopover = UserPopover;
+</script>
+<script type="text/babel">
+/* ModelConfig.jsx — Playground middle column.
+   Combines every "Model configuration" field surfaced in the two reference
+   screenshots — toggles for custom body / image URL, group + model selectors,
+   four sampling sliders (Temperature / Top P / Frequency Penalty / Presence
+   Penalty), plus Max Tokens and Seed (the items that get pushed below the
+   fold in the source mocks).
+*/
+
+const SLIDER_FIELDS = [
+  { key: "temperature", label: "Temperature", icon: "ri-temp-cold-line", min: 0, max: 2, step: 0.1, default: 0.8, hint: "控制输出的随机性和创造性" },
+  { key: "topP",        label: "Top P",       icon: "ri-focus-3-line",   min: 0, max: 1, step: 0.05, default: 0.4, hint: "核采样，控制词汇选择的多样性" },
+  { key: "freqPenalty", label: "Frequency Penalty", icon: "ri-loop-right-line", min: -2, max: 2, step: 0.1, default: 0, hint: "频率惩罚，减少重复词汇的出现" },
+  { key: "presPenalty", label: "Presence Penalty",  icon: "ri-discuss-line",    min: -2, max: 2, step: 0.1, default: 0, hint: "存在惩罚，鼓励讨论新话题" },
+  { key: "maxTokens",   label: "Max Tokens",  icon: "ri-stack-line",     min: 256, max: 8192, step: 64, default: 2048, hint: "限制单次响应的最大长度", fmt: (v) => v },
+  { key: "seed",        label: "Seed",        icon: "ri-seedling-line",  min: 0, max: 999999, step: 1, default: 0, hint: "固定随机种子，使输出可复现", fmt: (v) => v },
+];
+
+function ToggleSwitch({ on, onChange, size = 22 }) {
+  const w = size * 1.75;
+  return (
+    <button
+      type="button"
+      aria-pressed={on}
+      onClick={() => onChange(!on)}
+      style={{
+        appearance: "none", border: "none", cursor: "pointer",
+        width: w, height: size, borderRadius: 999,
+        padding: 2,
+        background: on ? "var(--th-teal-500)" : "var(--th-gray-100)",
+        position: "relative",
+        transition: "background .2s ease",
+        flexShrink: 0,
+      }}
+    >
+      <span style={{
+        position: "absolute",
+        top: 2, left: on ? w - size + 2 : 2,
+        width: size - 4, height: size - 4,
+        borderRadius: 999,
+        background: "var(--th-white)",
+        boxShadow: "0 1px 4px rgba(0,0,0,0.18)",
+        transition: "left .2s cubic-bezier(0.2, 0.7, 0.2, 1)",
+      }} />
+    </button>
+  );
+}
+
+function FieldHeader({ icon, label, children }) {
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+      <i className={icon} style={{ fontSize: 14, color: "var(--color-fg-muted)" }} />
+      <span style={{ fontSize: 13, fontWeight: 500, flex: 1 }}>{label}</span>
+      {children}
+    </div>
+  );
+}
+
+function Select({ value, onChange, options }) {
+  return (
+    <div style={{ position: "relative" }}>
+      <select
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        style={{
+          width: "100%",
+          appearance: "none",
+          padding: "10px 24px 10px 12px",
+          border: "0.5px solid var(--color-border)",
+          borderRadius: "var(--th-radius-lg)",
+          background: "var(--th-white)",
+          fontFamily: "var(--th-font-cn)",
+          fontSize: 13,
+          color: "var(--color-fg)",
+          cursor: "pointer",
+        }}
+      >
+        {options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+      </select>
+      <i className="ri-arrow-down-s-line"
+         style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)",
+                  fontSize: 15, color: "var(--color-fg-muted)", pointerEvents: "none" }} />
+    </div>
+  );
+}
+
+/* Sleek thin slider that paints the filled track in blue, matching the mock. */
+function Slider({ value, min, max, step, onChange }) {
+  const pct = ((value - min) / (max - min)) * 100;
+  return (
+    <input
+      type="range"
+      min={min} max={max} step={step}
+      value={value}
+      onChange={(e) => onChange(parseFloat(e.target.value))}
+      className="th-slider"
+      style={{
+        width: "100%",
+        background: `linear-gradient(to right, var(--color-accent) 0%, var(--color-accent) ${pct}%, var(--th-gray-100) ${pct}%, var(--th-gray-100) 100%)`,
+      }}
+    />
+  );
+}
+
+function ModelConfig() {
+  const footerRef = React.useRef(null);
+  const [footerH, setFooterH] = React.useState(140);
+  React.useEffect(() => {
+    if (!footerRef.current) return;
+    const measure = () => setFooterH(footerRef.current.offsetHeight + 16);
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(footerRef.current);
+    return () => ro.disconnect();
+  }, []);
+
+  const [customBody, setCustomBody] = React.useState(false);
+  const [group, setGroup] = React.useState("default");
+  const [model, setModel] = React.useState("gpt-5.5");
+  const [imageOn, setImageOn] = React.useState(false);
+  const [imageUrl, setImageUrl] = React.useState("");
+  const [vals, setVals] = React.useState(() =>
+    Object.fromEntries(SLIDER_FIELDS.map((f) => [f.key, f.default]))
+  );
+  const [enabled, setEnabled] = React.useState(() =>
+    Object.fromEntries(SLIDER_FIELDS.map((f) => [f.key, true]))
+  );
+
+  const reset = () => {
+    setVals(Object.fromEntries(SLIDER_FIELDS.map((f) => [f.key, f.default])));
+    setEnabled(Object.fromEntries(SLIDER_FIELDS.map((f) => [f.key, true])));
+    setCustomBody(false);
+    setImageOn(false);
+  };
+
+  const fmt = (f, v) => {
+    if (f.fmt) return f.fmt(v);
+    return Number.isInteger(v) ? v.toString() : v.toFixed(2).replace(/0$/, "");
+  };
+
+  return (
+    <aside style={mcStyles.rail}>
+      {/* Header */}
+      <div style={mcStyles.headerRow}>
+        <span style={mcStyles.headerTitle}>模型配置</span>
+      </div>
+
+      <div style={{ ...mcStyles.scroll, paddingBottom: footerH }}>
+        {/* Custom body toggle */}
+        <div style={mcStyles.field}>
+          <FieldHeader icon="ri-code-line" label="自定义请求体模式">
+            <ToggleSwitch on={customBody} onChange={setCustomBody} />
+          </FieldHeader>
+        </div>
+
+        {/* Group */}
+        <div style={mcStyles.field}>
+          <FieldHeader icon="ri-team-line" label="分组" />
+          <Select value={group} onChange={setGroup}
+            options={[
+              { value: "default", label: "default" },
+              { value: "vip",     label: "vip" },
+              { value: "svip",    label: "svip" },
+            ]} />
+        </div>
+
+        {/* Model */}
+        <div style={mcStyles.field}>
+          <FieldHeader icon="ri-magic-line" label="模型" />
+          <Select value={model} onChange={setModel}
+            options={[
+              { value: "gpt-5.5",          label: "gpt-5.5" },
+              { value: "gpt-4o",           label: "gpt-4o" },
+              { value: "gpt-4o-mini",      label: "gpt-4o-mini" },
+              { value: "claude-haiku-4-5", label: "claude-haiku-4-5" },
+              { value: "claude-sonnet-4",  label: "claude-sonnet-4" },
+              { value: "deepseek-v3",      label: "deepseek-v3" },
+              { value: "qwen-3-max",       label: "qwen-3-max" },
+            ]} />
+        </div>
+
+        {/* Image URL */}
+        <div style={mcStyles.field}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <i className="ri-image-line" style={{ fontSize: 14, color: "var(--color-fg-muted)" }} />
+            <span style={{ fontSize: 13, fontWeight: 500, flex: 1 }}>图片地址</span>
+            <ToggleSwitch on={imageOn} onChange={setImageOn} />
+            <button
+              type="button"
+              disabled={!imageOn}
+              style={{
+                appearance: "none", border: "none", cursor: imageOn ? "pointer" : "not-allowed",
+                width: 22, height: 22, borderRadius: 999,
+                background: imageOn ? "var(--th-teal-50)" : "transparent",
+                color: imageOn ? "var(--th-teal-600)" : "var(--color-fg-subtle)",
+                display: "inline-flex", alignItems: "center", justifyContent: "center",
+                fontSize: 13,
+              }}
+              title="新增图片地址"
+            >
+              <i className="ri-add-line" />
+            </button>
+          </div>
+          <div style={{ fontSize: 12, color: "var(--color-fg-muted)", marginTop: 6 }}>
+            启用后可添加图片URL进行多模态对话
+          </div>
+          <div style={{
+            marginTop: 10,
+            display: "flex", alignItems: "center", gap: 8,
+            padding: "10px 12px",
+            border: "0.5px solid var(--color-border)",
+            borderRadius: "var(--th-radius-lg)",
+            background: imageOn ? "var(--th-white)" : "var(--th-gray-50)",
+            opacity: imageOn ? 1 : 0.55,
+          }}>
+            <i className="ri-link" style={{ fontSize: 14, color: "var(--color-fg-muted)" }} />
+            <input
+              type="text"
+              disabled={!imageOn}
+              value={imageUrl}
+              onChange={(e) => setImageUrl(e.target.value)}
+              placeholder="https://example.com/image1.png"
+              style={{
+                flex: 1, border: "none", background: "transparent",
+                fontFamily: "var(--th-font-mono)", fontSize: 12, color: "var(--color-fg)",
+                outline: "none", minWidth: 0,
+              }}
+            />
+          </div>
+        </div>
+
+        {/* Slider fields */}
+        {SLIDER_FIELDS.map((f) => (
+          <div key={f.key} style={{
+            ...mcStyles.field,
+            opacity: enabled[f.key] ? 1 : 0.55,
+          }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <i className={f.icon} style={{ fontSize: 14, color: "var(--color-fg-muted)" }} />
+              <span style={{ fontSize: 13, fontWeight: 500 }}>{f.label}</span>
+              <span style={mcStyles.valuePill}>{fmt(f, vals[f.key])}</span>
+              <div style={{ flex: 1 }} />
+              <button
+                type="button"
+                onClick={() => setEnabled((e) => ({ ...e, [f.key]: !e[f.key] }))}
+                style={{
+                  appearance: "none", border: "none", cursor: "pointer",
+                  width: 22, height: 22, borderRadius: 999,
+                  background: enabled[f.key] ? "var(--th-teal-500)" : "var(--th-gray-200)",
+                  color: "var(--th-white)",
+                  display: "inline-flex", alignItems: "center", justifyContent: "center",
+                  fontSize: 12,
+                  transition: "background .15s ease",
+                }}
+                title={enabled[f.key] ? "已启用" : "已禁用"}
+              >
+                <i className="ri-check-line" />
+              </button>
+            </div>
+            <div style={{ fontSize: 12, color: "var(--color-fg-muted)", marginTop: 6 }}>{f.hint}</div>
+            <div style={{ marginTop: 12 }}>
+              <Slider
+                min={f.min} max={f.max} step={f.step}
+                value={vals[f.key]}
+                onChange={(v) => setVals((s) => ({ ...s, [f.key]: v }))}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Footer */}
+      <div ref={footerRef} style={mcStyles.footer}>
+        <div style={mcStyles.savedRow}>
+          <span style={{ fontSize: 12, color: "var(--color-fg-muted)" }}>
+            上次保存: 2026/5/26 17:08:14
+          </span>
+          <button
+            type="button"
+            onClick={reset}
+            style={mcStyles.resetBtn}
+            title="重置为默认值"
+          >
+            <i className="ri-reset-left-line" />
+          </button>
+        </div>
+        <div style={{ display: "flex", gap: 10, marginTop: 12 }}>
+          <button type="button" className="tk-btn" style={mcStyles.actBtn}>
+            <i className="ri-download-2-line" />导出
+          </button>
+          <button type="button" className="tk-btn" style={mcStyles.actBtn}>
+            <i className="ri-upload-2-line" />导入
+          </button>
+        </div>
+      </div>
+    </aside>
+  );
+}
+
+const mcStyles = {
+  rail: {
+    width: 332,
+    flexShrink: 0,
+    alignSelf: "stretch",
+    background: "var(--th-white)",
+    border: "var(--th-border-card)",
+    borderRadius: "var(--th-radius-md)",
+    display: "flex", flexDirection: "column",
+    overflow: "hidden",
+    position: "relative",
+  },
+  headerRow: {
+    display: "flex", alignItems: "center", gap: 12,
+    padding: "12px 12px",
+    borderBottom: "0.5px solid var(--color-border)",
+    flexShrink: 0,
+  },
+  headerTitle: { fontSize: 15, fontWeight: 600 },
+  scroll: {
+    flex: 1, minHeight: 0, overflow: "auto",
+    padding: "12px 12px",
+    display: "flex", flexDirection: "column", gap: 12,
+  },
+  field: {
+    display: "flex", flexDirection: "column",
+  },
+  valuePill: {
+    fontFamily: "var(--th-font-mono)",
+    fontSize: 11,
+    color: "var(--color-fg-muted)",
+    background: "var(--th-gray-50)",
+    borderRadius: "var(--th-radius-xs)",
+    padding: "2px 8px",
+    minWidth: 28, textAlign: "center",
+  },
+  footer: {
+    position: "absolute",
+    left: 0, right: 0, bottom: 0,
+    padding: "12px 12px 12px",
+    background: "rgba(255,255,255,0.92)",
+    backdropFilter: "blur(12px)",
+    WebkitBackdropFilter: "blur(12px)",
+    borderTop: "0.5px solid var(--color-border)",
+    boxShadow: "0 -6px 16px rgba(0,0,0,0.04)",
+    zIndex: 5,
+  },
+  savedRow: { display: "flex", alignItems: "center", justifyContent: "space-between" },
+  resetBtn: {
+    appearance: "none", border: "none", cursor: "pointer",
+    width: 26, height: 26, borderRadius: 999,
+    background: "var(--th-pink-50)",
+    color: "var(--th-pink-500)",
+    display: "inline-flex", alignItems: "center", justifyContent: "center",
+    fontSize: 13,
+  },
+  actBtn: {
+    flex: 1, justifyContent: "center", padding: "10px 12px",
+    fontSize: 13,
+  },
+};
+
+/* slider css — thin track, blue thumb */
+if (typeof document !== "undefined" && !document.getElementById("th-slider-css")) {
+  const s = document.createElement("style");
+  s.id = "th-slider-css";
+  s.textContent = `
+    .th-slider {
+      -webkit-appearance: none; appearance: none;
+      height: 6px; border-radius: 999px; outline: none;
+      cursor: pointer;
+    }
+    .th-slider::-webkit-slider-thumb {
+      -webkit-appearance: none; appearance: none;
+      width: 16px; height: 16px; border-radius: 50%;
+      background: var(--th-white);
+      border: 2px solid var(--color-accent);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.18);
+      cursor: pointer;
+    }
+    .th-slider::-moz-range-thumb {
+      width: 16px; height: 16px; border-radius: 50%;
+      background: var(--th-white);
+      border: 2px solid var(--color-accent);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.18);
+      cursor: pointer;
+    }
+  `;
+  document.head.appendChild(s);
+}
+
+window.ModelConfig = ModelConfig;
+</script>
+<script type="text/babel">
+/* NOTE: this is a page-local recreation, not the canonical component.
+   For new work, use components/ThinkingBlock/ThinkingBlock.jsx (window.<Namespace>.ThinkingBlock) instead —
+   this file exists only so ui_kits/console/index.html stays self-contained. */
+/* ThinkingBlock.jsx — "Deep thinking" reveal for assistant messages.
+   Self-contained recreation (mirrors components/ThinkingBlock/ThinkingBlock.jsx). */
+function ConsoleThinkingBlock({ active, elapsed, text }) {
+  const [open, setOpen] = React.useState(active);
+  const wasActive = React.useRef(active);
+
+  React.useEffect(() => {
+    if (wasActive.current && !active) {
+      const t = setTimeout(() => setOpen(false), 700);
+      wasActive.current = active;
+      return () => clearTimeout(t);
+    }
+    if (!wasActive.current && active) {
+      setOpen(true);
+    }
+    wasActive.current = active;
+  }, [active]);
+
+  const seconds = Math.max(0, Math.floor(elapsed || 0));
+
+  return (
+    <div className={"th-think" + (active ? " is-active" : "")}>
+      <button
+        type="button"
+        className="th-think-header"
+        aria-expanded={open}
+        onClick={() => setOpen((o) => !o)}
+      >
+        <span className="th-think-icon" aria-hidden="true">
+          <i className={active ? "ri-loader-4-line th-spin" : "ri-sparkling-2-line"} />
+        </span>
+        <span className={"th-think-label" + (active ? " th-shimmer-text" : "")}>
+          {active ? "深度思考中" : "已深度思考"}
+        </span>
+        <span className="th-think-elapsed">{seconds}s</span>
+        <span className="th-think-chev" aria-hidden="true">
+          <i className={"ri-arrow-down-s-line" + (open ? " is-open" : "")} />
+        </span>
+      </button>
+
+      {open && (
+        <div className="th-think-body">
+          {text ? text : (active ? "\u2026" : "（无思考记录）")}
+          {active && <span className="th-caret" aria-hidden="true" />}
+        </div>
+      )}
+    </div>
+  );
+}
+
+if (typeof document !== "undefined" && !document.getElementById("th-think-css")) {
+  const s = document.createElement("style");
+  s.id = "th-think-css";
+  s.textContent = `
+    .th-think{--th-think-rail-offset:calc(var(--th-space-4) + var(--th-text-xl) / 2);background:var(--color-surface-raised);border:var(--th-border-card);border-radius:var(--th-radius-md);padding:var(--th-space-1);margin-bottom:var(--th-block-gap);max-width:720px;transition:border-color var(--th-dur-2) var(--th-ease),background var(--th-dur-2) var(--th-ease)}
+    .th-think.is-active{border-color:var(--color-accent);background:var(--color-surface-raised)}
+    .th-think-header{width:100%;appearance:none;border:none;background:transparent;cursor:pointer;display:flex;align-items:center;gap:var(--th-space-2);padding:var(--th-space-2) var(--th-space-4);border-radius:var(--th-radius-sm);color:var(--color-fg-muted);font-family:var(--th-font-cn);font-size:var(--th-text-base)}
+    .th-think-header:hover{background:var(--color-row-hover);color:var(--color-fg)}
+    .th-think-header:focus-visible{outline:2px solid var(--color-accent);outline-offset:2px}
+    .th-think-icon{width:var(--th-text-xl);height:var(--th-text-xl);flex-shrink:0;border-radius:var(--th-radius-full);background:var(--color-accent-soft);color:var(--color-link);display:inline-flex;align-items:center;justify-content:center;font-size:var(--th-text-base)}
+    .th-think.is-active .th-think-icon{background:var(--color-surface-selected)}
+    .th-think-label{font-size:var(--th-text-base);font-weight:500;flex:1;text-align:left;color:var(--color-fg-muted)}
+    .th-think-elapsed{font-family:var(--th-font-ui);font-size:var(--th-text-xs);color:var(--color-fg-subtle);font-variant-numeric:tabular-nums;padding:var(--th-space-1) var(--th-space-2);border-radius:var(--th-radius-sm);background:var(--color-surface-quiet);border:0.5px solid var(--color-border)}
+    .th-think.is-active .th-think-elapsed{color:var(--color-link);border-color:var(--color-accent)}
+    .th-think-chev{width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;color:var(--color-fg-subtle);font-size:var(--th-text-md)}
+    .th-think-chev .ri-arrow-down-s-line{transition:transform var(--th-dur-1) var(--th-ease)}
+    .th-think-chev .is-open{transform:rotate(180deg)}
+    .th-think-body{margin:var(--th-space-1) var(--th-space-2) var(--th-space-2) var(--th-think-rail-offset);padding:var(--th-space-2) 0 var(--th-space-2) var(--th-space-4);border-left:var(--th-border-hairline);font-size:var(--th-text-base);line-height:1.5;color:var(--color-fg-muted);white-space:pre-wrap;word-break:break-word;animation:th-think-fade-in var(--th-dur-1) var(--th-ease) both}
+    .th-think.is-active .th-think-body{border-left-color:var(--color-accent)}
+    .th-think-body .th-caret{margin-left:var(--th-space-1);background:var(--color-link)}
+    @keyframes th-think-fade-in {
+      from { opacity: 0; transform: translateY(-2px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @media (prefers-reduced-motion:reduce){.th-think-body{animation:none}}
+  `;
+  document.head.appendChild(s);
+}
+
+window.ThThinkingBlock = ConsoleThinkingBlock;
+</script>
+<script type="text/babel">
+/* ChatPanel.jsx — Playground right column.
+   Gradient purple→cyan header with model name, scrollable conversation,
+   message action rail under each bubble, fixed composer at the bottom.
+*/
+
+const TH_LOGO_SRC = "../../assets/tokenhub-logo.svg";
+
+/* A pre-canned reasoning trace used both for the seeded example and for the
+   simulated stream when 深度思考 is enabled. Written as how an internal
+   monologue actually reads — short, hedging, self-correcting. */
+const SAMPLE_THINKING = `用户问的是「API 管理平台中，模型管理做什么」。先拆一下范围：
+1) 模型本身的元数据登记 —— 名称、版本、供应商、上下文窗口、是否多模态。
+2) 路由层面 —— 统一接口怎么映射到底层不同厂商，比如 OpenAI / Anthropic / DeepSeek。
+3) 访问控制 —— 哪些用户分组能用哪些模型，配额怎么扣。
+4) 观测 —— 调用量、错误率、p95 延迟、token 成本。
+
+要不要把负载均衡和故障转移单独拎出来？我倾向于放在「路由」里，避免列表过长。
+另外，回答需要面向 TokenHub 的语境，TokenHub 是 OpenAI 兼容代理，所以「模型映射」是重点，应该排在前面。
+
+最后用 4 个小标题组织：模型配置 / 路由映射 / 权限配额 / 性能监控。每个小标题下用 3 条要点，控制密度。`;
+
+const SEED_MESSAGES = [
+  { role: "assistant", text: "你好！我是 TokenHub 助手，已开启深度思考。有什么我可以帮你的吗？" },
+  { role: "user",      text: "一般 api 管理平台中，模型管理做什么？" },
+  {
+    role: "assistant",
+    thinking: { text: SAMPLE_THINKING, elapsed: 8, active: false },
+    rich: [
+      { type: "p",  text: "API 管理平台中的模型管理主要负责以下几个方面：" },
+      { type: "h",  text: "模型配置管理" },
+      { type: "ul", items: [
+        "添加、编辑、删除可用的 AI 模型",
+        "配置模型的基本信息（名称、版本、供应商）",
+        "设置模型的参数限制（最大 token 数、温度范围等）",
+      ]},
+      { type: "h",  text: "模型路由与映射" },
+      { type: "ul", items: [
+        "将统一的 API 接口映射到不同的底层模型",
+        "配置模型别名和版本切换",
+        "实现模型的负载均衡和故障转移",
+      ]},
+      { type: "h",  text: "权限与访问控制" },
+      { type: "ul", items: [
+        "设置哪些用户或应用可以访问特定模型",
+        "配置模型的使用配额和限流规则",
+        "管理不同模型的定价策略",
+      ]},
+      { type: "h",  text: "性能监控" },
+      { type: "ul", items: [
+        "跟踪各模型的调用次数、响应时间",
+        "监控模型的可用性和错误率",
+        "统计 token 使用量和成本",
+      ]},
+    ],
+  },
+];
+
+function MsgActions({ role, onCopy, copied }) {
+  /* "刷新/重答" only makes sense on AI; "改写" only on user, etc. — we keep the
+     row identical to the mock: refresh, copy, edit, switch-author, delete. */
+  const items = role === "assistant"
+    ? [
+        { key: "regen",  icon: "ri-refresh-line",     label: "重新生成" },
+        { key: "copy",   icon: "ri-file-copy-line",   label: "复制" },
+        { key: "edit",   icon: "ri-edit-2-line",      label: "编辑" },
+        { key: "swap",   icon: "ri-user-shared-line", label: "改为我的发言" },
+        { key: "del",    icon: "ri-delete-bin-line",  label: "删除" },
+      ]
+    : [
+        { key: "regen",  icon: "ri-refresh-line",     label: "重新提问" },
+        { key: "copy",   icon: "ri-file-copy-line",   label: "复制" },
+        { key: "edit",   icon: "ri-edit-2-line",      label: "编辑" },
+        { key: "del",    icon: "ri-delete-bin-line",  label: "删除" },
+      ];
+
+  return (
+    <div style={{
+      display: "flex", gap: 6,
+      justifyContent: role === "user" ? "flex-end" : "flex-start",
+      marginTop: 8,
+    }}>
+      {items.map((it) => {
+        const isCopy = it.key === "copy" && copied;
+        return (
+          <button
+            key={it.key}
+            type="button"
+            onClick={() => it.key === "copy" && onCopy?.()}
+            className="msg-action"
+            title={it.label}
+          >
+            <i className={isCopy ? "ri-check-line" : it.icon} />
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+function AssistantBubble({ msg, streaming, phase }) {
+  const cursor = streaming && phase !== "thinking" ? <span className="th-stream-cursor" /> : null;
+  const thinking = msg.thinking;
+  // While in the thinking phase we keep the reply area empty (no premature
+  // cursor under the block) — the block has its own streaming cursor.
+  const showReplyArea = !thinking || !thinking.active || (msg.text || (msg.rich && msg.rich.length));
+
+  if (msg.text || (!msg.rich && thinking)) {
+    return (
+      <div style={cpStyles.assistantBubble}>
+        {thinking && (
+          <ThThinkingBlock
+            active={!!thinking.active}
+            elapsed={thinking.elapsed || 0}
+            text={thinking.text || ""}
+          />
+        )}
+        {showReplyArea && (msg.text || streaming) && (
+          <p style={{ margin: 0, lineHeight: 1.55 }}>{msg.text}{cursor}</p>
+        )}
+      </div>
+    );
+  }
+  return (
+    <div style={cpStyles.assistantBubble}>
+      {thinking && (
+        <ThThinkingBlock
+          active={!!thinking.active}
+          elapsed={thinking.elapsed || 0}
+          text={thinking.text || ""}
+        />
+      )}
+      {msg.rich.map((block, i) => {
+        if (block.type === "p") {
+          return <p key={i} style={{ margin: i === 0 ? 0 : "10px 0 0", lineHeight: 1.55 }}>{block.text}</p>;
+        }
+        if (block.type === "h") {
+          return <div key={i} style={{ marginTop: 16, marginBottom: 8, fontWeight: 600, fontSize: 13 }}>{block.text}</div>;
+        }
+        if (block.type === "ul") {
+          return (
+            <ul key={i} style={{ margin: "0 0 0 4px", padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 4 }}>
+              {block.items.map((t, j) => (
+                <li key={j} style={{ display: "flex", gap: 10, alignItems: "flex-start", lineHeight: 1.5 }}>
+                  <span style={{
+                    width: 5, height: 5, borderRadius: "50%",
+                    background: "var(--th-gray-300)",
+                    marginTop: 10, flexShrink: 0,
+                  }} />
+                  <span>{t}</span>
+                </li>
+              ))}
+            </ul>
+          );
+        }
+        return null;
+      })}
+    </div>
+  );
+}
+
+function MessageRow({ msg, idx, copied, setCopied, isStreaming }) {
+  const onCopy = () => {
+    const flat = msg.text || (msg.rich || []).map((b) => b.text || (b.items || []).join("\n")).join("\n");
+    navigator.clipboard?.writeText(flat).catch(() => {});
+    setCopied(idx);
+    setTimeout(() => setCopied(null), 1400);
+  };
+
+  if (msg.role === "user") {
+    return (
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end" }}>
+        <div style={{ display: "flex", maxWidth: "78%" }}>
+          <div style={cpStyles.userBubble}>{msg.text}</div>
+        </div>
+        <MsgActions role="user" onCopy={onCopy} copied={copied === idx} />
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+      <div style={{ display: "flex", maxWidth: "92%" }}>
+        <AssistantBubble msg={msg} streaming={isStreaming} />
+      </div>
+      {!isStreaming && <MsgActions role="assistant" onCopy={onCopy} copied={copied === idx} />}
+    </div>
+  );
+}
+
+function ChatPanel({ model = "gpt-5.5" }) {
+  const [messages, setMessages] = React.useState(SEED_MESSAGES);
+  const [input, setInput] = React.useState("");
+  const [copied, setCopied] = React.useState(null);
+  const [debug, setDebug] = React.useState(false);
+  const [thinkOn, setThinkOn] = React.useState(true);
+  const [streamingIdx, setStreamingIdx] = React.useState(null);
+  const composerRef = React.useRef(null);
+  const [composerH, setComposerH] = React.useState(96);
+  const scrollRef = React.useRef(null);
+  const [showDown, setShowDown] = React.useState(false);
+  const streamTimer = React.useRef(null);
+  const thinkTimer = React.useRef(null);
+
+  React.useEffect(() => {
+    if (!composerRef.current) return;
+    const measure = () => setComposerH(composerRef.current.offsetHeight + 36);
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(composerRef.current);
+    return () => ro.disconnect();
+  }, []);
+
+  // Track whether the user is scrolled away from the bottom — show jump arrow
+  React.useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const onScroll = () => {
+      const gap = el.scrollHeight - el.scrollTop - el.clientHeight;
+      setShowDown(gap > 60);
+    };
+    onScroll();
+    el.addEventListener("scroll", onScroll);
+    return () => el.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const scrollToBottom = () => {
+    const el = scrollRef.current;
+    if (el) el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
+  };
+
+  // Streaming reply simulation — types out one chunk at a time and can be aborted.
+  const streamChars = (replyIdx, fullText, applyChunk, onDone) => {
+    const CHUNK = 4;          // chars per tick
+    const TICK_MS = 45;
+    let cursor = 0;
+    const tick = () => {
+      cursor = Math.min(fullText.length, cursor + CHUNK);
+      setMessages((m) => m.map((msg, i) => (i === replyIdx ? applyChunk(msg, fullText.slice(0, cursor)) : msg)));
+      if (cursor >= fullText.length) {
+        streamTimer.current = null;
+        onDone?.();
+        return;
+      }
+      streamTimer.current = setTimeout(tick, TICK_MS);
+    };
+    streamTimer.current = setTimeout(tick, TICK_MS);
+  };
+
+  const startStream = (replyIdx, fullText, withThinking) => {
+    if (!withThinking) {
+      streamChars(
+        replyIdx,
+        fullText,
+        (msg, partial) => ({ ...msg, text: partial }),
+        () => setStreamingIdx(null),
+      );
+      return;
+    }
+
+    // --- Thinking phase ---
+    // A second, distinct chain-of-thought for the user's new prompt. We
+    // re-use the seeded sample's tone but switch the topic so the demo
+    // doesn't look like the same trace twice.
+    const liveThinking =
+      "用户又问了一个问题，先理解意图。\n" +
+      "看起来需要在 TokenHub 的上下文下给出实操性的答复，而不是泛泛而谈。\n" +
+      "整理思路：先抓重点结论，再补 1–2 条短理由；不展开成长清单，控制密度。\n" +
+      "另外要保留对模型 `" + model + "` 的提及，让回答贴合所选模型。\n" +
+      "最后用 1 段对话式中文输出，避免标题与符号堆叠。";
+
+    const startedAt = Date.now();
+    thinkTimer.current = setInterval(() => {
+      const dt = (Date.now() - startedAt) / 1000;
+      setMessages((m) => m.map((msg, i) =>
+        i === replyIdx && msg.thinking
+          ? { ...msg, thinking: { ...msg.thinking, elapsed: dt } }
+          : msg
+      ));
+    }, 200);
+
+    streamChars(
+      replyIdx,
+      liveThinking,
+      (msg, partial) => ({ ...msg, thinking: { ...(msg.thinking || {}), text: partial, active: true } }),
+      () => {
+        // End thinking, hand over to reply.
+        if (thinkTimer.current) { clearInterval(thinkTimer.current); thinkTimer.current = null; }
+        const totalSec = Math.max(1, Math.round((Date.now() - startedAt) / 1000));
+        setMessages((m) => m.map((msg, i) =>
+          i === replyIdx && msg.thinking
+            ? { ...msg, thinking: { ...msg.thinking, active: false, elapsed: totalSec } }
+            : msg
+        ));
+        // Tiny breather before answer starts, mimics real platforms.
+        setTimeout(() => {
+          streamChars(
+            replyIdx,
+            fullText,
+            (msg, partial) => ({ ...msg, text: partial }),
+            () => setStreamingIdx(null),
+          );
+        }, 350);
+      },
+    );
+  };
+
+  const stopStream = () => {
+    if (streamTimer.current) { clearTimeout(streamTimer.current); streamTimer.current = null; }
+    if (thinkTimer.current) { clearInterval(thinkTimer.current); thinkTimer.current = null; }
+    setMessages((m) => m.map((msg) =>
+      msg.thinking && msg.thinking.active
+        ? { ...msg, thinking: { ...msg.thinking, active: false } }
+        : msg
+    ));
+    setStreamingIdx(null);
+  };
+
+  React.useEffect(() => () => {
+    if (streamTimer.current) clearTimeout(streamTimer.current);
+    if (thinkTimer.current) clearInterval(thinkTimer.current);
+  }, []);
+
+  const send = () => {
+    if (streamingIdx !== null) { stopStream(); return; }
+    const t = input.trim();
+    if (!t) return;
+    const fullReply = "这是一条模拟回复。在真实环境下，TokenHub 会把这条消息路由到所选模型（" + model +
+      "）并返回结果" + (thinkOn ? "；启用了深度思考的请求会先输出推理过程，再给出最终答复。" : "。") +
+      "点击发送按钮或再次点击可以随时中断。";
+    setMessages((m) => {
+      const assistantPlaceholder = thinkOn
+        ? { role: "assistant", thinking: { text: "", elapsed: 0, active: true }, text: "" }
+        : { role: "assistant", text: "" };
+      const next = [...m, { role: "user", text: t }, assistantPlaceholder];
+      const replyIdx = next.length - 1;
+      setStreamingIdx(replyIdx);
+      setTimeout(() => startStream(replyIdx, fullReply, thinkOn), 0);
+      return next;
+    });
+    setInput("");
+    setTimeout(scrollToBottom, 50);
+  };
+
+  const clearAll = () => setMessages([]);
+
+  return (
+    <section style={cpStyles.panel}>
+      {/* Scrollable conversation */}
+      <div ref={scrollRef} style={{ ...cpStyles.body, paddingBottom: composerH }}>
+        {messages.length === 0 ? (
+          <div style={cpStyles.emptyState}>
+            <div style={cpStyles.emptyIcon}>
+              <img src={TH_LOGO_SRC} width="32" height="32" alt="" />
+            </div>
+            <div style={{ fontSize: 13, fontWeight: 500 }}>开始一段新的对话</div>
+            <div style={{ fontSize: 12, color: "var(--color-fg-muted)", marginTop: 4 }}>
+              在下方输入框发起你的第一条消息
+            </div>
+          </div>
+        ) : messages.map((m, i) => (
+          <MessageRow key={i} msg={m} idx={i} copied={copied} setCopied={setCopied} isStreaming={i === streamingIdx} />
+        ))}
+      </div>
+
+      {/* Floating scroll-to-bottom */}
+      {showDown && (
+        <button type="button" onClick={scrollToBottom} style={cpStyles.scrollDown} title="滚动到最新">
+          <i className="ri-arrow-down-s-line" />
+        </button>
+      )}
+
+      {/* Composer */}
+      <div ref={composerRef} style={cpStyles.composer}>
+        <button type="button" onClick={clearAll} style={cpStyles.clearBtn} title="清空对话">
+          <i className="ri-delete-bin-line" />
+        </button>
+        <button
+          type="button"
+          onClick={() => setThinkOn((v) => !v)}
+          className={"th-think-toggle" + (thinkOn ? " is-on" : "")}
+          title={thinkOn ? "已开启深度思考，点击关闭" : "开启深度思考"}
+        >
+          <i className="ri-sparkling-2-line" />
+          <span>深度思考</span>
+        </button>
+        <input
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); } }}
+          placeholder={streamingIdx !== null ? "AI 正在回复中…点击右侧按钮可以中断" : "请输入您的问题..."}
+          disabled={streamingIdx !== null}
+          style={{
+            ...cpStyles.composerInput,
+            opacity: streamingIdx !== null ? 0.55 : 1,
+          }}
+        />
+        <button
+          type="button"
+          onClick={send}
+          style={{
+            ...cpStyles.sendBtn,
+            background: streamingIdx !== null
+              ? "var(--th-gray-800)"
+              : (!input.trim() ? "var(--th-gray-200)" : "linear-gradient(135deg, #6741E8 0%, #5BA8F4 100%)"),
+            boxShadow: streamingIdx !== null
+              ? "0 4px 12px rgba(0,0,0,0.18)"
+              : (!input.trim() ? "none" : "0 4px 12px rgba(103,65,232,0.28)"),
+            cursor: streamingIdx !== null ? "pointer" : (!input.trim() ? "not-allowed" : "pointer"),
+          }}
+          title={streamingIdx !== null ? "停止生成" : "发送"}
+          disabled={streamingIdx === null && !input.trim()}
+        >
+          {streamingIdx !== null ? (
+            <span className="th-pulse-ring">
+              <span style={{
+                width: 10, height: 10, borderRadius: 2,
+                background: "var(--th-white)", display: "inline-block",
+              }} />
+            </span>
+          ) : (
+            <i className="ri-arrow-up-line" />
+          )}
+        </button>
+      </div>
+    </section>
+  );
+}
+
+const cpStyles = {
+  panel: {
+    flex: 1, minWidth: 0,
+    alignSelf: "stretch",
+    background: "var(--th-white)",
+    border: "var(--th-border-card)",
+    borderRadius: "var(--th-radius-md)",
+    display: "flex", flexDirection: "column",
+    overflow: "hidden",
+    position: "relative",
+  },
+  header: {
+    height: 88,
+    padding: "0 16px",
+    background: "linear-gradient(90deg, #6741E8 0%, #9659E8 45%, #5BA8F4 100%)",
+    display: "flex", alignItems: "center", gap: 12,
+    flexShrink: 0,
+  },
+  headerIcon: {
+    width: 44, height: 44, borderRadius: "var(--th-radius-md)",
+    background: "rgba(255,255,255,0.18)",
+    border: "1px solid rgba(255,255,255,0.22)",
+    display: "inline-flex", alignItems: "center", justifyContent: "center",
+    color: "var(--th-white)", fontSize: 20,
+    flexShrink: 0,
+  },
+  debugBtn: {
+    appearance: "none", border: "none", cursor: "pointer",
+    height: 32, padding: "0 12px",
+    borderRadius: "var(--th-radius-sm)",
+    fontFamily: "var(--th-font-cn)", fontSize: 12, fontWeight: 500,
+    display: "inline-flex", alignItems: "center", gap: 6,
+    transition: "background .15s ease, transform .08s ease",
+  },
+  body: {
+    flex: 1, minHeight: 0,
+    overflow: "auto",
+    padding: "16px 16px 16px",
+    display: "flex", flexDirection: "column", gap: 12,
+    background: "var(--th-white)",
+  },
+  aiAvatar: {
+    width: 32, height: 32, borderRadius: 999,
+    background: "var(--th-gray-50)",
+    border: "0.5px solid var(--color-border)",
+    display: "inline-flex", alignItems: "center", justifyContent: "center",
+    flexShrink: 0,
+  },
+  userAvatar: {
+    width: 32, height: 32, borderRadius: 999,
+    background: "linear-gradient(135deg, #4A41C8 0%, #6E5EE6 100%)",
+    color: "var(--th-white)",
+    display: "inline-flex", alignItems: "center", justifyContent: "center",
+    fontSize: 13, fontWeight: 600,
+    flexShrink: 0,
+  },
+  assistantBubble: {
+    fontSize: 13, color: "var(--color-fg)",
+    padding: "4px 0",
+    minWidth: 0,
+  },
+  userBubble: {
+    background: "linear-gradient(135deg, var(--th-teal-500) 0%, var(--th-teal-600) 100%)",
+    color: "var(--th-white)",
+    padding: "10px 12px",
+    borderRadius: 18,
+    borderTopRightRadius: 4,
+    fontSize: 13, lineHeight: 1.55,
+    boxShadow: "0 4px 12px rgba(0,174,170,0.22)",
+    maxWidth: "100%",
+    wordBreak: "break-word",
+  },
+  composer: {
+    position: "absolute",
+    left: 18, right: 18, bottom: 18,
+    padding: "10px 12px 10px 12px",
+    border: "0.5px solid var(--color-border)",
+    borderRadius: "var(--th-radius-sm)",
+    background: "rgba(255,255,255,0.96)",
+    backdropFilter: "blur(12px)",
+    WebkitBackdropFilter: "blur(12px)",
+    display: "flex", alignItems: "center", gap: 10,
+    boxShadow: "0 6px 24px rgba(0,0,0,0.08)",
+    zIndex: 5,
+  },
+  clearBtn: {
+    appearance: "none", border: "none", cursor: "pointer",
+    width: 36, height: 36, borderRadius: 999,
+    background: "transparent",
+    color: "var(--color-fg-muted)",
+    display: "inline-flex", alignItems: "center", justifyContent: "center",
+    fontSize: 15,
+  },
+  composerInput: {
+    flex: 1, minWidth: 0,
+    height: 36,
+    border: "none", outline: "none",
+    background: "transparent",
+    fontFamily: "var(--th-font-cn)",
+    fontSize: 13, color: "var(--color-fg)",
+  },
+  sendBtn: {
+    appearance: "none", border: "none", cursor: "pointer",
+    width: 38, height: 38, borderRadius: 999,
+    background: "linear-gradient(135deg, #6741E8 0%, #5BA8F4 100%)",
+    color: "var(--th-white)",
+    display: "inline-flex", alignItems: "center", justifyContent: "center",
+    fontSize: 18,
+    boxShadow: "0 4px 12px rgba(103,65,232,0.28)",
+    transition: "transform .08s ease, opacity .2s ease",
+  },
+  scrollDown: {
+    position: "absolute",
+    right: 32,
+    bottom: 92,
+    width: 36, height: 36, borderRadius: 999,
+    background: "var(--th-white)",
+    border: "0.5px solid var(--color-border)",
+    boxShadow: "var(--th-shadow-soft)",
+    color: "var(--color-fg)",
+    cursor: "pointer",
+    display: "inline-flex", alignItems: "center", justifyContent: "center",
+    fontSize: 18,
+    zIndex: 6,
+  },
+  emptyState: {
+    margin: "auto",
+    display: "flex", flexDirection: "column", alignItems: "center",
+    color: "var(--color-fg)",
+    padding: "24px 12px",
+  },
+  emptyIcon: {
+    width: 56, height: 56, borderRadius: "var(--th-radius-lg)",
+    background: "var(--th-gray-50)",
+    border: "0.5px solid var(--color-border)",
+    display: "inline-flex", alignItems: "center", justifyContent: "center",
+    marginBottom: 14,
+  },
+};
+
+/* Action button hover style */
+if (typeof document !== "undefined" && !document.getElementById("th-msg-action-css")) {
+  const s = document.createElement("style");
+  s.id = "th-msg-action-css";
+  s.textContent = `
+    .msg-action {
+      appearance: none; border: none; cursor: pointer;
+      width: 28px; height: 28px; border-radius: 999px;
+      background: transparent;
+      color: var(--color-fg-muted);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 13px;
+      transition: background .15s ease, color .15s ease;
+    }
+    .msg-action:hover {
+      background: var(--th-gray-50);
+      color: var(--color-fg);
+    }
+    .msg-action:active { transform: scale(0.94); }
+
+    @keyframes th-blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
+    }
+    .th-stream-cursor {
+      display: inline-block;
+      width: 7px; height: 14px;
+      margin-left: 3px;
+      vertical-align: -2px;
+      background: var(--th-gray-800);
+      border-radius: 1px;
+      animation: th-blink 1s steps(2, start) infinite;
+    }
+
+    @keyframes th-pulse-ring {
+      0%   { box-shadow: 0 0 0 0 rgba(255,255,255,0.45); }
+      80%  { box-shadow: 0 0 0 10px rgba(255,255,255,0); }
+      100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); }
+    }
+    .th-pulse-ring {
+      display: inline-flex;
+      align-items: center; justify-content: center;
+      width: var(--th-text-xl); height: var(--th-text-xl);
+      border-radius: 999px;
+      animation: th-pulse-ring 1.4s ease-out infinite;
+    }
+
+    .th-think-toggle {
+      appearance: none; cursor: pointer;
+      height: 32px; padding: 0 12px;
+      display: inline-flex; align-items: center; gap: 6px;
+      border-radius: 999px;
+      border: 0.5px solid var(--color-border);
+      background: var(--th-white);
+      color: var(--color-fg-muted);
+      font-family: var(--th-font-cn);
+      font-size: 12px; font-weight: 500;
+      transition: background .15s ease, color .15s ease, border-color .15s ease, box-shadow .15s ease;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+    .th-think-toggle.is-on {
+      color: var(--th-teal-600);
+      border-color: rgba(0,174,170,0.25);
+      background: var(--th-teal-50);
+      box-shadow: inset 0 0 0 1px rgba(0,174,170,0.04);
+    }
+    .th-think-toggle.is-on i { color: var(--th-teal-500); }
+    .th-think-toggle:active { transform: scale(0.97); }
+  `;
+  document.head.appendChild(s);
+}
+
+window.ChatPanel = ChatPanel;
+</script>
+
+<script>
+  window.addEventListener("error", (e) => {
+    const root = document.getElementById("root");
+    if (root && !root.children.length) {
+      root.innerHTML = '<pre style="padding:24px;color:#E5564E;font-family:ui-monospace,monospace;white-space:pre-wrap">' +
+        (e.message || "Script load error") + '\n' + (e.filename || "") + ':' + (e.lineno || "") +
+        '</pre>';
+    }
+  });
+</script>
+
+<script type="text/babel">
+const { NavRail } = window.TokenHubDesignSystem_019e20;
+
+const NAV_GROUPS = [
+  {
+    title: "聊天",
+    items: [
+      { key: "playground", icon: "ri-terminal-box-line", label: "操练场" },
+    ],
+  },
+  {
+    title: "控制台",
+    items: [
+      { key: "dashboard", icon: "ri-bar-chart-line",   label: "数据看板" },
+      { key: "tokens",    icon: "ri-key-2-line",       label: "令牌管理" },
+      { key: "logs",      icon: "ri-file-list-3-line", label: "使用日志" },
+    ],
+  },
+  {
+    title: "管理员",
+    items: [
+      { key: "channels", icon: "ri-route-line",       label: "渠道管理" },
+      { key: "models",   icon: "ri-treasure-map-line",label: "模型管理" },
+      { key: "quota",    icon: "ri-coin-line",        label: "额度管理" },
+      { key: "users",    icon: "ri-team-line",        label: "用户管理" },
+      { key: "settings", icon: "ri-settings-3-line",  label: "系统设置" },
+    ],
+  },
+];
+
+function App() {
+  const [active, setActive] = React.useState("playground");
+  const [collapsed, setCollapsed] = React.useState(false);
+
+  // Items other than "playground" jump back to the main console — keeps this
+  // page self-contained but lets the rail still navigate the user out.
+  const onNav = (key) => {
+    if (key === "playground") { setActive("playground"); return; }
+    window.location.href = "./index.html";
+  };
+
+  return (
+    <>
+      <div className="shell">
+        <NavRail
+          logoSrc="../../../assets/tokenhub-logo.svg"
+          brand="TokenHub"
+          active={active}
+          onChange={onNav}
+          groups={NAV_GROUPS}
+          user="admin"
+          collapsed={collapsed}
+          onToggle={() => setCollapsed((v) => !v)}
+        />
+        <div className="pg-main">
+          <ModelConfig />
+          <ChatPanel model="gpt-5.5" />
+        </div>
+      </div>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>

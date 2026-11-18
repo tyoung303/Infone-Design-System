@@ -1,0 +1,43 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="Scrollbar" subtitle="Reusable overlay thumb for external scrolling viewports" viewport="700x300" -->
+<html lang="zh-Hans">
+<head>
+<script data-infone-theme-bootstrap>if(new URLSearchParams(location.search).get("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")</script>
+<meta charset="utf-8">
+<title>Scrollbar</title>
+<link rel="stylesheet" href="../../../tokens.css">
+<script src="../../runtime/ds-bundle.js"></script>
+<style>body{margin:0;padding:12px;background:var(--th-bg);font-family:var(--th-font-cn)}.wrap{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.card{height:244px;background:var(--th-white);border:0.5px solid var(--color-border);border-radius:var(--th-radius-md);overflow:hidden;display:flex;flex-direction:column}.head{height:36px;flex-shrink:0;padding:0 12px;display:flex;align-items:center;justify-content:space-between;border-bottom:0.5px solid var(--color-divider);font-size:13px;font-weight:600}.head span{font-size:11px;color:var(--color-fg-subtle);font-weight:400}.shell{position:relative;flex:1;min-height:0}.view{height:100%;overflow:auto;scrollbar-width:none;-ms-overflow-style:none}.view::-webkit-scrollbar{width:0;height:0;display:none}.row{padding:8px 12px;font-size:13px;border-top:0.5px solid var(--color-divider)}.row:first-child{border-top:none}.chips{display:flex;gap:8px;padding:12px;width:max-content}.chip{flex:none;height:26px;padding:0 10px;border-radius:6px;background:var(--color-surface-inset);font-size:12px;display:inline-flex;align-items:center;white-space:nowrap}</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="../../runtime/react.production.min.js"></script>
+<script src="../../runtime/react-dom.production.min.js"></script>
+<script src="../../runtime/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+const { Scrollbar } = window.TokenHubDesignSystem_019e20;
+const ITEMS = ["运行记录", "任务队列", "仓库接入", "密钥与令牌", "模型市场", "渠道管理", "用量分析", "账单记录", "系统设置", "团队配置"];
+const TAGS = ["全部模型", "OpenAI 系列", "Anthropic 系列", "DeepSeek", "Gemini", "自定义渠道", "边缘缓存", "高可用线路"];
+function Panel({ title, axis = "y", reveal }) {
+  const ref = React.useRef(null);
+  return (
+    <div className="card">
+      <div className="head">{title}<span>{reveal}</span></div>
+      <div className="shell">
+        <div ref={ref} className="view" style={axis === "x" ? { overflowX: "auto", overflowY: "hidden" } : { overflowY: "auto", overflowX: "hidden" }}>
+          {axis === "x"
+            ? <div className="chips">{TAGS.map((t) => <span className="chip" key={t}>{t}</span>)}</div>
+            : ITEMS.map((item) => <div className="row" key={item}>{item}</div>)}
+        </div>
+        <Scrollbar targetRef={ref} axis={axis} reveal={reveal} />
+      </div>
+    </div>
+  );
+}
+function Demo() {
+  return <div className="wrap"><Panel title="纵向" reveal="hover" /><Panel title="纵向" reveal="always" /><Panel title="横向" axis="x" reveal="scroll" /></div>;
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<Demo />);
+</script>
+</body>
+</html>

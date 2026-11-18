@@ -1,0 +1,49 @@
+<!doctype html>
+<!-- @dsCard group="Colors" name="Color · Surface layers & category tones" subtitle="raised/quiet/inset/well/selected 表面分层、cat1–6 分类色、heat 强度色阶" viewport="720x520" -->
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<title>Surface Layers</title>
+<link rel="stylesheet" href="preview.css">
+<style>
+  .section-label { font-family: var(--th-font-ui); font-size: 11px; font-weight: 600; color: var(--color-fg-muted); text-transform: uppercase; letter-spacing: 0.04em; }
+  .layer-card { border-radius: var(--th-radius-md); border: var(--th-border-card); background: var(--color-surface-raised); padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+  .layer-row { border-radius: var(--th-radius-sm); padding: 10px 12px; font-family: var(--th-font-ui); font-size: 12px; display: flex; justify-content: space-between; align-items: center; }
+  .layer-row .k { font-family: var(--th-font-mono); font-weight: 500; color: var(--color-fg); }
+  .layer-row .d { color: var(--color-fg-muted); }
+  .cat-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+  .cat-chip { border-radius: 999px; padding: 6px 0; text-align: center; font-family: var(--th-font-ui); font-size: 11px; font-weight: 600; }
+  .heat-strip { display: flex; border-radius: var(--th-radius-sm); overflow: hidden; height: 40px; }
+  .heat-strip div { flex: 1; display: flex; align-items: center; justify-content: center; font-family: var(--th-font-mono); font-size: 10px; color: var(--color-fg-muted); }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="section-label">表面分层 — 四档纯中性灰阶（整体偏浅、最深一档也留在浅区），层层递进但差值克制；同一张卡内最多叠两层</div>
+  <div class="layer-card">
+    <div class="layer-row" style="background:var(--color-surface-raised);border:0.5px solid var(--color-border)"><span class="k">--color-surface-raised</span><span class="d">卡片本体</span></div>
+    <div class="layer-row" style="background:var(--color-surface-quiet);border:1px solid var(--color-surface-quiet-border)"><span class="k">--color-surface-quiet</span><span class="d">最浅一档回撤 — 轻量强调块/摘要行</span></div>
+    <div class="layer-row" style="background:var(--color-surface-inset)"><span class="k">--color-surface-inset</span><span class="d">下沉面板 — 代码块/日志/预览区</span></div>
+    <div class="layer-row" style="background:var(--color-surface-well)"><span class="k">--color-surface-well</span><span class="d">最深一档 — 嵌套在 inset 里的内容/合计行</span></div>
+    <div class="layer-row" style="background:var(--color-surface-selected)"><span class="k">--color-surface-selected</span><span class="d">选中态（品牌蓝浅色阶，交互状态色，不算中性层级）</span></div>
+  </div>
+  <div class="section-label">分类色 — cat1–6，取自图表色阶，供应商/模型系列/套餐层级用，禁止表状态</div>
+  <div class="cat-grid">
+    <div class="cat-chip" style="background:var(--th-cat-1-bg);color:var(--th-cat-1-fg)">cat1</div>
+    <div class="cat-chip" style="background:var(--th-cat-2-bg);color:var(--th-cat-2-fg)">cat2</div>
+    <div class="cat-chip" style="background:var(--th-cat-3-bg);color:var(--th-cat-3-fg)">cat3</div>
+    <div class="cat-chip" style="background:var(--th-cat-4-bg);color:var(--th-cat-4-fg)">cat4</div>
+    <div class="cat-chip" style="background:var(--th-cat-5-bg);color:var(--th-cat-5-fg)">cat5</div>
+    <div class="cat-chip" style="background:var(--th-cat-6-bg);color:var(--th-cat-6-fg)">cat6</div>
+  </div>
+  <div class="section-label">Heat 强度色阶 — 品牌蓝单色阶（顶档仍比可点击的 brand-500 浅），表示「多/少」而非「好/坏」；每一阶都能承载 gray-900 标签</div>
+  <div class="heat-strip">
+    <div style="background:var(--th-heat-0)">heat-0</div>
+    <div style="background:var(--th-heat-1)">heat-1</div>
+    <div style="background:var(--th-heat-2)">heat-2</div>
+    <div style="background:var(--th-heat-3)">heat-3</div>
+    <div style="background:var(--th-heat-4);color:var(--th-gray-900)">heat-4</div>
+  </div>
+</div>
+</body>
+</html>

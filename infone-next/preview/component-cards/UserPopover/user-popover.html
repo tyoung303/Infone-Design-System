@@ -1,0 +1,35 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="User popover" subtitle="Account card anchored to a trigger chip — click the demo chip" viewport="420x260" -->
+<html lang="zh-Hans">
+<head>
+<script data-infone-theme-bootstrap>if(new URLSearchParams(location.search).get("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")</script>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../tokens.css">
+<script src="../../runtime/ds-bundle.js"></script>
+<style>body{margin:0;background:var(--th-bg)}.panel{box-sizing:border-box;padding:40px}</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="../../runtime/react.production.min.js"></script>
+<script src="../../runtime/react-dom.production.min.js"></script>
+<script src="../../runtime/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+const { UserPopover } = window.TokenHubDesignSystem_019e20;
+function Demo() {
+  const [open, setOpen] = React.useState(true);
+  const ref = React.useRef(null);
+  const [anchor, setAnchor] = React.useState(null);
+  React.useEffect(() => setAnchor(ref.current), []);
+  return (
+    <div className="panel">
+      <button ref={ref} onClick={() => setOpen(v => !v)} style={{height:28,padding:"0 10px 0 6px",borderRadius:"var(--th-radius-sm)",background:"var(--th-white)",border:"0.5px solid var(--color-border)",display:"inline-flex",alignItems:"center",gap:8,fontSize:12,cursor:"pointer"}}>
+        <span style={{width:20,height:20,borderRadius:"50%",background:"var(--th-pink-100)",display:"inline-block"}} />admin<i className="ri-arrow-down-s-line" />
+      </button>
+       <UserPopover open={open} anchorEl={anchor} user={{ name: "admin", id: "10086", role: "普通用户", lastLogin: "2026-05-25 14:30" }} onClose={() => setOpen(false)} />
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<Demo />);
+</script>
+</body>
+</html>

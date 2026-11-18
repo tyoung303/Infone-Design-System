@@ -1,0 +1,51 @@
+<!doctype html>
+<!-- @dsCard group="Type" name="Type · Brand & nav" subtitle="Sora 700 wordmark 14/22/40 · 导航取系统 UI 字体栈 Medium 13" viewport="700x240" -->
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<title>Brand wordmark</title>
+<link rel="stylesheet" href="preview.css">
+<style>
+  .panel {
+    background: var(--th-white);
+    border: var(--th-border-card);
+    border-radius: var(--th-radius-md);
+    padding: 28px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .row1 { display: flex; align-items: flex-end; gap: 28px; }
+  .wm {
+    font-family: var(--th-font-brand);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--color-fg);
+  }
+  .wm.s14 { font-size: 14px; line-height: 1; } /* nav */
+  .wm.s22 { font-size: 22px; line-height: 1; } /* lockup */
+  .wm.s40 { font-size: 40px; line-height: 1; }
+  .meta { font-family: var(--th-font-ui); font-size: 11px; color: var(--color-fg-muted); }
+  .meta b { color: var(--color-fg); font-weight: 600; }
+  .stack { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; }
+  .nav { display: flex; gap: 28px; align-items: center; }
+  .nav span { font-family: var(--th-font-ui); font-weight: 500; font-size: 13px; color: var(--color-fg); }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="panel">
+    <div class="row1">
+      <div class="stack"><span class="wm s40">TokenHub</span><span class="meta">Display · Sora 700 / 40 · -1%</span></div>
+      <div class="stack"><span class="wm s22">TokenHub</span><span class="meta">Lockup · Sora 700 / 22</span></div>
+      <div class="stack"><span class="wm s14">TokenHub</span><span class="meta">Nav · Sora 700 / 14</span></div>
+    </div>
+    <div class="divider"></div>
+    <div class="nav">
+      <span>首页</span><span>客户伙伴</span><span>文档及动态</span><span>控制台</span><span>模型广场</span><span>关于</span>
+      <span class="meta" style="margin-left:auto">Nav 项 · --th-font-ui Medium · 13 / 100%</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>

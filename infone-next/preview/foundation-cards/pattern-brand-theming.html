@@ -1,0 +1,36 @@
+<!doctype html>
+<!-- @dsCard group="Patterns" name="品牌换肤" subtitle="同一风格多产品 — 只覆盖 --brand-* 与 logo，灰阶/字体/圆角/阴影不变" viewport="720x340" -->
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../tokens.css">
+<style>
+body{margin:0;background:var(--th-bg);display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;gap:16px}
+.demo{flex:1;max-width:330px;background:var(--th-white);border:var(--th-border-card);border-radius:var(--th-radius-md);box-shadow:var(--th-shadow-card);padding:18px;display:flex;flex-direction:column;gap:12px}
+.hd{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600}
+.mark{width:20px;height:20px;border-radius:6px;background:var(--brand-500);display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;font-family:var(--th-font-brand)}
+.cta{align-self:flex-start;height:32px;padding:0 16px;border:none;border-radius:var(--th-radius-pill);background:var(--th-teal-500);color:#FFFFFF;font-size:13px;font-weight:500;font-family:var(--th-font-cn);cursor:pointer;box-shadow:var(--th-shadow-key)}
+.item{display:flex;align-items:center;gap:8px;height:34px;padding:0 10px;border-radius:var(--th-radius-xs);background:var(--th-teal-50);color:var(--th-teal-600);font-size:13px;font-weight:500}
+.chip{align-self:flex-start;height:22px;padding:0 10px;border-radius:999px;display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:500;background:var(--th-teal-50);color:var(--th-teal-600)}
+.chip i{width:6px;height:6px;border-radius:999px;background:var(--th-teal-500)}
+.cap{font-size:11px;color:var(--color-fg-muted);font-family:var(--th-font-mono)}
+.reskin{--brand-50:#EDF3FF;--brand-100:#DBE7FF;--brand-200:#B9D2FF;--brand-300:#9DBFFF;--brand-400:#5E8EF7;--brand-500:#2F6BEB;--brand-600:#1F4FC4;--brand-700:#173D99;--th-teal-50:var(--brand-50);--th-teal-100:var(--brand-100);--th-teal-200:var(--brand-200);--th-teal-300:var(--brand-300);--th-teal-400:var(--brand-400);--th-teal-500:var(--brand-500);--th-teal-600:var(--brand-600);--th-teal-700:var(--brand-700);--th-shadow-key:0 4px 12px color-mix(in srgb,var(--brand-500) 25%,transparent)}
+</style>
+</head>
+<body>
+<div class="demo">
+<div class="hd"><span class="mark">T</span>TokenHub · 默认</div>
+<button class="cta">获取秘钥</button>
+<div class="item"><i class="ri-key-2-line"></i>令牌管理</div>
+<span class="chip"><i></i>已激活</span>
+<span class="cap">--brand-500: #3B83FF</span>
+</div>
+<div class="demo reskin">
+<div class="hd"><span class="mark">D</span>DataOne · 换肤后</div>
+<button class="cta" style="color:#fff;background-color:#2F6BEB;overflow:visible">获取秘钥</button>
+<div class="item"><i class="ri-key-2-line"></i>令牌管理</div>
+<span class="chip"><i></i>已激活</span>
+<span class="cap">--brand-500: #2F6BEB</span>
+</div>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="Top navigation" subtitle="48px 顶栏 — 域级导航、可选 15px 紧凑页面标题" viewport="760x160" catalogHeight="160" -->
+<html lang="zh-Hans">
+<head>
+<script data-infone-theme-bootstrap>if(new URLSearchParams(location.search).get("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")</script>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../tokens.css">
+<script src="../../runtime/ds-bundle.js"></script>
+<style>body{margin:0;background:var(--th-bg)}</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="../../runtime/react.production.min.js"></script>
+<script src="../../runtime/react-dom.production.min.js"></script>
+<script src="../../runtime/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+const { TopNav } = window.TokenHubDesignSystem_019e20;
+function Demo() {
+  return (
+    <div style={{ display: "grid", gap: "var(--space-3)" }}>
+    <TopNav
+      brand="TokenHub"
+      logoSrc="../../../assets/tokenhub-logo.svg"
+      active="控制台"
+      items={[{ label: "首页" }, { label: "控制台" }, { label: "模型广场" }]}
+    />
+    <TopNav variant="inline" pageTitle="智能工作台" />
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<Demo />);
+</script>
+</body>
+</html>

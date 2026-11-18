@@ -1,0 +1,34 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="Model price card" subtitle="Vendor tile + price lines + billing tag, select/copy actions" viewport="420x240" -->
+<html lang="zh-Hans">
+<head>
+<script data-infone-theme-bootstrap>if(new URLSearchParams(location.search).get("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")</script>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../tokens.css">
+<script src="../../runtime/ds-bundle.js"></script>
+<style>body{margin:0;background:var(--th-bg)}.panel{box-sizing:border-box;padding:24px;width:376px}</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="../../runtime/react.production.min.js"></script>
+<script src="../../runtime/react-dom.production.min.js"></script>
+<script src="../../runtime/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+const { ModelPriceCard } = window.TokenHubDesignSystem_019e20;
+function Demo() {
+  const [sel, setSel] = React.useState(false);
+  return (
+    <div className="panel">
+      <ModelPriceCard
+        vendorIcon="ri-anthropic-fill" vendorColor="var(--color-fg)"
+        name="claude-opus-4-7"
+        prices={[{ label: "输入价格", value: "$4.5000" }, { label: "补全价格", value: "$20.0000" }]}
+        selected={sel} onToggleSelect={() => setSel((v) => !v)}
+      />
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<Demo />);
+</script>
+</body>
+</html>

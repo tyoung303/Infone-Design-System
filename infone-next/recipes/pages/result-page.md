@@ -1,0 +1,96 @@
+# ResultPage
+
+根据源文件中的 result page 模板整理而成的 InfOne 页面模式。
+
+## 适用场景
+
+当页面需求匹配 result page 工作流时使用此模式，并复用所有匹配的 InfOne 具名组件。
+
+## 必要流程
+
+1. 应用 DESIGN.md 中的页面骨架决策树。
+2. 将每个可见控件匹配到具名组件目录。
+3. 保留密度、组件嵌套、响应式行为、语义颜色与视觉预算规则。
+4. 替换示例文案和业务数据，但不要用原生近似实现替换标准组件。
+
+## ResultPage.dc.html
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+<style data-infone-responsive>
+@media (max-width: 900px) {
+  [style*="grid-template-columns:minmax(0,1fr) 292px"],
+  [style*="grid-template-columns:minmax(0,1fr) 280px"] { grid-template-columns: minmax(0, 1fr) !important; }
+}
+@media (max-width: 680px) {
+  [style*="grid-template-columns:minmax(0,1fr) 92px 84px"] { grid-template-columns: minmax(0, 1fr) !important; }
+}
+</style>
+</head>
+<body>
+<x-dc>
+<!-- @template name="Result Page" description="结果页 — B 档骨架（仅顶栏，无侧栏）+ 居中结果卡（成功/失败可切换）+ 密钥展示 + 后续引导" -->
+<helmet>
+<script src="./ds-base.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css">
+<style>body{margin:0;background:var(--th-bg)}</style>
+</helmet>
+<div style="min-height:100vh;background:var(--th-bg);font-family:var(--th-font-cn);color:var(--color-fg)" data-screen-label="创建结果页">
+<x-import component-from-global-scope="TokenHubDesignSystem_019e20.TopNav" active="控制台" user="admin" hint-size="100%,48px"></x-import>
+<div style="display:flex;justify-content:center;padding:12px">
+<main style="width:100%;max-width:640px;display:flex;flex-direction:column;align-items:center;padding-top:48px">
+<div style="background:var(--th-white);border:var(--th-border-card);border-radius:var(--th-radius-md);box-shadow:var(--th-shadow-card);padding:40px;width:560px;max-width:100%;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center">
+<sc-if value="{{ isSuccess }}" hint-placeholder-val="{{ true }}">
+<span style="width:56px;height:56px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;font-size:28px;background:var(--color-success-bg);color:var(--color-success-fg)"><i class="ri-check-line"></i></span>
+</sc-if>
+<sc-if value="{{ isError }}" hint-placeholder-val="{{ false }}">
+<span style="width:56px;height:56px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;font-size:28px;background:var(--th-pink-50);color:var(--th-pink-500)"><i class="ri-close-line"></i></span>
+</sc-if>
+<div>
+<h2 style="margin:0;font-size:18px;font-weight:600">{{ title }}</h2>
+<div style="font-size:13px;color:var(--color-fg-muted);margin-top:6px;line-height:1.5">{{ desc }}</div>
+</div>
+<sc-if value="{{ isSuccess }}" hint-placeholder-val="{{ true }}">
+<x-import component-from-global-scope="TokenHubDesignSystem_019e20.CopyField" label="密钥（仅显示一次）" value="sk-Xk92mPqL7vN3wRt8aB5cD1eF6gH03f2a" secret="{{ true }}" style="width:100%;text-align:left" hint-size="100%,60px"></x-import>
+</sc-if>
+<div style="display:flex;gap:8px">
+<x-import component-from-global-scope="TokenHubDesignSystem_019e20.Button" variant="secondary" on-click="{{ noop }}" hint-size="96px,32px">返回列表</x-import>
+<x-import component-from-global-scope="TokenHubDesignSystem_019e20.Button" on-click="{{ noop }}" hint-size="96px,32px">{{ ctaLabel }}</x-import>
+</div>
+</div>
+<x-import component-from-global-scope="TokenHubDesignSystem_019e20.SectionCard" title="后续步骤" style="{{ nextCardStyle }}" hint-size="560px,140px">
+<x-import component-from-global-scope="TokenHubDesignSystem_019e20.Steps" items="{{ nextSteps }}" current="{{ 0 }}" hint-size="100%,80px"></x-import>
+</x-import>
+</main>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;result&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;success&quot;,&quot;options&quot;:[&quot;success&quot;,&quot;error&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;结果状态&quot;,&quot;description&quot;:&quot;切换成功/失败两种结果形态（图标、标题、CTA 联动）&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const ok = (this.props.result ?? "success") === "success";
+    return {
+      noop: () => {},
+      isSuccess: ok,
+      isError: !ok,
+      title: ok ? "令牌创建成功" : "令牌创建失败",
+      desc: ok ? "密钥仅在本页显示一次，请立即复制并妥善保存。" : "上游校验未通过，请检查渠道配置后重试。",
+      ctaLabel: ok ? "查看详情" : "重新创建",
+      nextCardStyle: { width: 560, maxWidth: "100%", marginTop: 16 },
+      nextSteps: [
+        { title: "复制密钥", description: "保存到密钥管理工具" },
+        { title: "替换接口地址", description: "指向 TokenHub 网关" },
+        { title: "发起调用", description: "在用量日志中查看请求" },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>
+```

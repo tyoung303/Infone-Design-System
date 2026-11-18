@@ -1,0 +1,111 @@
+{
+  "schemaVersion": "od-design-system-project/v1",
+  "id": "infone",
+  "name": "InfOne",
+  "category": "企业 SaaS 与 Agent 运维",
+  "description": "面向 InfOne、TokenHub 及相关后台界面的完整组件化企业管理设计系统。",
+  "source": {
+    "type": "bundled",
+    "origin": "2026-08-10 版 InfOne Design System 源文件包"
+  },
+  "files": {
+    "design": "DESIGN.md",
+    "brand": "brand.json",
+    "tokens": "tokens.css",
+    "components": "components.html"
+  },
+  "usage": "USAGE.md",
+  "rulesIndex": "rules/index.json",
+  "componentsManifest": "components.manifest.json",
+  "logo": "assets/tokenhub-logo.svg",
+  "importMode": "hybrid",
+  "craft": {
+    "applies": [
+      "accessibility-baseline",
+      "state-coverage",
+      "form-validation"
+    ],
+    "suggested": [
+      "animation-discipline",
+      "color"
+    ],
+    "exemptions": []
+  },
+  "fonts": [
+    {
+      "family": "Sora",
+      "file": "fonts/Sora-500.ttf",
+      "weight": 500,
+      "style": "normal"
+    },
+    {
+      "family": "Sora",
+      "file": "fonts/Sora-600.ttf",
+      "weight": 600,
+      "style": "normal"
+    },
+    {
+      "family": "Sora",
+      "file": "fonts/Sora-700.ttf",
+      "weight": 700,
+      "style": "normal"
+    },
+    {
+      "family": "IBM Plex Mono",
+      "file": "fonts/IBMPlexMono-400.ttf",
+      "weight": 400,
+      "style": "normal"
+    },
+    {
+      "family": "IBM Plex Mono",
+      "file": "fonts/IBMPlexMono-500.ttf",
+      "weight": 500,
+      "style": "normal"
+    },
+    {
+      "family": "Remix Icon",
+      "file": "fonts/remixicon.woff2",
+      "weight": "normal",
+      "style": "normal"
+    }
+  ],
+  "assetsDir": "assets",
+  "preview": {
+    "dir": "preview",
+    "pages": [
+      {
+        "path": "preview/colors.html",
+        "role": "colors",
+        "title": "InfOne 颜色与品牌"
+      },
+      {
+        "path": "preview/typography.html",
+        "role": "typography",
+        "title": "InfOne 字体排版"
+      },
+      {
+        "path": "preview/spacing.html",
+        "role": "spacing",
+        "title": "InfOne 间距与密度"
+      },
+      {
+        "path": "preview/components.html",
+        "role": "components",
+        "title": "InfOne 组件"
+      },
+      {
+        "path": "preview/pages.html",
+        "role": "pages",
+        "title": "InfOne 页面模式（14）"
+      },
+      {
+        "path": "preview/ui-kits.html",
+        "role": "ui-kits",
+        "title": "InfOne 应用界面套件（3）"
+      }
+    ]
+  },
+  "sourceFiles": {
+    "snippets": "recipes/index.json"
+  }
+}

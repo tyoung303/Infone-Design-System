@@ -1,0 +1,68 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="Chart" subtitle="统一图表组件 — 20 种图形，系列色恒取 --th-chart-1…12，网格取 --color-data-track" viewport="1180x1560" -->
+<html lang="zh-Hans">
+<head>
+<script data-infone-theme-bootstrap>if(new URLSearchParams(location.search).get("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")</script>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../tokens.css">
+<script src="../../runtime/ds-bundle.js"></script>
+<style>body{margin:0;background:var(--th-bg);font-family:var(--th-font-cn)}.wrap{padding:20px;display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}.cell{background:var(--th-white);border:var(--th-border-card);border-radius:var(--th-radius-md);box-shadow:var(--th-shadow-card);padding:14px 16px;display:flex;flex-direction:column;gap:10px;min-width:0}.cell h4{margin:0;font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px}.cell code{font-family:var(--th-font-mono);font-size:11px;color:var(--color-fg-muted);font-weight:400}</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="../../runtime/react.production.min.js"></script>
+<script src="../../runtime/react-dom.production.min.js"></script>
+<script src="../../runtime/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+const { Chart } = window.TokenHubDesignSystem_019e20;
+const days = ["07-25","07-26","07-27","07-28","07-29","07-30","07-31"];
+const trend = days.map((d,i)=>({ label:d, calls:[5820,6410,6120,7240,7860,8020,8730][i], errors:[42,38,51,33,29,31,24][i] }));
+const split = days.map((d,i)=>({ label:d, sonnet:[3200,3600,3400,4100,4400,4600,4800][i], gpt:[1800,2000,1900,2200,2300,2200,2600][i], deepseek:[820,810,820,940,1160,1220,1330][i] }));
+const vendors = [
+  { label:"Anthropic", value:42100 }, { label:"OpenAI", value:28600 },
+  { label:"DeepSeek", value:14300 }, { label:"Qwen", value:8200 }, { label:"Moonshot", value:3900 },
+];
+const cap = [
+  { label:"推理", a:92, b:78 }, { label:"代码", a:88, b:84 }, { label:"长文", a:76, b:90 },
+  { label:"多语言", a:81, b:72 }, { label:"速度", a:64, b:88 }, { label:"成本", a:58, b:86 },
+];
+const latency = days.slice(0,5).map((d,i)=>({ label:d, min:[180,190,175,200,186][i], q1:[280,300,265,320,290][i], median:[380,410,360,430,395][i], q3:[520,560,480,610,530][i], max:[880,940,760,1100,900][i] }));
+const scatter = Array.from({length:22},(_,i)=>({ x: 120+Math.round(Math.sin(i*1.7)*90)+i*22, y: 0.2+((i*37)%50)/100, r: 200+((i*91)%800), series: i%3===0?"Anthropic":i%3===1?"OpenAI":"DeepSeek", label:"model-"+(i+1) }));
+const cells = [
+  ["折线 line","line",{ data:trend, series:[{key:"calls",name:"调用量"},{key:"errors",name:"错误数",axis:"right"}] }],
+  ["平滑 spline","spline",{ data:trend, series:[{key:"calls",name:"调用量"}], unit:"次" }],
+  ["阶梯 step","step",{ data:trend, series:[{key:"calls",name:"调用量"}], unit:"次" }],
+  ["面积 area","area",{ data:trend, series:[{key:"calls",name:"调用量"}], unit:"次" }],
+  ["堆叠面积 stackedArea","stackedArea",{ data:split, series:[{key:"sonnet",name:"Sonnet"},{key:"gpt",name:"GPT-4o"},{key:"deepseek",name:"DeepSeek"}] }],
+  ["柱 bar","bar",{ data:trend, series:[{key:"calls",name:"调用量"}], unit:"次" }],
+  ["分组柱 groupedBar","groupedBar",{ data:split, series:[{key:"sonnet",name:"Sonnet"},{key:"gpt",name:"GPT-4o"},{key:"deepseek",name:"DeepSeek"}] }],
+  ["堆叠柱 stackedBar","stackedBar",{ data:split, series:[{key:"sonnet",name:"Sonnet"},{key:"gpt",name:"GPT-4o"},{key:"deepseek",name:"DeepSeek"}] }],
+  ["柱线组合 combo","combo",{ data:trend, series:[{key:"calls",name:"调用量"},{key:"errors",name:"错误数",type:"line",axis:"right"}] }],
+  ["条形 hbar","hbar",{ data:vendors, unit:"" }],
+  ["堆叠条形 stackedHbar","stackedHbar",{ data:[{label:"Anthropic",in:26000,out:12000,cache:4100},{label:"OpenAI",in:17000,out:9000,cache:2600},{label:"DeepSeek",in:9000,out:4000,cache:1300}], series:[{key:"in",name:"输入"},{key:"out",name:"输出"},{key:"cache",name:"缓存"}] }],
+  ["饼 pie","pie",{ data:vendors }],
+  ["环 donut","donut",{ data:vendors, donutLabel:"总调用量" }],
+  ["散点 scatter","scatter",{ data:scatter.map(({x,y,series,label})=>({x,y,series,label})), series:[{key:"a",name:"Anthropic"},{key:"b",name:"OpenAI"},{key:"c",name:"DeepSeek"}] }],
+  ["气泡 bubble","bubble",{ data:scatter, series:[{key:"a",name:"Anthropic"},{key:"b",name:"OpenAI"},{key:"c",name:"DeepSeek"}] }],
+  ["雷达 radar","radar",{ data:cap, series:[{key:"a",name:"claude-sonnet-4-5"},{key:"b",name:"deepseek-v3"}] }],
+  ["漏斗 funnel","funnel",{ data:[{label:"访问",value:12800},{label:"注册",value:5400},{label:"接入密钥",value:2100},{label:"首次调用",value:1480},{label:"付费",value:520}] }],
+  ["瀑布 waterfall","waterfall",{ data:[{label:"上月",value:8200,total:true},{label:"新增",value:2600},{label:"升配",value:900},{label:"流失",value:-1400},{label:"降配",value:-300},{label:"本月",total:true}], unit:"元" }],
+  ["箱线 boxplot","boxplot",{ data:latency, unit:"ms" }],
+  ["矩形树图 treemap","treemap",{ data:vendors }],
+];
+function Demo() {
+  return (
+    <div className="wrap">
+      {cells.map(([title, type, props]) => (
+        <div className="cell" key={type + title}>
+          <h4>{title.split(" ")[0]} <code>type="{type}"</code></h4>
+          <Chart type={type} height={196} {...props} />
+        </div>
+      ))}
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<Demo />);
+</script>
+</body>
+</html>

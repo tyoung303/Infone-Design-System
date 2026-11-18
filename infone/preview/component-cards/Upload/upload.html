@@ -1,0 +1,24 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="Upload" subtitle="上传 — 拖拽上传微调数据集 / 批量文件" viewport="700x300" -->
+<html lang="zh-Hans">
+<head>
+<script data-infone-theme-bootstrap>if(new URLSearchParams(location.search).get("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")</script>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../tokens.css">
+<script src="../../runtime/ds-bundle.js"></script>
+<style>body{margin:0}.panel{box-sizing:border-box;padding:24px 26px;background:var(--th-white);border:var(--th-border-card);border-radius:var(--th-radius-md);margin:24px}</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="../../runtime/react.production.min.js"></script>
+<script src="../../runtime/react-dom.production.min.js"></script>
+<script src="../../runtime/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+const { Upload } = window.TokenHubDesignSystem_019e20;
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <div className="panel">
+    <Upload accept=".jsonl,.csv" hint="支持 .jsonl / .csv，单文件不超过 100 MB" />
+  </div>
+);</script>
+</body>
+</html>

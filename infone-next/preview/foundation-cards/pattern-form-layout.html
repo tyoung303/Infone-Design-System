@@ -1,0 +1,40 @@
+<!doctype html>
+<!-- @dsCard group="Patterns" name="表单布局" subtitle="标准表单节奏 — 18px 字段间距，标签在上，底部右对齐操作" viewport="520x560" -->
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../tokens.css">
+<script src="../runtime/ds-bundle.js"></script>
+<style>body{margin:0;display:flex;justify-content:center;padding:24px}</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="../runtime/react.production.min.js"></script>
+<script src="../runtime/react-dom.production.min.js"></script>
+<script src="../runtime/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+const { TextField, Select, RadioGroup, Switch, Button } = window.TokenHubDesignSystem_019e20;
+function Demo() {
+  const [group, setGroup] = React.useState("default");
+  const [quota, setQuota] = React.useState("limited");
+  const [on, setOn] = React.useState(true);
+  return (
+    <div style={{ width: 440, background: "var(--th-white)", border: "var(--th-border-card)", borderRadius: "var(--th-radius-md)", boxShadow: "var(--th-shadow-card)" }}>
+      <div style={{ padding: "14px 16px", borderBottom: "0.5px solid var(--color-border)", fontSize: 15, fontWeight: 600 }}>新建令牌</div>
+      <div style={{ padding: "16px", display: "flex", flexDirection: "column", gap: 12 }}>
+        <TextField label="令牌名称" placeholder="例如 chat-prod" />
+        <Select label="所属分组" value={group} onChange={setGroup} options={[{ value: "default", label: "默认分组" }, { value: "vip", label: "VIP 分组" }]} />
+        <RadioGroup label="额度类型" value={quota} onChange={setQuota} options={[{ value: "limited", label: "固定额度" }, { value: "unlimited", label: "不限额" }]} />
+        <Switch label="启用 IP 白名单" checked={on} onChange={setOn} />
+      </div>
+      <div style={{ padding: "14px 20px", display: "flex", justifyContent: "flex-end", gap: 8, borderTop: "0.5px solid var(--color-border)", background: "var(--th-bg)" }}>
+        <Button variant="ghost" size="sm">取消</Button>
+        <Button size="sm">创建</Button>
+      </div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<Demo />);
+</script>
+</body>
+</html>

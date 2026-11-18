@@ -1,0 +1,34 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="Dropdown" subtitle="操作菜单 — sm=28px / md=32px" viewport="700x260" -->
+<html lang="zh-Hans">
+<head>
+<script data-infone-theme-bootstrap>if(new URLSearchParams(location.search).get("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")</script>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../tokens.css">
+<script src="../../runtime/ds-bundle.js"></script>
+<style>body{margin:0}.panel{box-sizing:border-box;height:212px;padding:24px 26px;display:flex;gap:28px;align-items:flex-start;background:var(--th-white);border:var(--th-border-card);border-radius:var(--th-radius-md);margin:24px}.group{display:flex;flex-direction:column;gap:8px}.label{color:var(--color-fg-muted);font-size:12px}</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="../../runtime/react.production.min.js"></script>
+<script src="../../runtime/react-dom.production.min.js"></script>
+<script src="../../runtime/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+const { Dropdown, Button } = window.TokenHubDesignSystem_019e20;
+const items = [
+  { label: "编辑", icon: "ri-edit-line" },
+  { label: "复制密钥", icon: "ri-file-copy-line" },
+  { label: "重置", icon: "ri-reset-left-line", disabled: true },
+  { divider: true },
+  { label: "删除", icon: "ri-delete-bin-line", danger: true },
+];
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <div className="panel">
+    <div className="group"><span className="label">sm · 28px</span><Dropdown size="sm" items={items} defaultOpen /></div>
+    <div className="group"><span className="label">md · 32px</span><Dropdown items={items} /></div>
+    <div className="group"><span className="label">自定义触发器 · sm</span><Dropdown items={items} trigger={<Button variant="secondary" size="sm" icon="ri-arrow-down-s-line" iconPosition="right">更多操作</Button>} /></div>
+  </div>
+);
+</script>
+</body>
+</html>

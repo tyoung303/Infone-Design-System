@@ -1,0 +1,38 @@
+<!doctype html>
+<!-- @dsCard group="Spacing" name="Shadow & elevation" subtitle="仅剩三档且已弱化 — nav · soft · modal；卡片静置态与主按钮 hover 不再用阴影" viewport="760x200" -->
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<title>Shadow / Elevation</title>
+<link rel="stylesheet" href="preview.css">
+<style>
+  .panel { display: flex; gap: 18px; padding: 22px 16px 32px; background: var(--th-bg); border-radius: var(--th-radius-md); }
+  .tile { flex: 1; background: var(--th-white); border-radius: var(--th-radius-md); padding: 16px 18px 18px; font-family: var(--th-font-ui); font-size: 11px; color: var(--color-fg-muted); display: flex; flex-direction: column; gap: 6px; border: var(--th-border-card); }
+  .tile b { color: var(--color-fg); font-weight: 600; font-size: 12px; font-family: var(--th-font-mono); }
+  .val { font-family: var(--th-font-mono); font-size: 10px; }
+  .e-nav  { box-shadow: var(--th-shadow-nav); }
+  .e-soft { box-shadow: var(--th-shadow-soft); }
+  .e-modal{ box-shadow: var(--th-shadow-modal); }
+  .e-none { display: flex; align-items: center; justify-content: center; color: var(--color-fg-subtle); font-family: var(--th-font-mono); font-size: 20px; }
+  .note { color: var(--color-fg-muted); font-size: 10px; line-height: 1.4; }
+</style>
+</head>
+<body>
+<div class="card flush">
+  <div class="panel" id="panel">
+    <div class="tile e-nav"><b>shadow-nav</b><span class="val" data-var="--th-shadow-nav"></span><span class="note">顶导航玻璃条，唯一常驻阴影。</span></div>
+    <div class="tile e-soft"><b>shadow-soft</b><span class="val" data-var="--th-shadow-soft"></span><span class="note">hover / 下拉 / popover 浮起。</span></div>
+    <div class="tile e-modal"><b>shadow-modal</b><span class="val" data-var="--th-shadow-modal"></span><span class="note">对话框、抽屉 — 最深一档。</span></div>
+    <div class="tile"><b>shadow-card</b><div class="e-none">none</div><span class="note">卡片静置态无阴影，只靠 0.5px 描边 + 表面色阶分隔层次。</span></div>
+    <div class="tile"><b>shadow-key</b><div class="e-none">none</div><span class="note">主按钮 hover 改用填充变暗（<code>color-mix</code> 88% 品牌色 + 黑），不再用品牌色投影。</span></div>
+  </div>
+</div>
+<script>
+document.querySelectorAll('[data-var]').forEach(el => {
+  const name = el.dataset.var;
+  const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  el.textContent = v;
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!doctype html>
+<!-- @dsCard group="Patterns" name="确认删除" subtitle="破坏性操作对话框 — 复述对象名，主按钮转 --color-danger-solid，取消在左" viewport="700x360" -->
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../tokens.css">
+<script src="../runtime/ds-bundle.js"></script>
+<style>body{margin:0;height:360px;overflow:hidden}</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="../runtime/react.production.min.js"></script>
+<script src="../runtime/react-dom.production.min.js"></script>
+<script src="../runtime/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+const { Modal, Button } = window.TokenHubDesignSystem_019e20;
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <Modal open title="删除令牌" description="此操作不可撤销" width={400}
+    footer={<React.Fragment>
+      <Button variant="ghost" size="sm">取消</Button>
+      <Button size="sm" style={{ background: "var(--color-danger-solid)", color: "#fff" }}>确认删除</Button>
+    </React.Fragment>}>
+    <p style={{ fontSize: 13, lineHeight: 1.7 }}>令牌 <code style={{ background: "var(--th-gray-50)", padding: "1px 6px", borderRadius: 4 }}>chat-prod</code> 删除后，使用该密钥的请求将立即失败。确认删除？</p>
+  </Modal>
+);
+</script>
+</body>
+</html>

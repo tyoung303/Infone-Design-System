@@ -1,0 +1,26 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="CopyField" subtitle="单行可复制值 — sm=28px / md=32px" viewport="700x240" -->
+<html lang="zh-Hans">
+<head>
+<script data-infone-theme-bootstrap>if(new URLSearchParams(location.search).get("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")</script>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../tokens.css">
+<script src="../../runtime/ds-bundle.js"></script>
+<style>body{margin:0}.panel{box-sizing:border-box;padding:24px 26px;display:flex;flex-direction:column;gap:16px;background:var(--th-white);border:var(--th-border-card);border-radius:var(--th-radius-md);margin:24px}</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="../../runtime/react.production.min.js"></script>
+<script src="../../runtime/react-dom.production.min.js"></script>
+<script src="../../runtime/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+const { CopyField } = window.TokenHubDesignSystem_019e20;
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <div className="panel">
+    <CopyField size="sm" label="sm · 接口地址" value="http://localhost:3000/v1/chat/completions" />
+    <CopyField label="API 密钥" value="sk-Xk92mPqL7vN3wRt8aB5cD1eF6gH0jZ4y" secret />
+  </div>
+);
+</script>
+</body>
+</html>

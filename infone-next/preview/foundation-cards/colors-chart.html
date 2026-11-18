@@ -1,0 +1,46 @@
+<!doctype html>
+<!-- @dsCard group="Colors" name="Color · Chart palette" subtitle="12 色分类色板 --th-chart-1…12 — oklch 等明度环，按序取色，12 号灰为「其他」，暗色自动切换" viewport="700x430" -->
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<title>Chart palette</title>
+<link rel="stylesheet" href="preview.css">
+<style>
+.chart-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.chart-sw{display:flex;flex-direction:column;gap:4px}
+.chart-sw .chip{height:36px;border-radius:var(--th-radius-xs)}
+.chart-sw .n{font-family:var(--th-font-mono);font-size:11px;color:var(--color-fg-muted)}
+.chart-sw .hx{font-family:var(--th-font-mono);font-size:10px;color:var(--color-fg-subtle)}
+.mode-card{background:var(--color-surface);border:var(--th-border-card);border-radius:var(--th-radius-md);padding:16px}
+.mode-title{font-size:var(--th-text-sm);font-weight:600;color:var(--color-fg);margin-bottom:10px}
+</style>
+</head>
+<body>
+<div class="card" style="display:flex;flex-direction:column;gap:12px">
+  <div class="mode-card">
+    <div class="mode-title">浅色模式</div>
+    <div class="chart-grid" id="light-grid"></div>
+  </div>
+  <div class="mode-card" data-theme="dark">
+    <div class="mode-title">深色模式</div>
+    <div class="chart-grid" id="dark-grid"></div>
+  </div>
+  <p class="caption" style="margin:0">仅用于数据可视化，按序取色（1→12）；系列超过 12 时合并为「其他」取 chart-12；不含品牌蓝——图表不占用交互色。色板以 oklch 声明，明度 .56–.74、彩度 .07–.17 基本恒定，只变色相，因此各系列视觉权重相等。</p>
+</div>
+<script>
+/* Hexes are READ BACK from the resolved token, never hand-listed — a hardcoded
+   list silently goes stale the moment the palette is retuned. */
+function fill(id){
+  const host=document.getElementById(id);
+  host.innerHTML=Array.from({length:12},(_,i)=>`<div class="chart-sw"><div class="chip" style="background:var(--th-chart-${i+1})"></div><span class="n">chart-${i+1}</span><span class="hx"></span></div>`).join("");
+  const cv=document.createElement("canvas");cv.width=cv.height=1;const cx=cv.getContext("2d");
+  host.querySelectorAll(".chart-sw").forEach(sw=>{
+    cx.clearRect(0,0,1,1);cx.fillStyle=getComputedStyle(sw.querySelector(".chip")).backgroundColor;cx.fillRect(0,0,1,1);
+    const[r,g,b]=cx.getImageData(0,0,1,1).data;
+    sw.querySelector(".hx").textContent="#"+[r,g,b].map(v=>v.toString(16).padStart(2,"0")).join("").toUpperCase();
+  });
+}
+fill("light-grid");fill("dark-grid");
+</script>
+</body>
+</html>

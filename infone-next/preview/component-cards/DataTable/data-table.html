@@ -1,0 +1,144 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="Data table" subtitle="Column-driven grid table — 无底色表头 + 排序图标、comfortable/compact 密度、hover 行底色、斑马纹、列级热度、卡内嵌（embedded）、tree 层级（缩进 + 展开折叠）" viewport="980x980" -->
+<html lang="zh-Hans">
+<head>
+<script data-infone-theme-bootstrap>if(new URLSearchParams(location.search).get("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")</script>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../tokens.css">
+<link rel="stylesheet" href="../../../fonts/remixicon.css">
+<script src="../../runtime/ds-bundle.js"></script>
+<style>body{margin:0;background:var(--th-bg)}.panel{box-sizing:border-box;padding:24px;width:512px}.tree-demo{width:932px}.card{background:var(--th-white);border:var(--th-border-card);border-radius:var(--th-radius-md);box-shadow:var(--th-shadow-card);overflow:hidden}.card>h4{margin:0;padding:12px 16px;font-family:var(--th-font-cn);font-size:var(--th-text-md);font-weight:600}</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="../../runtime/react.production.min.js"></script>
+<script src="../../runtime/react-dom.production.min.js"></script>
+<script src="../../runtime/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+const { DataTable, StatusChip, Button, Dropdown, Progress } = window.TokenHubDesignSystem_019e20;
+function Demo() {
+  const [sortKey, setSortKey] = React.useState("name");
+  const [sortDir, setSortDir] = React.useState("asc");
+  const onSort = (key) => { if (key === sortKey) setSortDir((d) => d === "asc" ? "desc" : "asc"); else { setSortKey(key); setSortDir("asc"); } };
+  const rows = [
+    { id: 1, name: "production-web", key: "sk-••••3f2a", status: "active" },
+    { id: 2, name: "staging-batch", key: "sk-••••91cd", status: "limited" },
+    { id: 3, name: "old-key", key: "sk-••••00aa", status: "revoked" },
+  ];
+  const usage = [
+    { id: 1, name: "claude-sonnet-4", calls: 128400, tokens: 42_100_000 },
+    { id: 2, name: "gpt-4o-mini", calls: 64200, tokens: 18_600_000 },
+    { id: 3, name: "deepseek-v3", calls: 21800, tokens: 6_300_000 },
+    { id: 4, name: "qwen-max", calls: 4200, tokens: 900_000 },
+  ];
+  const orgRows = [
+    { id: "org", name: "InfOne 科技", meta: "组织 · 4 部门", owner: "李行", members: 128, budget: 62, status: "on", updated: "10-12 09:20", children: [
+      { id: "d1", name: "研发中心", meta: "部门 · 3 组", owner: "王工", members: 64, budget: 78, status: "on", updated: "10-12 08:41", children: [
+        { id: "p1", name: "陈思远", meta: "资深工程师", owner: "—", members: 1, budget: 46, status: "on", updated: "10-11 22:03" },
+        { id: "p2", name: "赵敏", meta: "工程师", owner: "—", members: 1, budget: 91, status: "risk", updated: "10-12 07:55" },
+      ] },
+      { id: "d2", name: "增长部", meta: "部门 · 2 组", owner: "周涛", members: 32, budget: 54, status: "on", updated: "10-11 19:12", children: [
+        { id: "p3", name: "孙悦", meta: "运营专家", owner: "—", members: 1, budget: 33, status: "off", updated: "10-09 14:20" },
+      ] },
+    ] },
+  ];
+  return (
+    <div className="panel" style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      <DataTable
+        columns={[
+          { key: "name", label: "名称", width: "1.4fr", sortable: true },
+          { key: "key", label: "密钥", width: "1.2fr", render: (r) => <code>{r.key}</code> },
+          { key: "status", label: "状态", width: "0.8fr", sortable: true, render: (r) => <StatusChip tone={r.status === "active" ? "success" : r.status === "limited" ? "warning" : "danger"}>{r.status === "active" ? "已激活" : r.status === "limited" ? "限速中" : "已禁用"}</StatusChip> },
+        ]}
+        rows={rows}
+        ariaLabel="API 令牌"
+        sortKey={sortKey}
+        sortDir={sortDir}
+        onSort={onSort}
+      />
+      <DataTable density="compact" striped
+        columns={[
+          { key: "name", label: "名称 (compact + striped)", width: "1.4fr" },
+          { key: "key", label: "密钥", width: "1.2fr", render: (r) => <code>{r.key}</code> },
+          { key: "status", label: "状态", width: "0.8fr", render: (r) => <StatusChip tone="success">已激活</StatusChip> },
+        ]}
+        rows={rows}
+      />
+      <DataTable density="compact"
+        columns={[
+          { key: "name", label: "模型 (heat 列)", width: "1.4fr" },
+          { key: "calls", label: "调用量", width: "1fr", heat: true, render: (r) => r.calls.toLocaleString("en-US") },
+          { key: "tokens", label: "Token", width: "1fr", heat: true, render: (r) => (r.tokens / 1e6).toFixed(1) + "M", heatValue: (r) => r.tokens },
+        ]}
+        rows={usage}
+      />
+      <div className="card">
+        <h4>卡内嵌表格（embedded）</h4>
+        <DataTable embedded density="compact"
+          columns={[
+            { key: "name", label: "名称", width: "1.4fr" },
+            { key: "key", label: "密钥", width: "1.2fr", render: (r) => <code>{r.key}</code> },
+            { key: "status", label: "状态", width: "0.8fr", render: (r) => <StatusChip tone="success">已激活</StatusChip> },
+          ]}
+          rows={rows}
+        />
+      </div>
+      <div className="tree-demo">
+      <DataTable
+        variant="tree"
+        tree={{ childKey: "children" }}
+        rowKey="id"
+        ariaLabel="组织架构"
+        columns={[
+          { key: "name", label: "名称", width: "240px", treeColumn: true, render: (r, t) => (
+            <div style={{ minWidth: 0, display: "flex", flexDirection: "column", gap: 2 }}>
+              <span style={{ color: "var(--color-fg)", fontWeight: t.depth === 0 ? 600 : 400, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{r.name}</span>
+              {r.meta && <span style={{ color: "var(--color-fg-muted)", fontSize: "var(--th-text-xs)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{r.meta}</span>}
+            </div>
+          ) },
+          { key: "owner", label: "责任人", width: "96px" },
+          { key: "members", label: "成员", width: "72px", numeric: true, render: (r) => <span style={{ fontFamily: "var(--th-font-ui)", fontVariantNumeric: "tabular-nums" }}>{r.members}</span> },
+          { key: "budget", label: "预算使用", width: "136px", numeric: true, render: (r) => (
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: 8 }}>
+              <div style={{ width: 56 }}><Progress value={r.budget} size="sm" tone={r.budget >= 90 ? "warning" : "accent"} /></div>
+              <span style={{ minWidth: 32, fontFamily: "var(--th-font-ui)", fontVariantNumeric: "tabular-nums", fontSize: "var(--th-text-xs)", color: "var(--color-fg-muted)", textAlign: "right" }}>{r.budget}%</span>
+            </div>
+          ) },
+          { key: "status", label: "状态", width: "88px", render: (r) => <StatusChip tone={r.status === "on" ? "success" : r.status === "risk" ? "warning" : "neutral"}>{r.status === "on" ? "正常" : r.status === "risk" ? "预警" : "冻结"}</StatusChip> },
+          { key: "updated", label: "更新时间", width: "120px", numeric: true, render: (r) => <span style={{ fontFamily: "var(--th-font-ui)", fontVariantNumeric: "tabular-nums", color: "var(--color-fg-muted)" }}>{r.updated}</span> },
+          { key: "ops", label: "操作", width: "148px", action: true, align: "center", render: (r) => (
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 4 }}>
+              {r.members === 1 ? (
+                <>
+                  <Button variant="link" size="sm">查看</Button>
+                  <Button variant="link" size="sm">编辑</Button>
+                </>
+              ) : r.id === "d1" || r.id === "d2" ? (
+                <>
+                  <Button variant="ghost" size="sm" icon="ri-eye-line" aria-label="查看" />
+                  <Dropdown size="sm" align="right" items={[
+                    { label: "编辑", icon: "ri-pencil-line" },
+                    { label: "添加成员", icon: "ri-user-add-line" },
+                    { divider: true },
+                    { label: "删除", icon: "ri-delete-bin-line", danger: true },
+                  ]} />
+                </>
+              ) : (
+                <>
+                  <Button variant="ghost" size="sm" icon="ri-eye-line" aria-label="查看" />
+                  <Button variant="ghost" size="sm" icon="ri-pencil-line" aria-label="编辑" />
+                </>
+              )}
+            </div>
+          ) },
+        ]}
+        rows={orgRows}
+      />
+      </div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<Demo />);
+</script>
+</body>
+</html>

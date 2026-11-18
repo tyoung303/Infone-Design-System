@@ -1,0 +1,250 @@
+{
+  "schemaVersion": 2,
+  "packages": [
+    {
+      "id": "infone",
+      "root": "infone",
+      "canonical": {
+        "principlesFile": "DESIGN.md",
+        "usageFile": "USAGE.md",
+        "files": [
+          "DESIGN.md",
+          "USAGE.md",
+          "tokens.css",
+          "brand.json",
+          "manifest.json",
+          "rules/index.json",
+          "recipes/index.json"
+        ],
+        "roots": [
+          "rules/",
+          "recipes/components/",
+          "recipes/pages/",
+          "assets/",
+          "fonts/"
+        ]
+      },
+      "derived": {
+        "componentPreviewRoot": "preview/component-cards/",
+        "pagePreviewRoot": "preview/page-patterns/",
+        "runtimeBundle": "preview/runtime/ds-bundle.js",
+        "supportFiles": [
+          "preview/colors.html",
+          "preview/components.html",
+          "preview/foundation-cards/brand-logo.html",
+          "preview/foundation-cards/colors-accent.html",
+          "preview/foundation-cards/colors-chart.html",
+          "preview/foundation-cards/colors-layers.html",
+          "preview/foundation-cards/colors-neutral.html",
+          "preview/foundation-cards/colors-semantic.html",
+          "preview/foundation-cards/colors-teal.html",
+          "preview/foundation-cards/dark-theme.html",
+          "preview/foundation-cards/density-scale.html",
+          "preview/foundation-cards/iconography.html",
+          "preview/foundation-cards/motion-timing.html",
+          "preview/foundation-cards/pattern-brand-onboarding.html",
+          "preview/foundation-cards/pattern-brand-theming.html",
+          "preview/foundation-cards/pattern-confirm-delete.html",
+          "preview/foundation-cards/pattern-form-layout.html",
+          "preview/foundation-cards/preview.css",
+          "preview/foundation-cards/radius-scale.html",
+          "preview/foundation-cards/shadow-scale.html",
+          "preview/foundation-cards/spacing-scale.html",
+          "preview/foundation-cards/type-body.html",
+          "preview/foundation-cards/type-brand-nav.html",
+          "preview/foundation-cards/type-display.html",
+          "preview/foundation-cards/type-mono.html",
+          "preview/foundation-cards/voice-tone.html",
+          "preview/foundation-cards/zindex-scale.html",
+          "preview/page-runtime/ds-base.js",
+          "preview/page-runtime/support.js",
+          "preview/pages.html",
+          "preview/runtime/LICENSE-Babel.txt",
+          "preview/runtime/LICENSE-Mermaid.txt",
+          "preview/runtime/LICENSE-React.txt",
+          "preview/runtime/babel.min.js",
+          "preview/runtime/mermaid.min.js",
+          "preview/runtime/react-dom.production.min.js",
+          "preview/runtime/react.production.min.js",
+          "preview/shell.css",
+          "preview/spacing.html",
+          "preview/typography.html",
+          "preview/ui-kits.html",
+          "preview/ui-kits/console/index.html",
+          "preview/ui-kits/console/playground.html",
+          "preview/ui-kits/login.html",
+          "preview/ui-kits/shared.css",
+          "system/kit.dark.html"
+        ],
+        "catalogFiles": [
+          "components.html",
+          "components.manifest.json"
+        ]
+      },
+      "ownership": {
+        "componentRecipeRoot": "recipes/components/",
+        "pageRecipeRoot": "recipes/pages/",
+        "recipeIndex": "recipes/index.json",
+        "catalogSources": [
+          "recipes/index.json",
+          "tokens.css",
+          "manifest.json"
+        ],
+        "generatorSources": [
+          "scripts/sync-recipes.mjs"
+        ]
+      },
+      "maintenance": {
+        "syncScript": "scripts/sync-recipes.mjs",
+        "validateScript": "scripts/validate-docs.mjs"
+      },
+      "hygiene": {
+        "imageRoots": [
+          "assets/"
+        ],
+        "fontRoots": [
+          "fonts/"
+        ],
+        "newFileRules": [
+          { "root": "rules/", "extensions": [".md"] },
+          { "root": "recipes/components/", "extensions": [".md"] },
+          { "root": "recipes/pages/", "extensions": [".md"] },
+          { "root": "assets/", "extensions": [".avif", ".bmp", ".gif", ".ico", ".jpg", ".jpeg", ".png", ".svg", ".webp"] },
+          { "root": "fonts/", "extensions": [".css", ".eot", ".md", ".otf", ".ttc", ".ttf", ".txt", ".woff", ".woff2"] },
+          { "root": "preview/component-cards/", "extensions": [".html"] },
+          { "root": "preview/page-patterns/", "extensions": [".html"] }
+        ]
+      }
+    },
+    {
+      "id": "infone-next",
+      "root": "infone-next",
+      "canonical": {
+        "principlesFile": "DESIGN.md",
+        "usageFile": "USAGE.md",
+        "files": [
+          "DESIGN.md",
+          "USAGE.md",
+          "tokens.css",
+          "brand.json",
+          "manifest.json",
+          "rules/index.json",
+          "recipes/index.json",
+          "FORK.md"
+        ],
+        "roots": [
+          "rules/",
+          "recipes/components/",
+          "recipes/pages/",
+          "assets/",
+          "fonts/"
+        ]
+      },
+      "derived": {
+        "componentPreviewRoot": "preview/component-cards/",
+        "pagePreviewRoot": "preview/page-patterns/",
+        "runtimeBundle": "preview/runtime/ds-bundle.js",
+        "supportFiles": [
+          "preview/colors.html",
+          "preview/components.html",
+          "preview/foundation-cards/brand-logo.html",
+          "preview/foundation-cards/colors-accent.html",
+          "preview/foundation-cards/colors-chart.html",
+          "preview/foundation-cards/colors-layers.html",
+          "preview/foundation-cards/colors-neutral.html",
+          "preview/foundation-cards/colors-semantic.html",
+          "preview/foundation-cards/colors-teal.html",
+          "preview/foundation-cards/dark-theme.html",
+          "preview/foundation-cards/density-scale.html",
+          "preview/foundation-cards/iconography.html",
+          "preview/foundation-cards/motion-timing.html",
+          "preview/foundation-cards/pattern-brand-onboarding.html",
+          "preview/foundation-cards/pattern-brand-theming.html",
+          "preview/foundation-cards/pattern-confirm-delete.html",
+          "preview/foundation-cards/pattern-form-layout.html",
+          "preview/foundation-cards/preview.css",
+          "preview/foundation-cards/radius-scale.html",
+          "preview/foundation-cards/shadow-scale.html",
+          "preview/foundation-cards/spacing-scale.html",
+          "preview/foundation-cards/type-body.html",
+          "preview/foundation-cards/type-brand-nav.html",
+          "preview/foundation-cards/type-display.html",
+          "preview/foundation-cards/type-mono.html",
+          "preview/foundation-cards/voice-tone.html",
+          "preview/foundation-cards/zindex-scale.html",
+          "preview/page-runtime/ds-base.js",
+          "preview/page-runtime/support.js",
+          "preview/pages.html",
+          "preview/runtime/LICENSE-Babel.txt",
+          "preview/runtime/LICENSE-Mermaid.txt",
+          "preview/runtime/LICENSE-React.txt",
+          "preview/runtime/babel.min.js",
+          "preview/runtime/mermaid.min.js",
+          "preview/runtime/react-dom.production.min.js",
+          "preview/runtime/react.production.min.js",
+          "preview/shell.css",
+          "preview/spacing.html",
+          "preview/typography.html",
+          "preview/ui-kits.html",
+          "preview/ui-kits/console/index.html",
+          "preview/ui-kits/console/playground.html",
+          "preview/ui-kits/login.html",
+          "preview/ui-kits/shared.css",
+          "system/kit.dark.html"
+        ],
+        "catalogFiles": [
+          "components.html",
+          "components.manifest.json"
+        ]
+      },
+      "ownership": {
+        "componentRecipeRoot": "recipes/components/",
+        "pageRecipeRoot": "recipes/pages/",
+        "recipeIndex": "recipes/index.json",
+        "catalogSources": [
+          "recipes/index.json",
+          "tokens.css",
+          "manifest.json"
+        ],
+        "generatorSources": [
+          "scripts/sync-recipes.mjs"
+        ]
+      },
+      "maintenance": {
+        "syncScript": "scripts/sync-recipes.mjs",
+        "validateScript": "scripts/validate-docs.mjs"
+      },
+      "hygiene": {
+        "imageRoots": [
+          "assets/"
+        ],
+        "fontRoots": [
+          "fonts/"
+        ],
+        "newFileRules": [
+          { "root": "rules/", "extensions": [".md"] },
+          { "root": "recipes/components/", "extensions": [".md"] },
+          { "root": "recipes/pages/", "extensions": [".md"] },
+          { "root": "assets/", "extensions": [".avif", ".bmp", ".gif", ".ico", ".jpg", ".jpeg", ".png", ".svg", ".webp"] },
+          { "root": "fonts/", "extensions": [".css", ".eot", ".md", ".otf", ".ttc", ".ttf", ".txt", ".woff", ".woff2"] },
+          { "root": "preview/component-cards/", "extensions": [".html"] },
+          { "root": "preview/page-patterns/", "extensions": [".html"] }
+        ]
+      }
+    }
+  ],
+  "scratchRoots": [
+    ".tmp/",
+    ".harness-output/"
+  ],
+  "enforces": [
+    "required design principles",
+    "generated-file ownership",
+    "temporary and review output exclusion"
+  ],
+  "doesNotEnforce": [
+    "design correctness",
+    "design-rule accuracy",
+    "visual quality"
+  ]
+}

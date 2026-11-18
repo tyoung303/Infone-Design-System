@@ -1,0 +1,96 @@
+<!doctype html>
+<!-- @dsCard group="Spacing" name="Density" subtitle="密度两档 — comfortable / compact，只收紧几何、不缩字号" viewport="960x620" -->
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../tokens.css">
+<link rel="stylesheet" href="preview.css">
+<style>
+body{margin:0;padding:16px;background:var(--th-bg);font-family:var(--th-font-cn)}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.col h3{font-size:var(--th-text-sm);font-weight:600;margin:0 0 2px}
+.col p.note{font-size:var(--th-text-2xs);color:var(--color-fg-subtle);margin:0 0 10px}
+.card{background:var(--th-white);border:var(--th-border-card);border-radius:var(--th-radius-md);box-shadow:var(--th-shadow-card);padding:var(--th-card-pad);display:flex;flex-direction:column;gap:var(--th-stack-gap)}
+.ttl{font-size:var(--th-text-md);font-weight:600}
+.row{display:grid;grid-template-columns:1.4fr 1fr 72px;align-items:center;gap:12px;min-height:var(--th-row-h);padding:var(--th-row-pad-y) 12px;border-top:0.5px solid var(--color-border);font-size:var(--th-text-base)}
+.row:first-of-type{border-top:none}
+.k{font-family:var(--th-font-mono);font-size:var(--th-text-xs);color:var(--color-fg-muted)}
+.n{font-variant-numeric:tabular-nums;text-align:right}
+.ctl{height:var(--th-ctl-h);display:inline-flex;align-items:center;padding:0 12px;border:1px solid var(--th-gray-150);border-radius:var(--th-radius-sm);font-size:var(--th-text-base);color:var(--color-fg-muted);background:var(--th-white)}
+.btn{height:var(--th-ctl-h);display:inline-flex;align-items:center;padding:0 14px;border-radius:var(--th-radius-sm);background:var(--color-cta);color:var(--color-cta-fg);font-size:var(--th-text-base)}
+.tokens{margin-top:12px;background:var(--th-white);border:var(--th-border-card);border-radius:var(--th-radius-md);padding:12px}
+table{width:100%;border-collapse:collapse;font-size:var(--th-text-xs)}
+th{text-align:left;font-weight:500;color:var(--color-fg-muted);padding:0 12px 8px 0}
+td{padding:5px 12px 5px 0;border-top:0.5px solid var(--color-border);font-variant-numeric:tabular-nums}
+td.tk{font-family:var(--th-font-mono);color:var(--color-fg)}
+.hint{font-size:var(--th-text-xs);color:var(--color-fg-muted);margin:12px 0 0;line-height:1.5}
+.hint b{color:var(--color-fg);font-weight:600}
+</style>
+</head>
+<body>
+<div class="cols">
+  <div class="col">
+    <h3>comfortable · 默认</h3>
+    <p class="note">概览页、表单页、详情页</p>
+    <div class="card">
+      <div class="ttl">令牌用量</div>
+      <div>
+        <div class="row"><span>production-web</span><span class="k">sk-••••3f2a</span><span class="n">1,204.50</span></div>
+        <div class="row"><span>staging-batch</span><span class="k">sk-••••91cd</span><span class="n">312.80</span></div>
+        <div class="row"><span>old-key</span><span class="k">sk-••••00aa</span><span class="n">0.00</span></div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center"><span class="ctl">筛选条件</span><span class="btn">新建令牌</span></div>
+    </div>
+  </div>
+  <div class="col" data-density="compact">
+    <h3>compact · data-density="compact"</h3>
+    <p class="note">列表页、日志页、对比场景 — 同高度再多出约 12% 行数</p>
+    <div class="card">
+      <div class="ttl">令牌用量</div>
+      <div>
+        <div class="row"><span>production-web</span><span class="k">sk-••••3f2a</span><span class="n">1,204.50</span></div>
+        <div class="row"><span>staging-batch</span><span class="k">sk-••••91cd</span><span class="n">312.80</span></div>
+        <div class="row"><span>old-key</span><span class="k">sk-••••00aa</span><span class="n">0.00</span></div>
+        <div class="row"><span>edge-cache</span><span class="k">sk-••••7b41</span><span class="n">88.20</span></div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center"><span class="ctl">筛选条件</span><span class="btn">新建令牌</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="tokens">
+  <table id="tk">
+    <tr><th>token</th><th>comfortable（默认）</th><th>compact</th><th>用途</th></tr>
+    <tr><td class="tk">--th-row-h</td><td data-t="--th-row-h"></td><td data-t="--th-row-h" data-c></td><td>表格 / 列表行高</td></tr>
+    <tr><td class="tk">--th-row-pad-y</td><td data-t="--th-row-pad-y"></td><td data-t="--th-row-pad-y" data-c></td><td>行内纵向 padding</td></tr>
+    <tr><td class="tk">--th-ctl-h-sm / h / h-lg</td><td data-t="--th-ctl-h-sm,--th-ctl-h,--th-ctl-h-lg"></td><td data-t="--th-ctl-h-sm,--th-ctl-h,--th-ctl-h-lg" data-c></td><td>输入、下拉、搜索框</td></tr>
+    <tr><td class="tk">--th-card-pad</td><td data-t="--th-card-pad"></td><td data-t="--th-card-pad" data-c></td><td>卡内 padding（恒为 12）</td></tr>
+    <tr><td class="tk">--th-stack-gap</td><td data-t="--th-stack-gap"></td><td data-t="--th-stack-gap" data-c></td><td>卡内区块间距</td></tr>
+    <tr><td class="tk">--th-field-gap</td><td data-t="--th-field-gap"></td><td data-t="--th-field-gap" data-c></td><td>表单字段节奏</td></tr>
+    <tr><td class="tk">--th-block-gap</td><td data-t="--th-block-gap"></td><td data-t="--th-block-gap" data-c></td><td>画布层：卡与卡之间</td></tr>
+  </table>
+  <p class="hint">
+    <b>只收紧几何，不缩字号。</b>两档共用同一套字号阶梯（11 / 12 / 13 / 15 / 18 / 24 / 32 / 48），12px 是小字下限，compact 不得突破。<br>
+    <b>作用域自由。</b><code>data-density="compact"</code> 可挂在 <code>html</code>、页面壳、单张卡或单个表格上，token 在该作用域内重声明，消费这些 token 的组件一起收紧。<br>
+    <b>组件 prop 等价。</b><code>DataTable</code> / <code>NavRail</code> / <code>Descriptions</code> / <code>Form</code> / <code>MetricStrip</code> / <code>PageHeader</code> 接受 <code>density="compact"</code>。<br>
+    <b>数字一律 tabular。</b>金额、次数、token 数、时间戳加 <code>.th-nums</code>，避免逐帧跳字宽。<br>
+    <b>结构同样收紧。</b>卡头带 36px / 13px 标题；卡内分区用 0.5px 分割线贴合，不用 gap 拉开；正文行高上限 1.5；<code>MetricStrip</code> 约 64px。<b>左侧导航不参与收紧</b>：导轨恒为 240px、导航行高 40px（compact 32px）。
+  </p>
+</div>
+<script>
+(function () {
+  const probe = document.createElement("div");
+  probe.setAttribute("data-density", "compact");
+  probe.style.cssText = "position:absolute;visibility:hidden";
+  document.body.appendChild(probe);
+  const read = (el, names) => names.split(",").map((n) => getComputedStyle(el).getPropertyValue(n).trim().replace("px", "")).join(" / ");
+  document.querySelectorAll("#tk td[data-t]").forEach((td) => {
+    const names = td.getAttribute("data-t");
+    const src = td.hasAttribute("data-c") ? probe : document.body;
+    const v = read(src, names);
+    td.textContent = names.includes(",") ? v : v + "px";
+  });
+})();
+</script>
+</body>
+</html>

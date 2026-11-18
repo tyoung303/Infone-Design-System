@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../../page-runtime/support.js"></script>
+<style data-infone-responsive>
+@media (max-width: 900px) {
+  [style*="grid-template-columns:minmax(0,1fr) 292px"],
+  [style*="grid-template-columns:minmax(0,1fr) 280px"] { grid-template-columns: minmax(0, 1fr) !important; }
+}
+@media (max-width: 680px) {
+  [style*="grid-template-columns:minmax(0,1fr) 92px 84px"] { grid-template-columns: minmax(0, 1fr) !important; }
+}
+</style>
+</head>
+<body>
+<x-dc>
+<!-- @template name="Form Page" description="表单页 — 标准骨架 + 分组长表单（基本信息/计费配置/高级设置）+ 底部操作栏" -->
+<helmet>
+<link rel="stylesheet" href="../../../fonts/fonts.css">
+<link rel="stylesheet" href="../../../tokens.css">
+<script src="../../runtime/ds-bundle.js"></script>
+<link rel="stylesheet" href="../../../fonts/remixicon.css">
+<style>body{margin:0;background:var(--th-bg)}</style>
+</helmet>
+<div style="display:flex;min-height:100vh;background:var(--th-bg);font-family:var(--th-font-cn);color:var(--color-fg)" data-screen-label="新建渠道表单页">
+<x-import component-from-global-scope="TokenHubDesignSystem_019e20.NavRail" hint-size="240px,100vh" logo-src="../../../assets/tokenhub-logo.svg" brand="InfOne" groups="{{ navGroups }}" active="{{ activeNav }}" on-change="{{ setNav }}" user="admin" collapsed="{{ collapsed }}" on-toggle="{{ toggle }}"></x-import>
+<main style="flex:1;min-width:0;padding:12px;display:flex;flex-direction:column;gap:12px">
+<x-import component-from-global-scope="TokenHubDesignSystem_019e20.PageHeader" variant="page" title="新建渠道" hint-size="100%,56px"></x-import>
+<div style="display:flex;flex-wrap:wrap;gap:12px;align-items:flex-start">
+<div style="flex:1 1 520px;max-width:720px;background:var(--th-white);border:var(--th-border-card);border-radius:var(--th-radius-md);box-shadow:var(--th-shadow-card);display:flex;flex-direction:column;overflow:hidden">
+<x-import component-from-global-scope="TokenHubDesignSystem_019e20.SectionCard" title="基本信息" embedded="{{ true }}" hint-size="100%,240px">
+<x-import component-from-global-scope="TokenHubDesignSystem_019e20.TextField" label="渠道名称" placeholder="例如：openai-primary" value="{{ name }}" on-change="{{ setName }}" hint-size="100%,58px"></x-import>
+<x-import component-from-global-scope="TokenHubDesignSystem_019e20.Select" label="渠道类型" value="{{ type }}" on-change="{{ setType }}" options="{{ typeOptions }}" hint-size="100%,58px"></x-import>
+<x-import component-from-global-scope="TokenHubDesignSystem_019e20.TextField" label="接口地址" placeholder="https://api.example.com/v1" value="{{ baseUrl }}" on-change="{{ setBaseUrl }}" hint-size="100%,58px"></x-import>
+</x-import>
+<div style="height:0;border-top:0.5px solid var(--color-divider)"></div>
+<x-import component-from-global-scope="TokenHubDesignSystem_019e20.SectionCard" title="计费配置" embedded="{{ true }}" hint-size="100%,180px">
+<x-import component-from-global-scope="TokenHubDesignSystem_019e20.RadioGroup" label="计费方式" value="{{ billing }}" on-change="{{ setBilling }}" options="{{ billingOptions }}" hint-size="100%,58px"></x-import>
+<x-import component-from-global-scope="TokenHubDesignSystem_019e20.TextField" label="倍率" placeholder="1.0" value="{{ ratio }}" on-change="{{ setRatio }}" hint-size="100%,58px"></x-import>
+</x-import>
+<div style="height:0;border-top:0.5px solid var(--color-divider)"></div>
+<x-import component-from-global-scope="TokenHubDesignSystem_019e20.SectionCard" title="高级设置" embedded="{{ true }}" hint-size="100%,200px">
+<x-import component-from-global-scope="TokenHubDesignSystem_019e20.Textarea" label="备注" placeholder="仅管理员可见" value="{{ note }}" on-change="{{ setNote }}" hint-size="100%,96px"></x-import>
+<x-import component-from-global-scope="TokenHubDesignSystem_019e20.Switch" label="创建后立即启用" checked="{{ enabled }}" on-change="{{ setEnabled }}" hint-size="200px,24px"></x-import>
+</x-import>
+<div style="display:flex;gap:8px;justify-content:flex-end;border-top:0.5px solid var(--color-divider);padding:12px">
+<x-import component-from-global-scope="TokenHubDesignSystem_019e20.Button" variant="ghost" on-click="{{ noop }}" hint-size="64px,32px">取消</x-import>
+<x-import component-from-global-scope="TokenHubDesignSystem_019e20.Button" on-click="{{ noop }}" hint-size="64px,32px">保存</x-import>
+</div>
+</div>
+<aside style="flex:0 0 320px;display:flex;flex-direction:column;gap:12px;position:sticky;top:0">
+<x-import component-from-global-scope="TokenHubDesignSystem_019e20.SectionCard" title="本次配置" hint-size="100%,200px">
+<div style="display:flex;flex-direction:column;gap:8px;font-size:13px">
+<div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px"><span style="color:var(--color-fg-muted);flex-shrink:0">名称</span><span style="text-align:right;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ sumName }}</span></div>
+<div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px"><span style="color:var(--color-fg-muted);flex-shrink:0">类型</span><span style="text-align:right;white-space:nowrap">{{ sumType }}</span></div>
+<div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px"><span style="color:var(--color-fg-muted);flex-shrink:0">计费</span><span style="text-align:right;white-space:nowrap">{{ sumBilling }}</span></div>
+<div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px"><span style="color:var(--color-fg-muted);flex-shrink:0">倍率</span><span class="th-nums" style="text-align:right;white-space:nowrap">{{ sumRatio }}</span></div>
+<div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px"><span style="color:var(--color-fg-muted);flex-shrink:0">创建后</span><span style="text-align:right;white-space:nowrap">{{ sumEnabled }}</span></div>
+</div>
+</x-import>
+<x-import component-from-global-scope="TokenHubDesignSystem_019e20.SectionCard" title="填写说明" hint-size="100%,200px">
+<div style="display:flex;flex-direction:column;gap:4px;font-size:13px;line-height:1.5;color:var(--color-fg-muted)">
+<span>接口地址填到版本号为止，不含具体路径。</span>
+<span style="font-family:var(--th-font-mono);font-size:12px;background:var(--color-surface-inset);padding:1px 5px;border-radius:var(--th-radius-xs);color:var(--color-fg);align-self:flex-start">https://api.example.com/v1</span>
+</div>
+<div style="font-size:13px;line-height:1.5;color:var(--color-fg-muted)">倍率是计费系数：填 1.5 表示按上游价格的 1.5 倍结算给用户，留空按 1.0。</div>
+<div style="font-size:13px;line-height:1.5;color:var(--color-fg-muted)">渠道类型决定请求体格式，接入后不可更改。</div>
+</x-import>
+<x-import component-from-global-scope="TokenHubDesignSystem_019e20.Banner" tone="info" title="保存后立即生效" hint-size="100%,72px">新渠道会进入负载池参与分流；先停用可在配置完模型映射后再启用。</x-import>
+</aside>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { activeNav: "channels", collapsed: false, name: "", type: "openai", baseUrl: "", billing: "token", ratio: "", note: "", enabled: true };
+  renderVals() {
+    return {
+      activeNav: this.state.activeNav,
+      setNav: (k) => this.setState({ activeNav: k }),
+      collapsed: this.state.collapsed,
+      toggle: () => this.setState((s) => ({ collapsed: !s.collapsed })),
+      navGroups: [{ title: "令牌中心", items: [
+        { key: "tokens", icon: "ri-key-2-line", label: "令牌管理" },
+        { key: "channels", icon: "ri-git-branch-line", label: "渠道管理" },
+        { key: "models", icon: "ri-store-2-line", label: "模型广场" },
+      ]},{ title: "系统", items: [
+        { key: "users", icon: "ri-team-line", label: "用户管理" },
+        { key: "settings", icon: "ri-settings-3-line", label: "系统设置" },
+      ]}],
+      sumName: this.state.name || "未填写",
+      sumType: ({ openai: "OpenAI 兼容", anthropic: "Anthropic", custom: "自定义" })[this.state.type],
+      sumBilling: this.state.billing === "token" ? "按 token 计费" : "按请求计费",
+      sumRatio: this.state.ratio || "默认 1.0",
+      sumEnabled: this.state.enabled ? "立即启用" : "保持停用",
+      noop: () => {},
+      name: this.state.name, setName: (e) => this.setState({ name: e.target.value }),
+      type: this.state.type, setType: (v) => this.setState({ type: v }),
+      typeOptions: [
+        { value: "openai", label: "OpenAI 兼容" },
+        { value: "anthropic", label: "Anthropic" },
+        { value: "custom", label: "自定义" },
+      ],
+      baseUrl: this.state.baseUrl, setBaseUrl: (e) => this.setState({ baseUrl: e.target.value }),
+      billing: this.state.billing, setBilling: (v) => this.setState({ billing: v }),
+      billingOptions: [
+        { value: "token", label: "按 token 计费" },
+        { value: "request", label: "按请求计费" },
+      ],
+      ratio: this.state.ratio, setRatio: (e) => this.setState({ ratio: e.target.value }),
+      note: this.state.note, setNote: (e) => this.setState({ note: e.target.value }),
+      enabled: this.state.enabled, setEnabled: (v) => this.setState({ enabled: v }),
+    };
+  }
+}
+</script>
+<style>
+html,body{height:auto!important;min-height:100%;overflow-y:auto!important}
+.infone-page-pager{position:fixed;z-index:2147483646;right:20px;bottom:20px;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:20px;min-width:min(520px,calc(100vw - 40px));padding:12px 16px;border:1px solid #e2e5ea;border-radius:12px;background:rgba(255,255,255,.94);box-shadow:0 10px 30px rgba(22,24,28,.14);backdrop-filter:blur(12px);font:13px/1.4 var(--th-font-ui,system-ui,sans-serif);color:#16181c}
+.infone-page-pager a{display:grid;gap:2px;color:#16181c;text-decoration:none}.infone-page-pager a span{color:#676e7c;font-size:11px}.infone-page-pager-next{text-align:right}.infone-page-pager-count{color:#676e7c;white-space:nowrap}
+@media(max-width:720px){.infone-page-pager{right:12px;bottom:12px;grid-template-columns:1fr auto 1fr;min-width:calc(100vw - 24px);padding:10px 12px}.infone-page-pager a strong{display:none}}
+</style><nav class="infone-page-pager" aria-label="页面模式切换" title="上下滚动切换页面"><a class="infone-page-pager-previous" href="../error-page/index.html"><span>上一个</span><strong>Error Page</strong></a><span class="infone-page-pager-count">5 / 14</span><a class="infone-page-pager-next" href="../login/index.html"><span>下一个</span><strong>Login</strong></a></nav><script>(()=>{const pager=document.querySelector(".infone-page-pager");if(!pager)return;const previous=pager.querySelector(".infone-page-pager-previous");const next=pager.querySelector(".infone-page-pager-next");const canScrollInDirection=(target,deltaY)=>{let element=target instanceof Element?target:null;while(element&&element!==document.documentElement){const overflowY=getComputedStyle(element).overflowY;if(/^(auto|scroll|overlay)$/.test(overflowY)&&element.scrollHeight>element.clientHeight){if(deltaY>0?element.scrollTop+element.clientHeight<element.scrollHeight-1:element.scrollTop>1)return true}element=element.parentElement}const scrollingElement=document.scrollingElement;if(!scrollingElement)return false;return deltaY>0?scrollingElement.scrollTop+scrollingElement.clientHeight<scrollingElement.scrollHeight-1:scrollingElement.scrollTop>1};let accumulatedDelta=0;let resetTimer=0;let navigating=false;addEventListener("wheel",event=>{if(navigating||event.ctrlKey||event.metaKey||Math.abs(event.deltaY)<=Math.abs(event.deltaX)||canScrollInDirection(event.target,event.deltaY))return;const candidate=event.deltaY>0?next:previous;if(!candidate)return;event.preventDefault();const multiplier=event.deltaMode===WheelEvent.DOM_DELTA_LINE?16:event.deltaMode===WheelEvent.DOM_DELTA_PAGE?innerHeight:1;accumulatedDelta+=event.deltaY*multiplier;clearTimeout(resetTimer);resetTimer=window.setTimeout(()=>{accumulatedDelta=0},180);if(Math.abs(accumulatedDelta)<48)return;const destination=accumulatedDelta>0?next:previous;if(!destination){accumulatedDelta=0;return}navigating=true;location.assign(destination.href)},{passive:false})})();</script>
+</body>
+</html>

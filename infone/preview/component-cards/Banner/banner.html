@@ -1,0 +1,29 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="Banner" subtitle="Persistent inline alert — info/success/warning/danger, stays until dismissed" viewport="440x220" -->
+<html lang="zh-Hans">
+<head>
+<script data-infone-theme-bootstrap>if(new URLSearchParams(location.search).get("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")</script>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../tokens.css">
+<script src="../../runtime/ds-bundle.js"></script>
+<style>body{margin:0;background:var(--th-bg)}.panel{box-sizing:border-box;padding:24px;width:392px;display:flex;flex-direction:column;gap:12px}</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="../../runtime/react.production.min.js"></script>
+<script src="../../runtime/react-dom.production.min.js"></script>
+<script src="../../runtime/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+const { Banner } = window.TokenHubDesignSystem_019e20;
+function Demo() {
+  return (
+    <div className="panel">
+      <Banner tone="warning" title="渠道 deepmap 响应延迟升高" description="过去 10 分钟平均延迟 2.4s，已自动降级到备用渠道" onClose={() => {}} />
+      <Banner tone="danger" title="令牌保存失败" description="名称已存在，请更换后重试" />
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<Demo />);
+</script>
+</body>
+</html>

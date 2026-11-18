@@ -1,0 +1,45 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="Tree" subtitle="树形控件 — 权限选择 / 紧凑层级导航，级联勾选" viewport="700x430" -->
+<html lang="zh-Hans">
+<head>
+<script data-infone-theme-bootstrap>if(new URLSearchParams(location.search).get("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")</script>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../tokens.css">
+<script src="../../runtime/ds-bundle.js"></script>
+<style>body{margin:0}.panel{box-sizing:border-box;padding:24px 26px;background:var(--th-white);border:var(--th-border-card);border-radius:var(--th-radius-md);margin:24px}</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="../../runtime/react.production.min.js"></script>
+<script src="../../runtime/react-dom.production.min.js"></script>
+<script src="../../runtime/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+const { Tree, StatusChip } = window.TokenHubDesignSystem_019e20;
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <div className="panel">
+    <Tree checkable defaultCheckedKeys={["console", "keys", "keys-prod", "keys-test", "usage"]} data={[
+      { key: "console", title: "控制台", icon: "ri-dashboard-line", children: [
+        { key: "keys", title: "API Keys 管理", icon: "ri-key-2-line", children: [
+          { key: "keys-prod", title: "生产环境 Keys", icon: "ri-shield-check-line" },
+          { key: "keys-test", title: "测试环境 Keys", icon: "ri-flask-line" },
+        ]},
+        { key: "usage", title: "用量分析", icon: "ri-line-chart-line" },
+        { key: "billing", title: "费用账单", icon: "ri-wallet-3-line", extra: <StatusChip tone="warning" dot={false}>敏感</StatusChip> },
+      ]},
+      { key: "admin", title: "管理后台", icon: "ri-settings-3-line", children: [
+        { key: "members", title: "成员管理", icon: "ri-team-line", children: [
+          { key: "organization", title: "组织架构", icon: "ri-node-tree", children: [
+            { key: "department", title: "产品研发中心", children: [
+              { key: "team", title: "平台产品部", children: [
+                { key: "roles", title: "角色权限", icon: "ri-shield-user-line" },
+              ]},
+            ]},
+          ]},
+        ]},
+        { key: "audit", title: "审计日志", icon: "ri-file-list-3-line" },
+      ]},
+    ]} ellipsisDepth={1} />
+  </div>
+);</script>
+</body>
+</html>

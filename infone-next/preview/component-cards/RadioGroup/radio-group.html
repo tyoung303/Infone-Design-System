@@ -1,0 +1,33 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="Radio group" subtitle="18px dot — brand-blue fill when selected" viewport="260x160" -->
+<html lang="zh-Hans">
+<head>
+<script data-infone-theme-bootstrap>if(new URLSearchParams(location.search).get("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")</script>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../tokens.css">
+<script src="../../runtime/ds-bundle.js"></script>
+<style>body{margin:0;background:var(--th-bg)}.panel{box-sizing:border-box;padding:24px}</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="../../runtime/react.production.min.js"></script>
+<script src="../../runtime/react-dom.production.min.js"></script>
+<script src="../../runtime/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+const { RadioGroup } = window.TokenHubDesignSystem_019e20;
+function Demo() {
+  const [v, setV] = React.useState("all");
+  return (
+    <div className="panel">
+      <RadioGroup label="可调用模型" value={v} onChange={setV} options={[
+        { value: "all", label: "全部模型" },
+        { value: "openai", label: "OpenAI 系列" },
+        { value: "custom", label: "自定义" },
+      ]} />
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<Demo />);
+</script>
+</body>
+</html>

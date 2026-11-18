@@ -1,0 +1,51 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="Cascader" subtitle="级联选择 — sm=28px / md=32px" viewport="700x320" -->
+<html lang="zh-Hans">
+<head>
+<script data-infone-theme-bootstrap>if(new URLSearchParams(location.search).get("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")</script>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../tokens.css">
+<script src="../../runtime/ds-bundle.js"></script>
+<style>body{margin:0}.panel{box-sizing:border-box;padding:24px 26px;background:var(--th-white);border:var(--th-border-card);border-radius:var(--th-radius-md);margin:24px;display:flex;flex-direction:column;gap:18px}.row{display:flex;align-items:center;gap:12px}.label{width:92px;color:var(--color-fg-muted);font-size:12px}</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="../../runtime/react.production.min.js"></script>
+<script src="../../runtime/react-dom.production.min.js"></script>
+<script src="../../runtime/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+const { Cascader } = window.TokenHubDesignSystem_019e20;
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <div className="panel" style={{ height: 250 }}>
+    <div className="row"><span className="label">sm · 28px</span><Cascader size="sm" defaultValue={["deepseek", "v3"]} width={280} options={[
+      { value: "deepseek", label: "DeepSeek", children: [
+        { value: "v3", label: "DeepSeek V3" },
+        { value: "r1", label: "DeepSeek R1" },
+      ]},
+      { value: "qwen", label: "通义千问", children: [
+        { value: "max", label: "Qwen Max" },
+        { value: "plus", label: "Qwen Plus" },
+        { value: "turbo", label: "Qwen Turbo" },
+      ]},
+      { value: "zhipu", label: "智谱 AI", children: [
+        { value: "glm4", label: "GLM-4" },
+      ]},
+    ]} /></div>
+    <div className="row"><span className="label">md · 32px</span><Cascader defaultValue={["qwen", "max"]} width={280} options={[
+      { value: "deepseek", label: "DeepSeek", children: [
+        { value: "v3", label: "DeepSeek V3" },
+        { value: "r1", label: "DeepSeek R1" },
+      ]},
+      { value: "qwen", label: "通义千问", children: [
+        { value: "max", label: "Qwen Max" },
+        { value: "plus", label: "Qwen Plus" },
+        { value: "turbo", label: "Qwen Turbo" },
+      ]},
+      { value: "zhipu", label: "智谱 AI", children: [
+        { value: "glm4", label: "GLM-4" },
+      ]},
+    ]} /></div>
+  </div>
+);</script>
+</body>
+</html>

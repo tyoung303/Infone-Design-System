@@ -1,0 +1,38 @@
+<!doctype html>
+<!-- @dsCard group="Spacing" name="Spacing scale" subtitle="4–48 px scale, with tokens called out where each is used" viewport="700x330" -->
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<title>Spacing scale</title>
+<link rel="stylesheet" href="preview.css">
+<style>
+  .panel {
+    background: var(--th-white);
+    border: var(--th-border-card);
+    border-radius: var(--th-radius-md);
+    padding: 22px 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .row-s { display: flex; align-items: center; gap: 12px; font-family: var(--th-font-ui); font-size: 11px; color: var(--color-fg-muted); }
+  .row-s b { color: var(--color-fg); font-weight: 600; }
+  .key { width: 88px; font-family: var(--th-font-mono); color: var(--color-fg); }
+  .bar { height: 14px; background: var(--th-teal-200); border-radius: 3px; }
+  .note { color: var(--color-fg-muted); }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="panel">
+    <div class="row-s"><span class="key">space-1</span><span class="bar" style="width:4px"></span><span><b>4 px</b> <span class="note">— tight 6/8 grain</span></span></div>
+    <div class="row-s"><span class="key">space-2</span><span class="bar" style="width:8px"></span><span><b>8 px</b> <span class="note">— icon→label, button gap</span></span></div>
+    <div class="row-s"><span class="key">space-3</span><span class="bar" style="width:10px"></span><span><b>10 px</b> <span class="note">— sidebar item padding</span></span></div>
+    <div class="row-s"><span class="key">space-4</span><span class="bar" style="width:12px"></span><span><b>12 px</b> <span class="note">— avatar→text, card inner</span></span></div>
+    <div class="row-s"><span class="key">space-6</span><span class="bar" style="width:16px"></span><span><b>16 px</b> <span class="note">— card column gutter, nav side padding</span></span></div>
+    <div class="row-s"><span class="key">space-10</span><span class="bar" style="width:40px"></span><span><b>40 px</b> <span class="note">— top-nav item gap</span></span></div>
+    <div class="row-s"><span class="key">space-12</span><span class="bar" style="width:48px"></span><span><b>48 px</b> <span class="note">— top-nav bar height</span></span></div>
+  </div>
+</div>
+</body>
+</html>

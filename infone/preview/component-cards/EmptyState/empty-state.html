@@ -1,0 +1,31 @@
+<!doctype html>
+<!-- @dsCard group="Patterns" name="Empty state" subtitle="Icon tile + title + description + CTA — graphic=dots/arcs/grid 提供抽象几何背景" viewport="760x300" -->
+<html lang="zh-Hans">
+<head>
+<script data-infone-theme-bootstrap>if(new URLSearchParams(location.search).get("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")</script>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../tokens.css">
+<script src="../../runtime/ds-bundle.js"></script>
+<style>body{margin:0;background:var(--th-bg)}.row{display:flex;gap:16px}.panel{box-sizing:border-box;padding:12px;width:224px;background:var(--th-white);border:var(--th-border-card);border-radius:var(--th-radius-md);box-shadow:var(--th-shadow-card)}</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="../../runtime/react.production.min.js"></script>
+<script src="../../runtime/react-dom.production.min.js"></script>
+<script src="../../runtime/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+const { EmptyState, Button } = window.TokenHubDesignSystem_019e20;
+function Demo() {
+  return (
+    <div className="row">
+      <div className="panel"><EmptyState icon="ri-key-2-line" title="暂无令牌" description="创建一个令牌即可开始调用模型接口" action={<Button size="sm">新建令牌</Button>} /></div>
+      <div className="panel"><EmptyState graphic="dots" icon="ri-search-line" title="无匹配结果" description="试试换个关键词" /></div>
+      <div className="panel"><EmptyState graphic="arcs" icon="ri-radar-line" title="暂无运行记录" description="任务运行后会在这里显示" /></div>
+      <div className="panel"><EmptyState graphic="grid" icon="ri-database-2-line" title="暂无数据源" description="接入仓库后开始分析" /></div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<Demo />);
+</script>
+</body>
+</html>

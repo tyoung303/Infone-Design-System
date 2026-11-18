@@ -1,0 +1,30 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="Steps" subtitle="接入引导 / 流程进度 — 完成打勾、当前薄荷色、后续置灰" viewport="700x200" -->
+<html lang="zh-Hans">
+<head>
+<script data-infone-theme-bootstrap>if(new URLSearchParams(location.search).get("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")</script>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../tokens.css">
+<script src="../../runtime/ds-bundle.js"></script>
+<style>body{margin:0}.panel{box-sizing:border-box;padding:28px 32px;background:var(--th-white);border:var(--th-border-card);border-radius:var(--th-radius-md);margin:24px}</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="../../runtime/react.production.min.js"></script>
+<script src="../../runtime/react-dom.production.min.js"></script>
+<script src="../../runtime/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+const { Steps } = window.TokenHubDesignSystem_019e20;
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <div className="panel">
+    <Steps current={2} items={[
+      { title: "创建令牌", description: "生成 API 密钥" },
+      { title: "替换地址", description: "指向网关端点" },
+      { title: "发起请求", description: "验证连通性" },
+      { title: "查看用量", description: "监控消费" },
+    ]} />
+  </div>
+);
+</script>
+</body>
+</html>

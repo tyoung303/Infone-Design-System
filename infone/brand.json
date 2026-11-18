@@ -1,0 +1,154 @@
+{
+  "name": "InfOne",
+  "tagline": "企业 AgentOS 管理后台设计系统",
+  "description": "面向 InfOne、TokenHub 及相关后台界面的组件化企业管理设计系统。",
+  "sourceUrl": "",
+  "logo": {
+    "primary": "assets/tokenhub-logo.svg",
+    "alternates": [],
+    "notes": "TokenHub 立方体标志与 Sora 字标；不同产品只替换品牌层和 Logo 素材。"
+  },
+  "colors": [
+    {
+      "role": "background",
+      "hex": "#fafafa",
+      "oklch": "",
+      "name": "页面与导航底色",
+      "usage": "应用画布与导航表面，两者处于同一层级。"
+    },
+    {
+      "role": "surface",
+      "hex": "#ffffff",
+      "oklch": "",
+      "name": "内容表面",
+      "usage": "卡片、面板、弹窗与抬升内容。"
+    },
+    {
+      "role": "foreground",
+      "hex": "#191919",
+      "oklch": "",
+      "name": "主文字",
+      "usage": "主要文字与高强调控件。"
+    },
+    {
+      "role": "muted",
+      "hex": "#6e6e6e",
+      "oklch": "",
+      "name": "次要文字",
+      "usage": "辅助文字、元数据与说明。"
+    },
+    {
+      "role": "border",
+      "hex": "#ededed",
+      "oklch": "",
+      "name": "中性边界",
+      "usage": "语义边框由近黑透明度混合派生；#EDEDED 用于中性选中与基础分层。"
+    },
+    {
+      "role": "accent",
+      "hex": "#3b83ff",
+      "oklch": "",
+      "name": "品牌蓝",
+      "usage": "聚焦、Steps、选中 tint 与品牌身份；普通字号主按钮不直接使用此档。"
+    },
+    {
+      "role": "cta",
+      "hex": "#1f62e0",
+      "oklch": "",
+      "name": "主操作蓝",
+      "usage": "主按钮填充与可读链接，配白字满足 WCAG AA。"
+    }
+  ],
+  "typography": {
+    "display": {
+      "family": "Sora",
+      "fallbacks": [
+        "sans-serif"
+      ],
+      "weights": [
+        500,
+        600,
+        700
+      ],
+      "notes": "品牌字标与展示型锁定组合。"
+    },
+    "body": {
+      "family": "PingFang SC",
+      "fallbacks": [
+        "Microsoft YaHei",
+        "system-ui",
+        "sans-serif"
+      ],
+      "weights": [
+        400,
+        500,
+        600,
+        700
+      ],
+      "notes": "中文优先的系统 UI 字体栈。"
+    },
+    "mono": {
+      "family": "IBM Plex Mono",
+      "fallbacks": [
+        "ui-monospace",
+        "monospace"
+      ],
+      "weights": [
+        400,
+        500
+      ],
+      "notes": "仅用于代码、URL、密钥与模型 ID；金额、次数、token 数和时间使用 UI 字体与等宽数位。"
+    }
+  },
+  "voice": {
+    "adjectives": [
+      "专业",
+      "明确",
+      "克制"
+    ],
+    "tone": "使用简洁的企业级语言，状态与操作标签必须明确。",
+    "messagingPillars": [
+      "清晰优先于装饰",
+      "组件优先的一致性",
+      "可靠的操作反馈"
+    ],
+    "vocabulary": {
+      "use": [
+        "状态",
+        "用量",
+        "配置",
+        "确认"
+      ],
+      "avoid": [
+        "夸张口号",
+        "模糊动作",
+        "emoji"
+      ]
+    }
+  },
+  "imagery": {
+    "style": "以真实产品 UI 为依据，搭配克制的抽象几何图形。",
+    "subjects": [
+      "企业管理",
+      "Agent 运维",
+      "用量与治理"
+    ],
+    "treatment": "在平静的中性色表面展示清晰的 UI 截图，避免装饰性素材图。",
+    "avoid": [
+      "通用素材摄影",
+      "过大的装饰图标",
+      "与内容无关的插画"
+    ],
+    "samples": []
+  },
+  "layout": {
+    "radius": "圆角仅使用 4、6、8px；卡片与控件为 6px，弹窗与抽屉为 8px。",
+    "borderWeight": "0.5px 语义中性边框；卡片静置态不使用阴影。",
+    "spacing": "以 4px 为基础刻度，提供舒适与紧凑两种密度。",
+    "postureRules": [
+      "使用一种标准页面骨架。",
+      "页面操作统一放在 PageHeader。",
+      "操作型内容优先铺满可用宽度，避免堆砌卡片墙。"
+    ]
+  }
+}

@@ -1,0 +1,111 @@
+{
+  "schemaVersion": "od-design-system-project/v1",
+  "id": "infone-next",
+  "name": "InfOne Next",
+  "category": "企业 SaaS 与 Agent 运维",
+  "description": "基于 InfOne 的独立本地设计系统草稿；初始组件与视觉继承 InfOne，可在本目录独立调整。",
+  "source": {
+    "type": "bundled",
+    "origin": "从本仓库 infone/ 当前本地文件复制；复制时 HEAD 为 be5d89750b8943d896a265a0cf6278b0fd7eccaf；维护说明见 FORK.md"
+  },
+  "files": {
+    "design": "DESIGN.md",
+    "brand": "brand.json",
+    "tokens": "tokens.css",
+    "components": "components.html"
+  },
+  "usage": "USAGE.md",
+  "rulesIndex": "rules/index.json",
+  "componentsManifest": "components.manifest.json",
+  "logo": "assets/tokenhub-logo.svg",
+  "importMode": "hybrid",
+  "craft": {
+    "applies": [
+      "accessibility-baseline",
+      "state-coverage",
+      "form-validation"
+    ],
+    "suggested": [
+      "animation-discipline",
+      "color"
+    ],
+    "exemptions": []
+  },
+  "fonts": [
+    {
+      "family": "Sora",
+      "file": "fonts/Sora-500.ttf",
+      "weight": 500,
+      "style": "normal"
+    },
+    {
+      "family": "Sora",
+      "file": "fonts/Sora-600.ttf",
+      "weight": 600,
+      "style": "normal"
+    },
+    {
+      "family": "Sora",
+      "file": "fonts/Sora-700.ttf",
+      "weight": 700,
+      "style": "normal"
+    },
+    {
+      "family": "IBM Plex Mono",
+      "file": "fonts/IBMPlexMono-400.ttf",
+      "weight": 400,
+      "style": "normal"
+    },
+    {
+      "family": "IBM Plex Mono",
+      "file": "fonts/IBMPlexMono-500.ttf",
+      "weight": 500,
+      "style": "normal"
+    },
+    {
+      "family": "Remix Icon",
+      "file": "fonts/remixicon.woff2",
+      "weight": "normal",
+      "style": "normal"
+    }
+  ],
+  "assetsDir": "assets",
+  "preview": {
+    "dir": "preview",
+    "pages": [
+      {
+        "path": "preview/colors.html",
+        "role": "colors",
+        "title": "InfOne Next 颜色与品牌"
+      },
+      {
+        "path": "preview/typography.html",
+        "role": "typography",
+        "title": "InfOne Next 字体排版"
+      },
+      {
+        "path": "preview/spacing.html",
+        "role": "spacing",
+        "title": "InfOne Next 间距与密度"
+      },
+      {
+        "path": "preview/components.html",
+        "role": "components",
+        "title": "InfOne Next 组件"
+      },
+      {
+        "path": "preview/pages.html",
+        "role": "pages",
+        "title": "InfOne Next 页面模式（14）"
+      },
+      {
+        "path": "preview/ui-kits.html",
+        "role": "ui-kits",
+        "title": "InfOne Next 应用界面套件（3）"
+      }
+    ]
+  },
+  "sourceFiles": {
+    "snippets": "recipes/index.json"
+  }
+}

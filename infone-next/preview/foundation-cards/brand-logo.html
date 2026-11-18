@@ -1,0 +1,73 @@
+<!doctype html>
+<!-- @dsCard group="Brand" name="Logo & lockup" subtitle="Brand-blue cube mark + Sora 700 wordmark, on light/dark/brand/bg" viewport="700x280" -->
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<title>Logo · TokenHub</title>
+<link rel="stylesheet" href="preview.css">
+<style>
+  .stage {
+    flex: 1;
+    background: var(--th-white);
+    border-radius: var(--th-radius-md);
+    border: var(--th-border-card);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 24px 32px;
+  }
+  .lockup { display: flex; align-items: center; gap: 12px; }
+  .lockup img { width: 32px; height: auto; }
+  .lockup .word {
+    font-family: var(--th-font-brand);
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--color-fg);
+    letter-spacing: -0.01em;
+  }
+  .stage .meta {
+    margin-left: auto;
+    text-align: right;
+    color: var(--color-fg-muted);
+    font-family: var(--th-font-ui);
+    font-size: 11px;
+    line-height: 1.5;
+  }
+  .stage .meta b { color: var(--color-fg); font-weight: 600; }
+
+  .marks { display: flex; gap: 12px; }
+  .mark {
+    width: 92px; height: 92px;
+    border-radius: var(--th-radius-md);
+    border: var(--th-border-card);
+    background: var(--th-white);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .mark.dark { background: var(--th-gray-900); }
+  .mark.brand { background: var(--th-teal-500); }
+  .mark.bg   { background: var(--th-bg); }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="stage">
+    <div class="lockup">
+      <img src="../../assets/tokenhub-logo.svg" alt="TokenHub">
+      <span class="word">TokenHub</span>
+    </div>
+    <div class="meta">
+      <b>Sora 700 · 14–22px</b><br>
+      Lockup gap 10–12px · icon 20–32px<br>
+      Mark <b>#3B83FF</b> w/ <b>#85B5FF</b> highlight + <b>#1F62E0</b> shadow
+    </div>
+  </div>
+
+  <div class="marks">
+    <div class="mark"><img src="../../assets/tokenhub-logo.svg" style="width:44px"></div>
+    <div class="mark bg"><img src="../../assets/tokenhub-logo.svg" style="width:44px"></div>
+    <div class="mark brand"><img src="../../assets/tokenhub-logo.svg" style="width:44px;filter:brightness(0) invert(1) opacity(0.95)"></div>
+    <div class="mark dark"><img src="../../assets/tokenhub-logo.svg" style="width:44px"></div>
+  </div>
+</div>
+</body>
+</html>

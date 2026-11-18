@@ -1,0 +1,39 @@
+<!doctype html>
+<!-- @dsCard group="Colors" name="Color · Neutrals" subtitle="Pure gray ladder (zero chroma) — canvas + nav on one plane, cards white" viewport="700x160" -->
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<title>Neutrals</title>
+<link rel="stylesheet" href="preview.css">
+</head>
+<body>
+<div class="card">
+  <div class="row" id="row">
+    <div class="swatch dark" data-token="--th-gray-900" data-note="text"><div class="fill"></div><span class="label">gray-900</span><span class="meta"></span></div>
+    <div class="swatch dark" data-token="--th-gray-800"><div class="fill"></div><span class="label">gray-800</span><span class="meta"></span></div>
+    <div class="swatch dark" data-token="--th-gray-600"><div class="fill"></div><span class="label">gray-600</span><span class="meta"></span></div>
+    <div class="swatch" data-token="--th-gray-500" data-note="muted"><div class="fill"></div><span class="label">gray-500</span><span class="meta"></span></div>
+    <div class="swatch" data-token="--th-gray-300"><div class="fill"></div><span class="label">gray-300</span><span class="meta"></span></div>
+    <div class="swatch" data-token="--th-gray-250" data-note="disabled"><div class="fill"></div><span class="label">gray-250</span><span class="meta"></span></div>
+    <div class="swatch" data-token="--th-gray-150"><div class="fill"></div><span class="label">gray-150</span><span class="meta"></span></div>
+    <div class="swatch" data-token="--th-gray-100" data-note="divider"><div class="fill"></div><span class="label">gray-100</span><span class="meta"></span></div>
+    <div class="swatch" data-token="--th-gray-50"><div class="fill"></div><span class="label">gray-50</span><span class="meta"></span></div>
+    <div class="swatch" data-token="--th-bg" data-note="canvas + nav" data-outline="1"><div class="fill"></div><span class="label">bg</span><span class="meta"></span></div>
+    <div class="swatch" data-token="--th-white" data-note="card" data-outline="1"><div class="fill"></div><span class="label">white</span><span class="meta"></span></div>
+  </div>
+</div>
+<script>
+const cs = getComputedStyle(document.documentElement);
+const cv = document.createElement("canvas"); cv.width = cv.height = 1;
+const ctx = cv.getContext("2d");
+const hex = (v) => { ctx.fillStyle = "#000"; ctx.fillStyle = v; ctx.fillRect(0, 0, 1, 1); const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data; return "#" + [r, g, b].map((n) => n.toString(16).padStart(2, "0")).join("").toUpperCase(); };
+for (const sw of document.querySelectorAll("[data-token]")) {
+  const val = cs.getPropertyValue(sw.dataset.token).trim();
+  const fill = sw.querySelector(".fill");
+  fill.style.background = val;
+  if (sw.dataset.outline) fill.style.boxShadow = "inset 0 0 0 1px " + cs.getPropertyValue("--th-gray-50").trim();
+  sw.querySelector(".meta").textContent = hex(val) + (sw.dataset.note ? " · " + sw.dataset.note : "");
+}
+</script>
+</body>
+</html>

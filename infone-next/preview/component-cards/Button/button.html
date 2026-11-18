@@ -1,0 +1,37 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="Button" subtitle="按钮 — primary / secondary / ghost / link / danger，sm=28px / md=32px" viewport="760x210" -->
+<html lang="zh-Hans">
+<head>
+<script data-infone-theme-bootstrap>if(new URLSearchParams(location.search).get("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")</script>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../tokens.css">
+<script src="../../runtime/ds-bundle.js"></script>
+<style>body{margin:0}.panel{box-sizing:border-box;width:100%;min-height:100%;padding:24px 26px;display:flex;flex-wrap:wrap;gap:18px;align-items:center;background:var(--th-white);border:var(--th-border-card);border-radius:var(--th-radius-md);margin:24px;width:calc(100% - 48px)}</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="../../runtime/react.production.min.js"></script>
+<script src="../../runtime/react-dom.production.min.js"></script>
+<script src="../../runtime/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+const { Button } = window.TokenHubDesignSystem_019e20;
+function Demo() {
+  return (
+    <div className="panel">
+      <Button>获取秘钥</Button>
+      <Button icon="ri-add-line">新建令牌</Button>
+      <Button size="sm">充值</Button>
+      <Button variant="secondary">查看文档</Button>
+      <Button variant="secondary" size="sm" icon="ri-file-copy-line">复制</Button>
+      <Button variant="ghost" size="sm">取消</Button>
+      <Button variant="danger" size="sm">删除</Button>
+      <Button variant="link">了解更多 →</Button>
+      <Button disabled>已禁用</Button>
+      <Button loading>创建中</Button>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<Demo />);
+</script>
+</body>
+</html>

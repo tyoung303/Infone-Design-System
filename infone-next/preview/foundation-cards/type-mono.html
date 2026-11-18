@@ -1,0 +1,67 @@
+<!doctype html>
+<!-- @dsCard group="Type" name="Type · Mono / code" subtitle="IBM Plex Mono 12–13px — API URL、代码、金额与 token 数" viewport="700x280" -->
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<title>Mono / Code</title>
+<link rel="stylesheet" href="preview.css">
+<style>
+  .panel {
+    background: var(--th-white);
+    border: var(--th-border-card);
+    border-radius: var(--th-radius-md);
+    padding: 22px 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .pill {
+    background: var(--th-white);
+    border: 0.5px solid var(--color-border);
+    border-radius: var(--th-radius-pill);
+    padding: 10px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--th-font-mono);
+    font-size: 13px;
+    color: var(--color-fg);
+    width: max-content;
+    max-width: 100%;
+  }
+  .pill .arrow { color: var(--color-fg-muted); }
+  .pill .endpoint { color: var(--color-link); }
+
+  .codeblock {
+    font-family: var(--th-font-mono);
+    font-size: 12px;
+    line-height: 1.5;
+    background: #0E1213;
+    color: #E8F8F7;
+    border-radius: var(--th-radius-md);
+    padding: 14px 18px;
+    overflow: hidden;
+  }
+  .codeblock .k { color: var(--th-teal-300); }
+  .codeblock .s { color: #FFD493; }
+  .codeblock .c { color: #6D6D6D; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="panel">
+    <div class="pill">
+      <span>http://localhost:3000</span>
+      <span class="arrow">›</span>
+      <span class="endpoint">/v1/chat/completions</span>
+    </div>
+    <div class="codeblock">
+<span class="c"># IBM Plex Mono · 12px / 18 · only for API surface</span><br>
+<span class="k">curl</span> https://api.tokenhub.cn/<span class="s">v1/chat/completions</span> \<br>
+&nbsp;&nbsp;-H <span class="s">"Authorization: Bearer $TOKENHUB_KEY"</span> \<br>
+&nbsp;&nbsp;-d <span class="s">'{"model":"gpt-4o-mini","messages":[…]}'</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>

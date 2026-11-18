@@ -1,0 +1,33 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="Checkbox" subtitle="18px box — brand-blue fill, check glyph" viewport="240x120" -->
+<html lang="zh-Hans">
+<head>
+<script data-infone-theme-bootstrap>if(new URLSearchParams(location.search).get("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")</script>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../tokens.css">
+<script src="../../runtime/ds-bundle.js"></script>
+<style>body{margin:0;background:var(--th-bg)}.panel{box-sizing:border-box;padding:24px;display:flex;flex-direction:column;gap:12px}</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="../../runtime/react.production.min.js"></script>
+<script src="../../runtime/react-dom.production.min.js"></script>
+<script src="../../runtime/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+const { Checkbox } = window.TokenHubDesignSystem_019e20;
+function Demo() {
+  const [a, setA] = React.useState(true);
+  const [b, setB] = React.useState(false);
+  const [c, setC] = React.useState(false);
+  return (
+    <div className="panel">
+      <Checkbox label="记住此设备" checked={a} onChange={setA} />
+      <Checkbox label="未选中" checked={c} onChange={setC} />
+      <Checkbox label="已禁用" checked={b} onChange={setB} disabled />
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<Demo />);
+</script>
+</body>
+</html>

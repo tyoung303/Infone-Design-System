@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "infone-design-rules/v1",
+  "core": "DESIGN.md",
+  "rules": [
+    {
+      "id": "foundations",
+      "path": "rules/foundations.md",
+      "title": "基础规则",
+      "summary": "字体、密度、间距、卡片、标题、控件、图标和动效。",
+      "requiredFor": ["page", "component"],
+      "keywords": ["字体", "字号", "数字", "密度", "间距", "卡片", "标题", "按钮", "图标", "动效"]
+    },
+    {
+      "id": "color",
+      "path": "rules/color.md",
+      "title": "颜色规则",
+      "summary": "品牌蓝、状态、分类、强度、表面、视觉预算和对比度。",
+      "requiredFor": ["color", "status", "visual-style"],
+      "keywords": ["颜色", "品牌蓝", "状态", "分类", "热力", "表面", "对比度", "供应商"]
+    },
+    {
+      "id": "data-visualization",
+      "path": "rules/data-visualization.md",
+      "title": "数据图形",
+      "summary": "微图表、Chart 选型、DataTable 层级变体和预览区。",
+      "requiredFor": ["chart", "analytics", "data-table"],
+      "keywords": ["图表", "分析", "趋势", "占比", "表格", "树表", "预览", "空状态"]
+    },
+    {
+      "id": "ai-native",
+      "path": "rules/ai-native.md",
+      "title": "AI 原生形态",
+      "summary": "模型输出、Agent 轨迹、token 和成本组件。",
+      "requiredFor": ["ai", "agent", "model"],
+      "keywords": ["AI", "Agent", "模型", "流式", "推理", "token", "成本"]
+    },
+    {
+      "id": "layout",
+      "path": "rules/layout.md",
+      "title": "响应式与布局",
+      "summary": "自适应网格、滚动列、工作台、表格和窄宽布局。",
+      "requiredFor": ["page", "responsive"],
+      "keywords": ["响应式", "布局", "网格", "滚动", "侧栏", "窄屏", "表格"]
+    },
+    {
+      "id": "page-shells",
+      "path": "rules/page-shells.md",
+      "title": "页面骨架",
+      "summary": "D、D+、B、C 档位，NavRail、TopNav 和 PageHeader 职责。",
+      "requiredFor": ["page", "navigation", "console"],
+      "keywords": ["页面", "控制台", "导航", "D", "D+", "B", "C", "NavRail", "TopNav", "PageHeader"]
+    },
+    {
+      "id": "theming",
+      "path": "rules/theming.md",
+      "title": "多品牌与暗色",
+      "summary": "品牌色阶、logo 替换、共享层保护和暗色派生。",
+      "requiredFor": ["branding", "theme", "dark-mode"],
+      "keywords": ["品牌", "换肤", "logo", "暗色", "brand", "theme"]
+    }
+  ]
+}

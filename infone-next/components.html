@@ -1,0 +1,1922 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="InfOne 标准组件预览与组件目录。">
+<title>InfOne 组件</title>
+<script>if(new URLSearchParams(location.search).get('theme')==='dark')document.documentElement.setAttribute('data-theme','dark')</script>
+<style>
+@import url("./fonts/fonts.css");
+@import url("./fonts/remixicon.css");
+
+/* ──────────────────────────────────────────────────────────────────
+   TokenHub Design Tokens
+   Sourced from /5.8-Tokenhub/* in the InfOne.fig file.
+   Two layers:
+     1. Primitive tokens — raw hex / px values
+     2. Semantic tokens  — what to actually reach for in components
+   ────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* ── Brand scale ─────────────────────────────────────────────
+     THE re-skin surface: to build a sibling product with the same
+     style but a different primary color, override ONLY --brand-*
+     (plus the logo file) in a brand.css loaded after tokens.css.
+     Everything else (grays, type, radii, shadows, motion) is the
+     shared style and should not change per product.
+     Default = TokenHub blue (standard #3B83FF; scale derived in oklch). */
+  --brand-50:  #E3EEFF;   /* tint fill — sidebar active, chips */
+  --brand-100: #C7DDFF;   /* tint border / active count pill */
+  --brand-200: #9FC5FF;   /* CTA pill fill */
+  --brand-300: #85B5FF;   /* logo accent edge, decorative blobs */
+  --brand-400: #5F9CFF;   /* progress/steps connector */
+  --brand-500: #3B83FF;   /* primary — controls, focus, accents */
+  --brand-600: #1F62E0;   /* strong — links, text on tint */
+  --brand-700: #16409C;   /* deepest — selected/pressed */
+
+  /* Legacy brand-blue aliases — keep pointing at brand */
+  --th-teal-50:  var(--brand-50);
+  --th-teal-100: var(--brand-100);
+  --th-teal-200: var(--brand-200);
+  --th-teal-300: var(--brand-300);
+  --th-teal-400: var(--brand-400);
+  --th-teal-500: var(--brand-500);
+  --th-teal-600: var(--brand-600);
+  --th-teal-700: var(--brand-700);
+
+  /* ── Neutral scale — PURE gray, zero chroma ────────────────
+     Every rung is achromatic (oklch chroma 0, R=G=B): the neutral
+     ladder carries NO brand or theme lean, so the only color on a
+     console page comes from the brand accent and the semantic
+     status/chart/category tokens. Lightness values are inherited
+     from the previous cool ramp, so contrast ratios are unchanged.
+     Never reintroduce a hue tint here — not warm, not cool. The
+     rungs are close together on purpose: surface tiers must read
+     as tiers, never as a loud change.
+       white = card surface · bg = canvas AND navigation surface */
+  --th-white:    #FFFFFF;
+  --th-bg:       #FAFAFA;   /* canvas + navigation surface — barely off white; cards sit ON this */
+  --th-gray-50:  #EDEDED;   /* card border, divider — visibly darker than surface */
+  --th-gray-100: #E4E4E4;   /* nav border, hairlines */
+  --th-gray-150: #E8E8E8;   /* disabled control fill/border */
+  --th-gray-200: #DDDDDD;
+  --th-gray-250: #C6C6C6;   /* disabled text on white, subtle icons */
+  --th-gray-300: #9E9E9E;   /* muted text */
+  --th-gray-400: #888888;
+  --th-gray-500: #6E6E6E;   /* sidebar section heading (4.9:1 on white) */
+  --th-gray-600: #4F4F4F;
+  --th-gray-700: #383838;
+  --th-gray-800: #222222;
+  --th-gray-900: #191919;   /* primary text — near-black, never pure #000 */
+
+  /* Accent — pinks, blue, link */
+  --th-pink-50:  #FFEFEF;   /* avatar bg, rgb(255,239,239) */
+  --th-pink-100: #FFE4E4;   /* nav avatar bg, rgb(255,228,228) */
+  --th-pink-500: #F56C89;   /* decorative only — avatar tint, destructive fill */
+  --th-pink-600: #C0304F;   /* TEXT-safe rose — 5.1:1 on pink-50, 5.6:1 on white */
+  --th-blue-50:  rgba(88,182,248,0.20);   /* hero blob, rgb(88,182,248) @ 20% */
+  --th-blue-300: #5E81F4;   /* secondary blue */
+  --th-blue-500: #455CFF;   /* link, rgb(69,92,255) */
+  --th-blue-700: #1F46E0;   /* deeper informational, rgb(31,70,224) */
+
+  /* ── Spacing scale (mostly 4px-based, observed values) ──── */
+  --th-space-1: 4px;
+  --th-space-2: 8px;
+  --th-space-3: 10px;   /* sidebar item padding */
+  --th-space-4: 12px;
+  --th-space-6: 16px;   /* card gutter, nav padding */
+  --th-space-8: 28px;
+  --th-space-10: 40px;  /* nav item gap */
+  --th-space-12: 48px;  /* nav bar height */
+
+  /* ── Density scale — GEOMETRY ONLY (never font size) ──────
+     Two rungs: default (comfortable) and compact. Switch a page,
+     a card, or a single table with data-density="compact" — the
+     tokens below re-declare inside that scope and every component
+     that consumes them tightens together.
+     Rule: card padding is 12 (16 only on marketing surfaces); block gaps
+     only 8/12. Arbitrary 14/18/20/24 values are a violation. */
+  --th-row-h:      36px;  /* table / list row */
+  --th-row-pad-y:  8px;
+  --th-ctl-h-sm:   26px;  /* legacy — chip control; filter/input controls use size="sm"=28px */
+  --th-ctl-h:      28px;  /* default control height; == size="sm" */
+  --th-ctl-h-lg:   32px;  /* == size="md" (default for forms/details) */
+  --th-card-pad:   12px;  /* card inner padding */
+  --th-stack-gap:  8px;  /* blocks inside a card */
+  --th-field-gap:  12px;  /* form field rhythm */
+  --th-block-gap:  12px;  /* canvas level — cards to each other */
+
+  /* ── Radii — THREE rungs: 4 / 6 / 8 ─────────────────────────
+     The 10px rung is gone. Cards and controls now share 6px, so a
+     button sitting inside a card no longer reads rounder than the
+     card it sits in; only overlays (modal/drawer) step up to 8px.
+     Four role tokens over three values on purpose: sm and md hold
+     the same 6px but keep separate names, because controls and cards
+     are separate roles that may diverge again. Never hand-write a
+     radius — 10px and 12px are off the ladder. */
+  --th-radius-xs: 4px;    /* tags, nav items, inline chips */
+  --th-radius-sm: 6px;    /* buttons, inputs, selects */
+  --th-radius-md: 6px;    /* cards, panels, popovers */
+  --th-radius-lg: 8px;    /* modal, drawer — the only rung above cards */
+  --th-radius-pill: 6px;  /* legacy alias - B端矩形按钮，与 sm 一致 */
+  --th-radius-full: 9999px;
+
+  /* ── Borders ────────────────────────────────────────────── */
+  --th-border-hairline: 0.5px solid var(--th-gray-100);
+  --th-border-card:     0.5px solid var(--color-border-strong);  /* weakened + thinner; --color-border is alpha-based so it keeps reading against whichever surface sits behind the card */
+
+  /* ── Z-index scale (stacking order for overlays) ───────── */
+  --z-nav: 30; /* @kind other */        /* sticky top nav */
+  --z-dropdown: 40; /* @kind other */   /* Select menu, inline popovers anchored to a trigger */
+  --z-overlay: 50; /* @kind other */    /* modal/popover scrim */
+  --z-modal: 60; /* @kind other */      /* modal dialog, popover card (sits above its own scrim) */
+  --z-tooltip: 70; /* @kind other */    /* hover tooltips — always above dialogs */
+  --z-toast: 80; /* @kind other */      /* toast/notification stack — always topmost */
+
+  /* ── Shadows ────────────────────────────────────────────── */
+  /* Resting cards carry NO shadow — the 0.5px border + surface-color step against
+     the canvas is what separates a card, not elevation. Cards never use a shadow
+     at rest; --th-shadow-card is retained as a token (value: none) only so nothing
+     that still references var(--th-shadow-card) breaks — do not reintroduce a value.
+     Primary-button hover no longer uses a brand-tinted shadow either (see Button.jsx
+     — hover now darkens the fill instead); --th-shadow-key is likewise kept at none.
+     The three shadows that remain are all weakened one notch from the previous scale. */
+  --th-shadow-nav:   0 2px 16px rgba(0,0,0,0.03);                                          /* top nav (glass) */
+  --th-shadow-card:  none;                                                                        /* resting card — no elevation, see note above */
+  --th-shadow-soft:  0 2px 4px rgba(0,0,0,0.02), 0 6px 14px rgba(0,0,0,0.03);        /* hover, dropdowns, popovers */
+  --th-shadow-modal: 0 3px 8px rgba(0,0,0,0.04), 0 12px 28px rgba(0,0,0,0.05);      /* dialogs, drawers */
+  --th-shadow-key:   none;                                                                        /* removed — primary CTA hover uses a darkened fill instead, see Button.jsx */
+  --th-blur:         blur(50px); /* @kind other */
+
+  /* ── Motion ─────────────────────────────────────────────────
+     Three durations, three curves, one stagger step. Anything
+     longer than --th-dur-3 is a violation except --th-dur-count
+     (data settling into place, e.g. a KPI counting up). */
+  --th-dur-1: 150ms; /* @kind other */  /* hover, color, icon rotate */
+  --th-dur-2: 200ms; /* @kind other */  /* open/close, width, layout shift */
+  --th-dur-3: 280ms; /* @kind other */  /* entrances — modal, drawer, list items */
+  --th-dur-count: 560ms; /* @kind other */ /* number count-up — the only long one */
+  --th-stagger: 28ms; /* @kind other */ /* per-item delay in a list entrance */
+  --th-ease:        cubic-bezier(0.2, 0.7, 0.2, 1); /* @kind other */   /* default — hovers, fades */
+  --th-ease-out:    cubic-bezier(0.16, 1, 0.3, 1); /* @kind other */    /* entrances — fast out, long settle */
+  --th-ease-spring: cubic-bezier(0.34, 1.3, 0.36, 1); /* @kind other */ /* overlays — gentle overshoot, never bouncy */
+
+  /* ── Typography ─────────────────────────────────────────────
+     UI text uses the DEVICE's own system font — no CJK webfont is
+     downloaded. Apple resolves PingFang SC, Windows 微软雅黑,
+     Android its bundled sans. Do not add a webfont to this stack. */
+  --th-font-cn: -apple-system, BlinkMacSystemFont, "PingFang SC", "HarmonyOS Sans SC", "Microsoft YaHei", "微软雅黑", "Noto Sans CJK SC", "Source Han Sans SC", sans-serif;
+  --th-font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "HarmonyOS Sans SC", "Microsoft YaHei", "微软雅黑", "Noto Sans CJK SC", sans-serif;
+  --th-font-brand: "Sora", -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --th-font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* Size scale — one ladder, 11/12/13/15/18/24/32/48.
+     Each rung has exactly one job; 14px, 16px, 20px, 22px are not
+     on the ladder and must not be hand-written in components. */
+  --th-text-2xs:  11px;   /* dense table meta, secondary line under a value */
+  --th-text-xs:   12px;   /* nav, sidebar, labels, captions */
+  --th-text-sm:   13px;   /* form label, card subtitle */
+  --th-text-base: 13px;   /* primary body / regular UI text (weight 400) */
+  --th-text-md:   15px;   /* card title, section title (was 16) */
+  --th-text-lg:   18px;   /* page title (was 20) */
+  --th-text-xl:   24px;   /* dashboard headline number, greeting */
+  --th-text-2xl:  32px;   /* marketing section head */
+  --th-text-hero: 48px;   /* marketing headline (PingFang SC 700) */
+
+  /* ── Semantic / role tokens ─────────────────────────────── */
+  --color-bg:        var(--th-bg);
+  --color-surface:   var(--th-white);
+  --color-surface-nav: var(--th-bg);     /* NAVIGATION surface — rail, inline top bar: the same faint gray as the canvas, so nav and page floor are one plane and only CARDS are white. Never white. */
+  --color-sunken:    var(--th-gray-50);
+  --color-border:    color-mix(in srgb, var(--th-gray-900) 8%, transparent);  /* weakened from opaque gray-50; alpha-mixed off near-black text color so it self-adjusts to whatever surface sits behind it (incl. under [data-theme="dark"], where --th-gray-900 is redeclared near-white) — never redeclare this separately per theme */
+  --color-border-strong: color-mix(in srgb, var(--th-gray-900) 16%, transparent);  /* one step darker than --color-border — CARD OUTER FRAME ONLY; dividers, table rules and control borders stay on --color-border/--color-divider so the tiers keep reading apart */
+  --color-divider:   var(--th-gray-100);
+  --color-fg:        var(--th-gray-900);
+  --color-fg-muted:  var(--th-gray-500);
+  --color-fg-subtle: var(--th-gray-300);
+  --color-fg-disabled: var(--th-gray-250);
+  --color-row-hover: #F0F0F0;            /* table/list row hover — quieter than gray-50 */
+  --color-link:      var(--th-teal-600);  /* interactive accent uses brand blue; --th-teal-* names are legacy aliases only */
+  --color-accent:    var(--th-teal-500);
+  --color-accent-soft: var(--th-teal-50);
+  --color-cta:       var(--th-teal-600);  /* 主按钮填充 — brand-600 #1F62E0。500 (#3B83FF) 配白字只有 3.6:1，按钮标签是 12/13px 的正文字号，AA 要求 4.5:1；600 + 白字 = 5.5:1。brand-500 仍是身份色（focus ring、选中 tint、Steps、图表强调） */
+  --color-cta-fg:    #FFFFFF;
+
+  /* ── Surface layers ────────────────────────────────────────
+     A page is not "canvas + white cards" alone: a card is divided from
+     the inside using a ladder of NEUTRAL steps instead of being cut
+     into more cards. Never stack more than two of these in one card.
+     Every step is plain gray (no hue lean) and the steps are kept close
+     together on purpose — each is visibly a different tier, but no
+     single step should read as a loud change from its neighbor.
+       raised   — the card itself, sits above the canvas (white)
+       quiet    — the shallowest recess: mild emphasis block, summary line
+       inset    — a sunken panel INSIDE a card: code, log, preview, footnote row
+       well     — the deepest recess: content nested inside an inset panel,
+                  or a totals/subtotal row that should read below inset
+       selected — the interactive SELECTED state (brand-blue tint / brand-50) —
+                  this one is a state color, not a neutral depth tier; it
+                  does not sit on the raised→quiet→inset→well ladder */
+  --color-surface-raised:  var(--th-white);
+  --color-surface-quiet:   #F7F7F7;
+  --color-surface-inset:   #F1F1F1;
+  --color-surface-well:    #E9E9E9;
+  --color-surface-quiet-border: var(--th-gray-100);
+  --color-surface-selected: var(--th-teal-50);
+  --color-nav-selected: var(--th-gray-50);   /* NAVIGATION / POSITION selected state — NavRail, Tree, Cascader, Pager, Segmented-like "where am I" states. Neutral on purpose: brand color is reserved for things the user acts on, never for location. Pair with font-weight 500 and --color-fg text/icon; hover uses --color-row-hover so the two states stay apart */
+  --color-table-head:      var(--th-gray-50); /* header row — must read apart from page canvas, not just from the card; th-bg is too close to it */
+  --color-table-total:     var(--color-surface-well);           /* totals / subtotal row */
+
+  /* ── Category tones ────────────────────────────────────────
+     Pairs for classifying things that are NOT status and NOT
+     clickable: model vendors, model families, plan tiers, regions.
+     Derived from the chart palette, so category color and chart
+     series color stay the same language — and both stay outside the
+     brand's interactive budget (原则 1). Assign a fixed tone per
+     category once and never re-map it between pages.
+     Consumed via Tag tone="cat1"…"cat6". */
+  --th-cat-1-bg: color-mix(in srgb, var(--th-chart-1) 10%, var(--th-white));
+  --th-cat-1-fg: color-mix(in srgb, var(--th-chart-1) 78%, var(--th-gray-900));
+  --th-cat-2-bg: color-mix(in srgb, var(--th-chart-2) 10%, var(--th-white));
+  --th-cat-2-fg: color-mix(in srgb, var(--th-chart-2) 74%, var(--th-gray-900));
+  --th-cat-3-bg: color-mix(in srgb, var(--th-chart-3) 10%, var(--th-white));
+  --th-cat-3-fg: color-mix(in srgb, var(--th-chart-3) 74%, var(--th-gray-900));
+  --th-cat-4-bg: color-mix(in srgb, var(--th-chart-4) 12%, var(--th-white));
+  --th-cat-4-fg: color-mix(in srgb, var(--th-chart-4) 62%, var(--th-gray-900));
+  --th-cat-5-bg: color-mix(in srgb, var(--th-chart-5) 10%, var(--th-white));
+  --th-cat-5-fg: color-mix(in srgb, var(--th-chart-5) 80%, var(--th-gray-900));
+  --th-cat-6-bg: color-mix(in srgb, var(--th-chart-6) 10%, var(--th-white));
+  --th-cat-6-fg: color-mix(in srgb, var(--th-chart-6) 76%, var(--th-gray-900));
+
+  /* ── Heat ramp ─────────────────────────────────────────────
+     Five steps for INTENSITY, not status: usage per day, cost per
+     token, latency buckets, calendar activity. Single hue so a row
+     reads as "more/less", never as "good/bad".
+     Hue choice: the BRAND hue (blue, oklch h 262) — one product, one
+     accent family. Not a warm orange.
+     Two reasons — (a) an orange ramp inside a blue product reads as
+     a warning/alert gradient, which is exactly the "good/bad" read
+     this ramp must NOT carry; (b) it keeps the whole system on one
+     cool axis, while staying a clearly different hue from the
+     interactive brand blue (原则 1: charts/intensity never borrow
+     the interactive color). Every step stays light enough that
+     --th-gray-900 labels clear 7:1, so no consumer needs to flip
+     its text color (step 4 = 5.9:1, steps 0–3 ≥ 8:1). */
+  --th-heat-0: var(--th-gray-50);
+  --th-heat-1: oklch(0.955 0.028 262);
+  --th-heat-2: oklch(0.905 0.058 262);
+  --th-heat-3: oklch(0.825 0.100 262);
+  --th-heat-4: oklch(0.730 0.150 262);
+
+  /* ── Chart palette — 12 categorical series colors ──────────
+     For data visualization ONLY (charts, graphs, legends) — never
+     for UI states, buttons, or status chips. Assign by series
+     index in order (1→12); chart-12 (cool gray) doubles as the
+     "其他/未分类" bucket. Deliberately excludes the brand blue —
+     charts stay outside the interactive-color budget (原则 1).
+     Dark-mode values are redeclared under [data-theme="dark"].
+     Declared in oklch and tuned for a white canvas: lightness sits
+     in a bright, airy band (L .70–.85) with a softly muted chroma
+     (C .10–.16) so each series reads light and pastel rather than
+     vivid, while the 12 hues stay spread evenly enough that
+     adjacent series remain distinct even in dense stacked/grouped
+     charts. Do not hand-write a hex here. */
+  --th-chart-1:  oklch(0.66 0.185 272);  /* indigo */
+  --th-chart-2:  oklch(0.80 0.11 190);   /* cyan-green chart hue, not brand blue */
+  --th-chart-3:  oklch(0.74 0.16 330);   /* pink */
+  --th-chart-4:  oklch(0.80 0.12 82);    /* amber */
+  --th-chart-5:  oklch(0.80 0.13 150);   /* green */
+  --th-chart-6:  oklch(0.74 0.14 20);    /* rose */
+  --th-chart-7:  oklch(0.78 0.11 232);   /* sky */
+  --th-chart-8:  oklch(0.73 0.15 348);   /* magenta */
+  --th-chart-9:  oklch(0.83 0.12 105);   /* lime */
+  --th-chart-10: oklch(0.77 0.13 55);    /* orange */
+  --th-chart-11: oklch(0.75 0.13 300);   /* violet */
+  --th-chart-12: oklch(0.80 0.02 262);   /* cool gray — 其他/未分类 */
+
+  /* Focus ring — keyboard focus & focused inputs share one visual language */
+  --th-ring: 0 0 0 3px color-mix(in srgb, var(--brand-500) 22%, transparent); /* @kind other */
+
+  /* ── Status tones — THREE rungs, not two ──────────────────
+     -bg    tint background (chip, banner, toast surface)
+     -fg    TEXT/icon on that tint — deliberately dark, low chroma
+     -solid FILL for a painted shape: progress bar, ring, dot,
+            timeline node, destructive button
+     The third rung is why a warning bar used to come out mud-yellow:
+     components had only -fg to reach for and filled an 8px bar with a
+     text color. -solid values share a matched lightness (L .62–.74)
+     so a success bar and a warning bar carry equal visual weight.
+     Rule: never put text on -solid, never fill a shape with -fg. */
+  --color-success-bg: #E9FFF5;
+  --color-success-fg: #007F4A;
+  --color-warning-bg: #FFF6E7;
+  --color-warning-fg: #8A5A12;                 /* deepened: #D89F3D was 2.4:1 on white — failed AA */
+  --color-danger-bg:  var(--th-pink-50);
+  --color-danger-fg:  var(--th-pink-600);      /* deepened: pink-500 was 2.6:1 on pink-50 — failed AA */
+  --color-info-bg:    var(--th-teal-50);
+  --color-info-fg:    var(--th-teal-600);
+  --color-success-solid: oklch(0.66 0.14 158);
+  --color-warning-solid: oklch(0.74 0.14 76);
+  --color-danger-solid:  oklch(0.62 0.18 16);
+  --color-info-solid:    var(--brand-500);
+
+  /* ── Neutral data ink ─────────────────────────────────────
+     Sparklines, un-emphasised series, and the empty part of a bar or
+     ring. NOT --th-gray-300: that is muted TEXT, and a 1.5px line in
+     it reads as disabled. A mid PURE gray reads as ink —
+     quiet enough to stay out of the interactive budget (原则 1),
+     dark enough to look drawn on purpose. A micro-chart stays on
+     data-line unless the line itself is the emphasis; then it takes
+     a --th-chart-* slot, never a status or brand color. */
+  --color-data-line:  oklch(0.55 0 0);
+  --color-data-fill:  color-mix(in srgb, var(--color-data-line) 14%, transparent);
+  --color-data-track: var(--color-surface-inset);
+
+  /* ── Stacked-composition ramp ───────────────────────────
+     Parts of ONE quantity: a token split (input/output/reasoning),
+     a cost split inside one bar, a donut, a segmented meter.
+     The categorical chart ring is the WRONG tool here — hand-picking
+     chart-1/3/5 yields an unrelated indigo + violet + green that
+     reads as three separate metrics, and chart-1 (L .56) is the
+     darkest value in the ring, so an 8px bar came out heavy and
+     dull. This is one continuous cool arc (hue 218→168) with
+     stepped lightness: the segments read as "one total, cut up",
+     they sit clearly lighter and airier than the categorical ring,
+     and the arc is far enough from the brand hue (264) to stay out
+     of the interactive budget (原则 1).
+     Order segments by billing weight, most expensive first, so the
+     ramp darkens in the direction of "costs more".
+     stack-0 is the neutral residual bucket — cached, unbilled,
+     「其他」— deliberately the lightest, because it is the part you
+     are NOT paying for. Four segments + residual is the ceiling;
+     more than that is a chart, not a meter. */
+  --color-stack-1: oklch(0.70 0.11 218);   /* sky */
+  --color-stack-2: oklch(0.66 0.11 200);   /* cyan */
+  --color-stack-3: oklch(0.62 0.10 184);   /* cyan-green segment */
+  --color-stack-4: oklch(0.57 0.09 168);   /* deep cyan-green segment */
+  --color-stack-0: oklch(0.80 0 0);  /* neutral residual */
+
+  /* Open Design shared-token bridge.
+     These aliases make InfOne consumable by the repository's generic
+     artifact primitives without replacing any canonical InfOne token. */
+  --bg: var(--color-bg);
+  --surface: var(--color-surface-raised);
+  --surface-warm: var(--color-surface-quiet);
+  --fg: var(--color-fg);
+  --fg-2: var(--th-gray-700);
+  --muted: var(--color-fg-muted);
+  --meta: var(--color-fg-subtle);
+  --border: var(--color-border);
+  --border-soft: var(--color-divider);
+  --accent: var(--color-accent);
+  --accent-on: var(--color-cta-fg);
+  --accent-hover: var(--brand-600);
+  --accent-active: var(--brand-700);
+  --success: var(--color-success-solid);
+  --warn: var(--color-warning-solid);
+  --danger: var(--color-danger-solid);
+  --font-display: var(--th-font-brand);
+  --font-body: var(--th-font-ui);
+  --font-mono: var(--th-font-mono);
+  --text-xs: var(--th-text-xs);
+  --text-sm: var(--th-text-sm);
+  --text-base: var(--th-text-base);
+  --text-lg: var(--th-text-md);
+  --text-xl: var(--th-text-lg);
+  --text-2xl: var(--th-text-xl);
+  --text-3xl: var(--th-text-2xl);
+  --text-4xl: var(--th-text-hero);
+  --leading-body: 1.5;
+  --leading-tight: 1.15;
+  --tracking-display: -0.01em;
+  --space-1: var(--th-space-1);
+  --space-2: var(--th-space-2);
+  --space-3: var(--th-space-4);
+  --space-4: var(--th-space-6);
+  --space-5: var(--th-space-6);
+  --space-6: var(--th-space-6);
+  --space-8: var(--th-space-8);
+  --space-12: var(--th-space-12);
+  --section-y-desktop: var(--th-space-10);
+  --section-y-tablet: var(--th-space-8);
+  --section-y-phone: var(--th-space-6);
+  --radius-sm: var(--th-radius-sm);
+  --radius-md: var(--th-radius-md);
+  --radius-lg: var(--th-radius-lg);
+  --radius-pill: var(--th-radius-full);
+  --elev-flat: none;
+  --elev-ring: 0 0 0 1px var(--color-border);
+  --elev-raised: var(--th-shadow-card);
+  --focus-ring: var(--th-ring);
+  --motion-fast: var(--th-dur-1);
+  --motion-base: var(--th-dur-2);
+  --ease-standard: var(--th-ease);
+  --container-max: 1440px;
+  --container-gutter-desktop: var(--th-space-8);
+  --container-gutter-tablet: var(--th-space-6);
+  --container-gutter-phone: var(--th-space-4);
+}
+
+/* ── Compact density ─────────────────────────────
+   Put data-density="compact" on <html>, a page shell, or a single
+   card. Only geometry tightens — font sizes never shrink, so text
+   stays at the 12px floor and the page just holds ~25% more rows.
+   Use for list/table/log pages where comparison beats comfort. */
+[data-density="compact"] {
+  --th-row-h:     32px;
+  --th-row-pad-y:  6px;
+  --th-ctl-h-sm:  24px;
+  --th-ctl-h:     26px;
+  --th-ctl-h-lg:  28px;
+  --th-card-pad:  12px;
+  --th-stack-gap:  8px;
+  --th-field-gap:  8px;
+  --th-block-gap: 8px;
+}
+
+/* ── Dark theme ─────────────────────────────────────────────
+   Toggle via document.documentElement.setAttribute('data-theme','dark')
+   (or add data-theme="dark" to any container — it scopes to descendants).
+   Redeclares the same primitive + semantic tokens components already
+   consume (--th-white, --th-bg, --th-gray-*, --color-*), so every
+   component restyles automatically — no component code changes needed. */
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --th-white:    #1C1C1C;   /* card surface */
+  --th-bg:       #131313;   /* canvas + navigation surface */
+  --th-gray-50:  #292929;   /* card border, divider */
+  --th-gray-100: #333333;   /* nav border, hairline */
+  --th-gray-150: #3A3A3A;
+  --th-gray-200: #404040;
+  --th-gray-250: #545454;
+  --th-gray-300: #858585;   /* subtle text */
+  --th-gray-400: #949494;
+  --th-gray-500: #A4A4A4;   /* muted text */
+  --th-gray-600: #BFBFBF;
+  --th-gray-700: #D6D6D6;
+  --th-gray-800: #EBEBEB;
+  --th-gray-900: #F4F4F4;   /* primary text — near-white, never pure #FFF */
+
+  --th-teal-50:  color-mix(in srgb, var(--brand-500) 16%, transparent);   /* legacy alias for brand blue tints on dark surfaces */
+  --th-teal-100: color-mix(in srgb, var(--brand-500) 26%, transparent);
+  --th-teal-600: color-mix(in srgb, var(--brand-400) 72%, white);   /* legacy alias — brightened text/icon on brand-blue tint */
+  --th-teal-700: color-mix(in srgb, var(--brand-400) 55%, white);   /* legacy alias — brightened text on brand-blue tint */
+  --th-pink-50:  rgba(245,108,137,0.16);
+  --th-pink-500: #FF93AB;   /* brightened — decorative on dark */
+  --th-pink-600: #FF9DB2;   /* brightened — TEXT on pink-50 tint (dark surfaces need light text) */
+  --th-blue-500: #7C90FF;   /* brightened link for contrast on dark */
+
+  --color-link: var(--th-teal-600);
+  --color-row-hover: #202020;
+  --color-cta:       var(--brand-400);   /* dark: lighter fill + near-black label = 7:1 (white label on a brand fill would be 3.6:1) */
+  --color-cta-fg:    #0F1115;
+  --color-surface-quiet: #1F1F1F;
+  --color-surface-inset: #232323;
+  --color-surface-well: #2A2A2A;
+  --color-surface-quiet-border: var(--th-gray-100);
+  --color-table-total: var(--color-surface-well);
+
+  /* Category tones — tint on dark surfaces, lightened label */
+  --th-cat-1-bg: color-mix(in srgb, var(--th-chart-1) 18%, transparent);
+  --th-cat-1-fg: color-mix(in srgb, var(--th-chart-1) 70%, white);
+  --th-cat-2-bg: color-mix(in srgb, var(--th-chart-2) 18%, transparent);
+  --th-cat-2-fg: color-mix(in srgb, var(--th-chart-2) 70%, white);
+  --th-cat-3-bg: color-mix(in srgb, var(--th-chart-3) 18%, transparent);
+  --th-cat-3-fg: color-mix(in srgb, var(--th-chart-3) 70%, white);
+  --th-cat-4-bg: color-mix(in srgb, var(--th-chart-4) 18%, transparent);
+  --th-cat-4-fg: color-mix(in srgb, var(--th-chart-4) 70%, white);
+  --th-cat-5-bg: color-mix(in srgb, var(--th-chart-5) 18%, transparent);
+  --th-cat-5-fg: color-mix(in srgb, var(--th-chart-5) 70%, white);
+  --th-cat-6-bg: color-mix(in srgb, var(--th-chart-6) 18%, transparent);
+  --th-cat-6-fg: color-mix(in srgb, var(--th-chart-6) 70%, white);
+
+  /* Heat ramp — same brand hue, mixed into the dark surface */
+  --th-heat-0: var(--th-gray-50);
+  --th-heat-1: color-mix(in srgb, var(--brand-500) 18%, var(--th-white));
+  --th-heat-2: color-mix(in srgb, var(--brand-500) 32%, var(--th-white));
+  --th-heat-3: color-mix(in srgb, var(--brand-500) 50%, var(--th-white));
+  --th-heat-4: color-mix(in srgb, var(--brand-500) 70%, var(--th-white));
+  --th-ring: 0 0 0 3px color-mix(in srgb, var(--th-teal-600) 28%, transparent); /* @kind other */
+
+  --th-shadow-card:  none;
+  --th-shadow-soft:  0 2px 4px rgba(0,0,0,0.20), 0 6px 14px rgba(0,0,0,0.26);
+  --th-shadow-modal: 0 3px 8px rgba(0,0,0,0.26), 0 12px 28px rgba(0,0,0,0.34);
+  --th-shadow-key:   none;
+
+  --color-success-bg: rgba(0,214,122,0.16);
+  --color-success-fg: #3DDC97;
+  --color-warning-bg: rgba(217,159,61,0.20);
+  --color-warning-fg: #F0C674;
+  --color-danger-bg:  var(--th-pink-50);
+  --color-danger-fg:  var(--th-pink-600);
+  --color-info-bg:    var(--th-teal-50);
+  --color-info-fg:    var(--th-teal-600);
+  --color-success-solid: oklch(0.74 0.15 158);
+  --color-warning-solid: oklch(0.80 0.14 78);
+  --color-danger-solid:  oklch(0.68 0.17 18);
+  --color-info-solid:    var(--brand-400);
+
+  --color-data-line:  oklch(0.70 0 0);
+  --color-data-fill:  color-mix(in srgb, var(--color-data-line) 18%, transparent);
+  --color-data-track: var(--color-surface-inset);
+
+  /* Stacked-composition ramp — same arc, lifted for dark surfaces */
+  --color-stack-1: oklch(0.78 0.11 218);
+  --color-stack-2: oklch(0.74 0.11 200);
+  --color-stack-3: oklch(0.70 0.10 184);
+  --color-stack-4: oklch(0.65 0.09 168);
+  --color-stack-0: oklch(0.52 0 0);
+
+  /* Chart palette — same hue ring, lifted ~+0.12 L for dark surfaces */
+  --th-chart-1:  oklch(0.68 0.13 268);
+  --th-chart-2:  oklch(0.76 0.11 178);
+  --th-chart-3:  oklch(0.73 0.14 300);
+  --th-chart-4:  oklch(0.82 0.12 78);
+  --th-chart-5:  oklch(0.76 0.13 148);
+  --th-chart-6:  oklch(0.72 0.14 14);
+  --th-chart-7:  oklch(0.78 0.10 220);
+  --th-chart-8:  oklch(0.70 0.15 338);
+  --th-chart-9:  oklch(0.78 0.11 112);
+  --th-chart-10: oklch(0.72 0.12 46);
+  --th-chart-11: oklch(0.70 0.06 252);
+  --th-chart-12: oklch(0.76 0 0);
+}
+
+
+/* ── Element-level defaults ────────────────────────────────── */
+html, body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--th-font-cn);
+  font-size: var(--th-text-base);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1 { font-family: var(--th-font-cn); font-weight: 700; font-size: var(--th-text-hero); line-height: 1; letter-spacing: -0.01em; margin: 0; }
+h2 { font-family: var(--th-font-cn); font-weight: 700; font-size: var(--th-text-2xl); line-height: 1.15; margin: 0; }
+h3 { font-family: var(--th-font-cn); font-weight: 600; font-size: var(--th-text-xl); line-height: 1.2; margin: 0; }
+h4 { font-family: var(--th-font-cn); font-weight: 500; font-size: var(--th-text-md); line-height: 1.3; margin: 0; }
+p  { margin: 0; font-size: var(--th-text-base); color: var(--color-fg); }
+small, .caption { font-size: var(--th-text-xs); color: var(--color-fg-muted); }
+code, pre { font-family: var(--th-font-mono); font-size: var(--th-text-sm); font-variant-numeric: tabular-nums; }
+/* Any figure that can change or be compared column-wise — money, counts,
+   token totals, timestamps, percentages — gets tabular numerals so digits
+   never shift width between renders. */
+.th-nums { font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1; }
+a  { color: var(--color-link); text-decoration: none; }
+a:hover { opacity: 0.85; }
+:focus-visible { outline: 2px solid var(--th-teal-500); outline-offset: 2px; }
+
+/* Project-owned runtime foundations integrated from the supplied system. */
+/* tokens.css — single entry point for the InfOne Design System.
+   Consumers link this file for tokens, global control safeguards, and motion utilities.
+   Fonts and icons remain explicit project dependencies. */
+
+* { box-sizing: border-box; }
+
+/* ── Control-label integrity (system-wide, non-negotiable) ──────────────
+   A control with a FIXED height (every button, tab, segment, chip, pill,
+   step and pager cell in this system) must never let its label wrap: the
+   second line escapes the fixed-height background and the control looks
+   broken. These are the floor for every component and every consuming
+   page — a component may still opt out with an inline style when it is
+   genuinely a multi-line surface (a card, a menu item with a description).
+     • white-space: nowrap  — label stays on one line
+     • flex-shrink: 0       — a crowded toolbar row overflows/scrolls
+                              instead of squeezing the button until the
+                              label collides with its own padding
+   Corollary rules live in DESIGN.md → 控件标签（强制）: never give a button
+   a fixed px width, keep labels ≤ 6 汉字 / ~14 latin chars, and put a
+   long label in a Tooltip instead of in the button. */
+button, [role="button"], [role="tab"], [role="option"], .tk-btn { white-space: nowrap; }
+button, .tk-btn { flex-shrink: 0; }
+
+/* ──────────────────────────────────────────────────────────────────
+   InfOne Motion — the timing table, as utilities.
+   Integrated into tokens.css; consumes the --th-dur-* / --th-ease-* tokens.
+
+   WHEN TO ANIMATE (the six sanctioned moments — nothing else moves):
+     1. Content entrance      .th-in            280ms ease-out
+     2. List entrance         .th-stagger       280ms + 28ms per item
+     3. Overlay entrance      .th-in-overlay    280ms spring (modal, drawer, toast)
+     4. Press feedback        .th-press         150ms, scale(0.98)
+     5. Hover lift            .th-lift          200ms, shadow + 1px rise
+     6. Pending / streaming   .th-shimmer .th-spin .th-caret
+
+   Numbers counting up (560ms) live in components (MetricStrip/Statistic),
+   not here — they are data settling, not chrome.
+   ────────────────────────────────────────────────────────────────── */
+
+@keyframes th-in-up { from { opacity: 0; transform: translateY(6px) } to { opacity: 1; transform: none } }
+@keyframes th-in-fade { from { opacity: 0 } to { opacity: 1 } }
+@keyframes th-in-scale { from { opacity: 0; transform: translateY(8px) scale(0.98) } to { opacity: 1; transform: none } }
+@keyframes th-shimmer { from { background-position: 100% 0 } to { background-position: -100% 0 } }
+@keyframes th-spin { to { transform: rotate(360deg) } }
+@keyframes th-caret { 50% { opacity: 0 } }
+@keyframes th-indeterminate { 0% { transform: translateX(-60%) } 100% { transform: translateX(200%) } }
+
+/* 1 · content entrance — a card, a panel, a result appearing */
+.th-in { animation: th-in-up var(--th-dur-3) var(--th-ease-out) both }
+.th-in-fade { animation: th-in-fade var(--th-dur-2) var(--th-ease) both }
+
+/* 2 · list entrance — put on the container, children come in one after another.
+   Capped at 12 items: past that the last row would lag noticeably. */
+.th-stagger > * { animation: th-in-up var(--th-dur-3) var(--th-ease-out) both }
+.th-stagger > :nth-child(1) { animation-delay: 0ms }
+.th-stagger > :nth-child(2) { animation-delay: calc(var(--th-stagger) * 1) }
+.th-stagger > :nth-child(3) { animation-delay: calc(var(--th-stagger) * 2) }
+.th-stagger > :nth-child(4) { animation-delay: calc(var(--th-stagger) * 3) }
+.th-stagger > :nth-child(5) { animation-delay: calc(var(--th-stagger) * 4) }
+.th-stagger > :nth-child(6) { animation-delay: calc(var(--th-stagger) * 5) }
+.th-stagger > :nth-child(7) { animation-delay: calc(var(--th-stagger) * 6) }
+.th-stagger > :nth-child(8) { animation-delay: calc(var(--th-stagger) * 7) }
+.th-stagger > :nth-child(9) { animation-delay: calc(var(--th-stagger) * 8) }
+.th-stagger > :nth-child(10) { animation-delay: calc(var(--th-stagger) * 9) }
+.th-stagger > :nth-child(11) { animation-delay: calc(var(--th-stagger) * 10) }
+.th-stagger > :nth-child(n + 12) { animation-delay: calc(var(--th-stagger) * 11) }
+
+/* 3 · overlay entrance — spring, only for things that sit above the page */
+.th-in-overlay { animation: th-in-scale var(--th-dur-3) var(--th-ease-spring) both }
+
+/* 4 · press — every clickable surface may take this; it never changes color */
+.th-press { transition: transform var(--th-dur-1) var(--th-ease) }
+.th-press:active { transform: scale(0.98) }
+
+/* 5 · hover lift — cards and tiles only, never rows or buttons */
+.th-lift { transition: box-shadow var(--th-dur-2) var(--th-ease), transform var(--th-dur-2) var(--th-ease), border-color var(--th-dur-2) var(--th-ease) }
+.th-lift:hover { box-shadow: var(--th-shadow-soft); transform: translateY(-1px) }
+
+/* 6 · pending states */
+.th-shimmer { background: linear-gradient(90deg, var(--th-gray-50) 25%, var(--th-gray-100) 37%, var(--th-gray-50) 63%); background-size: 400% 100%; animation: th-shimmer 1.4s ease infinite }
+.th-shimmer-text { background: linear-gradient(90deg, var(--color-fg-muted) 0%, var(--color-fg-muted) 30%, var(--th-teal-600) 50%, var(--color-fg-muted) 70%, var(--color-fg-muted) 100%); background-size: 200% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: th-shimmer 2s linear infinite }
+.th-spin { display: inline-block; animation: th-spin 1.1s linear infinite }
+.th-caret { display: inline-block; width: 2px; height: 1em; vertical-align: text-bottom; margin-left: 2px; background: var(--th-teal-600); animation: th-caret 1s step-end infinite }
+.th-indeterminate { position: relative; overflow: hidden }
+.th-indeterminate::after { content: ""; position: absolute; inset: 0 auto 0 0; width: 40%; background: var(--th-teal-500); border-radius: inherit; animation: th-indeterminate 1.2s var(--th-ease) infinite }
+
+/* Skeleton → content: mount the real content with .th-in-fade and the swap
+   reads as a crossfade rather than a jump. */
+
+/* ── Accessibility floor ──────────────────────────────────────────
+   Honoured system-wide: no entrance, no shimmer, no count-up.
+   Components read the same media query in JS before animating numbers. */
+@media (prefers-reduced-motion: reduce) {
+  .th-in, .th-in-fade, .th-stagger > *, .th-in-overlay, .th-shimmer, .th-shimmer-text, .th-spin, .th-caret, .th-indeterminate::after {
+    animation: none !important;
+  }
+  .th-shimmer-text { -webkit-text-fill-color: currentColor; color: var(--color-fg-muted) }
+  .th-press, .th-lift { transition: none }
+  .th-lift:hover { transform: none }
+}
+* { box-sizing: border-box; }
+body { margin: 0; padding: 32px; background: var(--color-bg); color: var(--color-fg); font-family: var(--th-font-ui); }
+.component-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 40px; min-width: 0; }
+.stack { display: grid; grid-template-columns: 232px minmax(0, 1fr); gap: 40px; width: min(1440px, 100%); margin: 0 auto; }
+.component-nav { position: sticky; top: 0; align-self: start; height: 100vh; overflow-y: auto; padding: 0 20px 36px 0; border-right: 1px solid var(--color-divider); scrollbar-width: thin; }
+.component-nav-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; font-size: 24px; line-height: 1.2; }
+.component-nav-head span { display: inline-grid; min-width: 28px; height: 24px; place-items: center; padding: 0 7px; border-radius: var(--th-radius-full); background: var(--color-accent-soft); color: var(--color-link); font-size: var(--th-text-xs); }
+.component-nav-group { margin: 0 0 22px; }
+.component-nav-group h2 { margin: 0 0 7px; color: var(--color-fg-muted); font-size: 11px; font-weight: 600; letter-spacing: .08em; }
+.component-nav-group a { display: block; padding: 5px 8px; border-radius: 6px; color: var(--color-fg); font-size: var(--th-text-xs); line-height: 1.35; text-decoration: none; }
+.component-nav-group a:hover, .component-nav-group a:focus-visible { background: var(--color-accent-soft); color: var(--color-link); outline: none; }
+@media (max-width: 840px) { body { padding: 0 20px 32px; } .stack { grid-template-columns: 1fr; gap: 24px; } .component-nav { position: sticky; top: 0; z-index: 10; display: flex; height: auto; margin: 0 -20px; padding: 12px 20px; overflow-x: auto; overflow-y: hidden; gap: 18px; border-right: 0; border-bottom: 1px solid var(--color-divider); background: color-mix(in srgb, var(--color-bg) 96%, transparent); backdrop-filter: blur(16px); } .component-nav-head { flex: 0 0 auto; margin: 0; gap: 8px; white-space: nowrap; } .component-nav-group { display: flex; flex: 0 0 auto; align-items: center; gap: 4px; margin: 0; } .component-nav-group h2 { margin: 0 4px 0 0; white-space: nowrap; } .component-nav-group a { white-space: nowrap; } }
+.component-card { min-width: 0; padding: 0 0 40px; border-bottom: 1px solid var(--color-divider); }
+.component-card iframe { display: block; width: 100%; border: 0; background: var(--color-bg); }
+.component-card h2 { margin-bottom: 16px; }
+.component-card h2 { margin: 0 0 var(--th-stack-gap); font-size: var(--th-text-md); }
+.component-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--th-space-4); }
+.btn { display: inline-flex; align-items: center; justify-content: center; border: 1px solid transparent; border-radius: var(--th-radius-sm); font: 500 var(--th-text-sm)/1 var(--th-font-ui); cursor: pointer; }
+.btn-sm { height: var(--th-ctl-h-sm); padding: 0 14px; }
+.btn-primary { background: var(--color-cta); color: var(--color-cta-fg); }
+.btn-secondary { background: var(--color-surface); color: var(--color-fg); border-color: var(--color-border); }
+.field { display: grid; gap: var(--th-space-2); }
+.field label { color: var(--color-fg-muted); font-size: var(--th-text-xs); }
+.field input { height: var(--th-ctl-h-lg); border: 1px solid var(--color-border); border-radius: var(--th-radius-sm); padding: 0 var(--th-space-4); color: var(--color-fg); background: var(--color-surface); }
+.badge, .status-chip { display: inline-flex; align-items: center; min-height: 24px; padding: 0 8px; border-radius: var(--th-radius-full); font-size: var(--th-text-xs); white-space: nowrap; }
+.status-chip { gap: 6px; color: var(--color-success-fg); background: var(--th-gray-50); }
+.status-chip::before { content: ""; width: 6px; height: 6px; border-radius: var(--th-radius-full); background: currentColor; flex: 0 0 auto; }
+.card { padding: var(--th-card-pad); border: var(--th-border-card); border-radius: var(--th-radius-md); background: var(--color-surface-raised); }
+.nav { display: flex; gap: var(--th-space-6); border-bottom: 1px solid var(--color-divider); }
+.nav a { padding: var(--th-space-4) 0; color: var(--color-link); text-decoration: none; }
+.table { width: 100%; border-collapse: collapse; font-size: var(--th-text-base); }
+.table th, .table td { padding: var(--th-row-pad-y) var(--th-space-4); border-bottom: 1px solid var(--color-divider); text-align: left; }
+.table th { color: var(--color-fg-muted); background: var(--color-table-head); }
+.stack { display: grid; gap: var(--th-stack-gap); }
+</style>
+</head>
+<body>
+<main class="stack">
+  <aside class="component-nav" aria-label="组件目录">
+    <div class="component-nav-head"><strong>组件目录</strong><span>68</span></div>
+    <section class="component-nav-group"><h2>操作</h2><a href="#Button">Button</a><a href="#Dropdown">Dropdown</a><a href="#Popconfirm">Popconfirm</a></section><section class="component-nav-group"><h2>表单输入</h2><a href="#Cascader">Cascader</a><a href="#Checkbox">Checkbox</a><a href="#DateRangePicker">DateRangePicker</a><a href="#Form">Form</a><a href="#FormItem">FormItem</a><a href="#InputNumber">InputNumber</a><a href="#RadioGroup">RadioGroup</a><a href="#SearchBox">SearchBox</a><a href="#Select">Select</a><a href="#Slider">Slider</a><a href="#Switch">Switch</a><a href="#TextField">TextField</a><a href="#Textarea">Textarea</a><a href="#Transfer">Transfer</a><a href="#Upload">Upload</a></section><section class="component-nav-group"><h2>导航</h2><a href="#NavRail">NavRail</a><a href="#PageHeader">PageHeader</a><a href="#Pager">Pager</a><a href="#Segmented">Segmented</a><a href="#Steps">Steps</a><a href="#Tabs">Tabs</a><a href="#TopNav">TopNav</a></section><section class="component-nav-group"><h2>数据展示</h2><a href="#Chart">Chart</a><a href="#CostBreakdown">CostBreakdown</a><a href="#DataTable">DataTable</a><a href="#Descriptions">Descriptions</a><a href="#Heatgrid">Heatgrid</a><a href="#MetricStrip">MetricStrip</a><a href="#Progress">Progress</a><a href="#RingGauge">RingGauge</a><a href="#Sparkline">Sparkline</a><a href="#Statistic">Statistic</a><a href="#Timeline">Timeline</a><a href="#TokenMeter">TokenMeter</a><a href="#Tree">Tree</a><a href="#TrendDelta">TrendDelta</a></section><section class="component-nav-group"><h2>反馈</h2><a href="#Banner">Banner</a><a href="#Drawer">Drawer</a><a href="#Modal">Modal</a><a href="#Skeleton">Skeleton</a><a href="#Toast">Toast</a><a href="#Tooltip">Tooltip</a></section><section class="component-nav-group"><h2>身份与状态</h2><a href="#AccountCard">AccountCard</a><a href="#Avatar">Avatar</a><a href="#Badge">Badge</a><a href="#LogoLockup">LogoLockup</a><a href="#StatusChip">StatusChip</a><a href="#Tag">Tag</a><a href="#UserPopover">UserPopover</a><a href="#VendorFilter">VendorFilter</a></section><section class="component-nav-group"><h2>AI 能力</h2><a href="#AgentTimeline">AgentTimeline</a><a href="#CodeBlock">CodeBlock</a><a href="#Markdown">Markdown</a><a href="#ModelCompare">ModelCompare</a><a href="#StreamingText">StreamingText</a><a href="#ThinkingBlock">ThinkingBlock</a></section><section class="component-nav-group"><h2>内容展示</h2><a href="#Collapse">Collapse</a><a href="#CopyField">CopyField</a><a href="#Divider">Divider</a><a href="#EmptyState">EmptyState</a><a href="#ModelDetailModal">ModelDetailModal</a><a href="#ModelPriceCard">ModelPriceCard</a><a href="#ScrollArea">ScrollArea</a><a href="#Scrollbar">Scrollbar</a><a href="#SectionCard">SectionCard</a></section>
+  </aside>
+  <section class="component-grid">
+    <article class="component-card" id="AccountCard"><h2>AccountCard</h2><iframe title="AccountCard 组件预览" src="preview/component-cards/AccountCard/account-card.html" loading="lazy" style="height:220px"></iframe></article>
+    <article class="component-card" id="AgentTimeline"><h2>AgentTimeline</h2><iframe title="AgentTimeline 组件预览" src="preview/component-cards/AgentTimeline/agent-timeline.html" loading="lazy" style="height:460px"></iframe></article>
+    <article class="component-card" id="Avatar"><h2>Avatar</h2><iframe title="Avatar 组件预览" src="preview/component-cards/Avatar/avatar.html" loading="lazy" style="height:180px"></iframe></article>
+    <article class="component-card" id="Badge"><h2>Badge</h2><iframe title="Badge 组件预览" src="preview/component-cards/Badge/badge.html" loading="lazy" style="height:230px"></iframe></article>
+    <article class="component-card" id="Banner"><h2>Banner</h2><iframe title="Banner 组件预览" src="preview/component-cards/Banner/banner.html" loading="lazy" style="height:220px"></iframe></article>
+    <article class="component-card" id="Button"><h2>Button</h2><iframe title="Button 组件预览" src="preview/component-cards/Button/button.html" loading="lazy" style="height:210px"></iframe></article>
+    <article class="component-card" id="Cascader"><h2>Cascader</h2><iframe title="Cascader 组件预览" src="preview/component-cards/Cascader/cascader.html" loading="lazy" style="height:320px"></iframe></article>
+    <article class="component-card" id="Chart"><h2>Chart</h2><iframe title="Chart 组件预览" src="preview/component-cards/Chart/chart.html" loading="lazy" style="height:1560px"></iframe></article>
+    <article class="component-card" id="Checkbox"><h2>Checkbox</h2><iframe title="Checkbox 组件预览" src="preview/component-cards/Checkbox/checkbox.html" loading="lazy" style="height:180px"></iframe></article>
+    <article class="component-card" id="CodeBlock"><h2>CodeBlock</h2><iframe title="CodeBlock 组件预览" src="preview/component-cards/CodeBlock/codeblock.html" loading="lazy" style="height:260px"></iframe></article>
+    <article class="component-card" id="Collapse"><h2>Collapse</h2><iframe title="Collapse 组件预览" src="preview/component-cards/Collapse/collapse.html" loading="lazy" style="height:300px"></iframe></article>
+    <article class="component-card" id="CopyField"><h2>CopyField</h2><iframe title="CopyField 组件预览" src="preview/component-cards/CopyField/copyfield.html" loading="lazy" style="height:240px"></iframe></article>
+    <article class="component-card" id="CostBreakdown"><h2>CostBreakdown</h2><iframe title="CostBreakdown 组件预览" src="preview/component-cards/CostBreakdown/cost-breakdown.html" loading="lazy" style="height:330px"></iframe></article>
+    <article class="component-card" id="DataTable"><h2>DataTable</h2><iframe title="DataTable 组件预览" src="preview/component-cards/DataTable/data-table.html" loading="lazy" style="height:680px"></iframe></article>
+    <article class="component-card" id="DateRangePicker"><h2>DateRangePicker</h2><iframe title="DateRangePicker 组件预览" src="preview/component-cards/DateRangePicker/daterangepicker.html" loading="lazy" style="height:360px"></iframe></article>
+    <article class="component-card" id="Descriptions"><h2>Descriptions</h2><iframe title="Descriptions 组件预览" src="preview/component-cards/Descriptions/descriptions.html" loading="lazy" style="height:260px"></iframe></article>
+    <article class="component-card" id="Divider"><h2>Divider</h2><iframe title="Divider 组件预览" src="preview/component-cards/Divider/divider.html" loading="lazy" style="height:220px"></iframe></article>
+    <article class="component-card" id="Drawer"><h2>Drawer</h2><iframe title="Drawer 组件预览" src="preview/component-cards/Drawer/drawer.html" loading="lazy" style="height:420px"></iframe></article>
+    <article class="component-card" id="Dropdown"><h2>Dropdown</h2><iframe title="Dropdown 组件预览" src="preview/component-cards/Dropdown/dropdown.html" loading="lazy" style="height:260px"></iframe></article>
+    <article class="component-card" id="EmptyState"><h2>EmptyState</h2><iframe title="EmptyState 组件预览" src="preview/component-cards/EmptyState/empty-state.html" loading="lazy" style="height:300px"></iframe></article>
+    <article class="component-card" id="Form"><h2>Form</h2><iframe title="Form 组件预览" src="preview/component-cards/Form/form.html" loading="lazy" style="height:430px"></iframe></article>
+    <article class="component-card" id="FormItem"><h2>FormItem</h2><iframe title="FormItem 组件预览" src="preview/component-cards/Form/form.html" loading="lazy" style="height:430px"></iframe></article>
+    <article class="component-card" id="Heatgrid"><h2>Heatgrid</h2><iframe title="Heatgrid 组件预览" src="preview/component-cards/Heatgrid/heatgrid.html" loading="lazy" style="height:220px"></iframe></article>
+    <article class="component-card" id="InputNumber"><h2>InputNumber</h2><iframe title="InputNumber 组件预览" src="preview/component-cards/InputNumber/input-number.html" loading="lazy" style="height:190px"></iframe></article>
+    <article class="component-card" id="LogoLockup"><h2>LogoLockup</h2><iframe title="LogoLockup 组件预览" src="preview/component-cards/LogoLockup/logo-lockup.html" loading="lazy" style="height:260px"></iframe></article>
+    <article class="component-card" id="Markdown"><h2>Markdown</h2><iframe title="Markdown 组件预览" src="preview/component-cards/Markdown/markdown.html" loading="lazy" style="height:2200px"></iframe></article>
+    <article class="component-card" id="MetricStrip"><h2>MetricStrip</h2><iframe title="MetricStrip 组件预览" src="preview/component-cards/MetricStrip/metric-strip.html" loading="lazy" style="height:300px"></iframe></article>
+    <article class="component-card" id="Modal"><h2>Modal</h2><iframe title="Modal 组件预览" src="preview/component-cards/Modal/modal.html" loading="lazy" style="height:360px"></iframe></article>
+    <article class="component-card" id="ModelCompare"><h2>ModelCompare</h2><iframe title="ModelCompare 组件预览" src="preview/component-cards/ModelCompare/model-compare.html" loading="lazy" style="height:400px"></iframe></article>
+    <article class="component-card" id="ModelDetailModal"><h2>ModelDetailModal</h2><iframe title="ModelDetailModal 组件预览" src="preview/component-cards/ModelDetailModal/model-detail-modal.html" loading="lazy" style="height:520px"></iframe></article>
+    <article class="component-card" id="ModelPriceCard"><h2>ModelPriceCard</h2><iframe title="ModelPriceCard 组件预览" src="preview/component-cards/ModelPriceCard/model-price-card.html" loading="lazy" style="height:240px"></iframe></article>
+    <article class="component-card" id="NavRail"><h2>NavRail</h2><iframe title="NavRail 组件预览" src="preview/component-cards/NavRail/nav-rail.html" loading="lazy" style="height:460px"></iframe></article>
+    <article class="component-card" id="PageHeader"><h2>PageHeader</h2><iframe title="PageHeader 组件预览" src="preview/component-cards/PageHeader/page-header.html" loading="lazy" style="height:330px"></iframe></article>
+    <article class="component-card" id="Pager"><h2>Pager</h2><iframe title="Pager 组件预览" src="preview/component-cards/Pager/pager.html" loading="lazy" style="height:180px"></iframe></article>
+    <article class="component-card" id="Popconfirm"><h2>Popconfirm</h2><iframe title="Popconfirm 组件预览" src="preview/component-cards/Popconfirm/popconfirm.html" loading="lazy" style="height:260px"></iframe></article>
+    <article class="component-card" id="Progress"><h2>Progress</h2><iframe title="Progress 组件预览" src="preview/component-cards/Progress/progress.html" loading="lazy" style="height:260px"></iframe></article>
+    <article class="component-card" id="RadioGroup"><h2>RadioGroup</h2><iframe title="RadioGroup 组件预览" src="preview/component-cards/RadioGroup/radio-group.html" loading="lazy" style="height:180px"></iframe></article>
+    <article class="component-card" id="RingGauge"><h2>RingGauge</h2><iframe title="RingGauge 组件预览" src="preview/component-cards/RingGauge/ring-gauge.html" loading="lazy" style="height:220px"></iframe></article>
+    <article class="component-card" id="ScrollArea"><h2>ScrollArea</h2><iframe title="ScrollArea 组件预览" src="preview/component-cards/ScrollArea/scroll-area.html" loading="lazy" style="height:300px"></iframe></article>
+    <article class="component-card" id="Scrollbar"><h2>Scrollbar</h2><iframe title="Scrollbar 组件预览" src="preview/component-cards/Scrollbar/scrollbar.html" loading="lazy" style="height:300px"></iframe></article>
+    <article class="component-card" id="SearchBox"><h2>SearchBox</h2><iframe title="SearchBox 组件预览" src="preview/component-cards/SearchBox/search-box.html" loading="lazy" style="height:600px"></iframe></article>
+    <article class="component-card" id="SectionCard"><h2>SectionCard</h2><iframe title="SectionCard 组件预览" src="preview/component-cards/SectionCard/section-card.html" loading="lazy" style="height:420px"></iframe></article>
+    <article class="component-card" id="Segmented"><h2>Segmented</h2><iframe title="Segmented 组件预览" src="preview/component-cards/Segmented/segmented.html" loading="lazy" style="height:180px"></iframe></article>
+    <article class="component-card" id="Select"><h2>Select</h2><iframe title="Select 组件预览" src="preview/component-cards/Select/select.html" loading="lazy" style="height:1120px"></iframe></article>
+    <article class="component-card" id="Skeleton"><h2>Skeleton</h2><iframe title="Skeleton 组件预览" src="preview/component-cards/Skeleton/skeleton.html" loading="lazy" style="height:220px"></iframe></article>
+    <article class="component-card" id="Slider"><h2>Slider</h2><iframe title="Slider 组件预览" src="preview/component-cards/Slider/slider.html" loading="lazy" style="height:200px"></iframe></article>
+    <article class="component-card" id="Sparkline"><h2>Sparkline</h2><iframe title="Sparkline 组件预览" src="preview/component-cards/Sparkline/sparkline.html" loading="lazy" style="height:260px"></iframe></article>
+    <article class="component-card" id="Statistic"><h2>Statistic</h2><iframe title="Statistic 组件预览" src="preview/component-cards/Statistic/statistic.html" loading="lazy" style="height:200px"></iframe></article>
+    <article class="component-card" id="StatusChip"><h2>StatusChip</h2><iframe title="StatusChip 组件预览" src="preview/component-cards/StatusChip/status-chip.html" loading="lazy" style="height:220px"></iframe></article>
+    <article class="component-card" id="Steps"><h2>Steps</h2><iframe title="Steps 组件预览" src="preview/component-cards/Steps/steps.html" loading="lazy" style="height:200px"></iframe></article>
+    <article class="component-card" id="StreamingText"><h2>StreamingText</h2><iframe title="StreamingText 组件预览" src="preview/component-cards/StreamingText/streaming-text.html" loading="lazy" style="height:260px"></iframe></article>
+    <article class="component-card" id="Switch"><h2>Switch</h2><iframe title="Switch 组件预览" src="preview/component-cards/Switch/switch.html" loading="lazy" style="height:180px"></iframe></article>
+    <article class="component-card" id="Tabs"><h2>Tabs</h2><iframe title="Tabs 组件预览" src="preview/component-cards/Tabs/tabs.html" loading="lazy" style="height:180px"></iframe></article>
+    <article class="component-card" id="Tag"><h2>Tag</h2><iframe title="Tag 组件预览" src="preview/component-cards/Tag/tag.html" loading="lazy" style="height:180px"></iframe></article>
+    <article class="component-card" id="TextField"><h2>TextField</h2><iframe title="TextField 组件预览" src="preview/component-cards/TextField/text-field.html" loading="lazy" style="height:220px"></iframe></article>
+    <article class="component-card" id="Textarea"><h2>Textarea</h2><iframe title="Textarea 组件预览" src="preview/component-cards/Textarea/textarea.html" loading="lazy" style="height:180px"></iframe></article>
+    <article class="component-card" id="ThinkingBlock"><h2>ThinkingBlock</h2><iframe title="ThinkingBlock 组件预览" src="preview/component-cards/ThinkingBlock/thinking-block.html" loading="lazy" style="height:260px"></iframe></article>
+    <article class="component-card" id="Timeline"><h2>Timeline</h2><iframe title="Timeline 组件预览" src="preview/component-cards/Timeline/timeline.html" loading="lazy" style="height:320px"></iframe></article>
+    <article class="component-card" id="Toast"><h2>Toast</h2><iframe title="Toast 组件预览" src="preview/component-cards/Toast/toast.html" loading="lazy" style="height:160px"></iframe></article>
+    <article class="component-card" id="TokenMeter"><h2>TokenMeter</h2><iframe title="TokenMeter 组件预览" src="preview/component-cards/TokenMeter/token-meter.html" loading="lazy" style="height:300px"></iframe></article>
+    <article class="component-card" id="Tooltip"><h2>Tooltip</h2><iframe title="Tooltip 组件预览" src="preview/component-cards/Tooltip/tooltip.html" loading="lazy" style="height:180px"></iframe></article>
+    <article class="component-card" id="TopNav"><h2>TopNav</h2><iframe title="TopNav 组件预览" src="preview/component-cards/TopNav/top-navigation.html" loading="lazy" style="height:160px"></iframe></article>
+    <article class="component-card" id="Transfer"><h2>Transfer</h2><iframe title="Transfer 组件预览" src="preview/component-cards/Transfer/transfer.html" loading="lazy" style="height:340px"></iframe></article>
+    <article class="component-card" id="Tree"><h2>Tree</h2><iframe title="Tree 组件预览" src="preview/component-cards/Tree/tree.html" loading="lazy" style="height:430px"></iframe></article>
+    <article class="component-card" id="TrendDelta"><h2>TrendDelta</h2><iframe title="TrendDelta 组件预览" src="preview/component-cards/TrendDelta/trend-delta.html" loading="lazy" style="height:180px"></iframe></article>
+    <article class="component-card" id="Upload"><h2>Upload</h2><iframe title="Upload 组件预览" src="preview/component-cards/Upload/upload.html" loading="lazy" style="height:300px"></iframe></article>
+    <article class="component-card" id="UserPopover"><h2>UserPopover</h2><iframe title="UserPopover 组件预览" src="preview/component-cards/UserPopover/user-popover.html" loading="lazy" style="height:260px"></iframe></article>
+    <article class="component-card" id="VendorFilter"><h2>VendorFilter</h2><iframe title="VendorFilter 组件预览" src="preview/component-cards/VendorFilter/vendor-filter.html" loading="lazy" style="height:360px"></iframe></article>
+  </section>
+</main>
+<script type="application/json" data-od-component-catalog>
+{
+  "snippetIndex": "recipes/index.json",
+  "components": [
+    {
+      "name": "AccountCard",
+      "category": "identity",
+      "description": "276×170 white card — title row + stacked data rows",
+      "status": "active",
+      "recipePath": "recipes/components/AccountCard.md",
+      "apiPath": "recipes/components/AccountCard.md",
+      "reactPath": "recipes/components/AccountCard.md",
+      "htmlPath": "recipes/components/AccountCard.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "AgentTimeline",
+      "category": "ai",
+      "description": "一次 agent 运行的轨迹：思考/工具调用/输出/错误 + 耗时 + 可展开原始报文",
+      "status": "active",
+      "recipePath": "recipes/components/AgentTimeline.md",
+      "apiPath": "recipes/components/AgentTimeline.md",
+      "reactPath": "recipes/components/AgentTimeline.md",
+      "htmlPath": "recipes/components/AgentTimeline.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Avatar",
+      "category": "identity",
+      "description": "圆形头像 — 首字符 / 图片 / 兜底图标，pink / brand-blue / gray 三种底色",
+      "status": "active",
+      "recipePath": "recipes/components/Avatar.md",
+      "apiPath": "recipes/components/Avatar.md",
+      "reactPath": "recipes/components/Avatar.md",
+      "htmlPath": "recipes/components/Avatar.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Badge",
+      "category": "identity",
+      "description": "计数 / 小红点 — 语气由状态决定：未读 danger、待办 warning、已完成 success、纯信息 info、无紧迫 neutral",
+      "status": "active",
+      "recipePath": "recipes/components/Badge.md",
+      "apiPath": "recipes/components/Badge.md",
+      "reactPath": "recipes/components/Badge.md",
+      "htmlPath": "recipes/components/Badge.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Banner",
+      "category": "feedback",
+      "description": "Persistent inline alert — info/success/warning/danger, stays until dismissed",
+      "status": "active",
+      "recipePath": "recipes/components/Banner.md",
+      "apiPath": "recipes/components/Banner.md",
+      "reactPath": "recipes/components/Banner.md",
+      "htmlPath": "recipes/components/Banner.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Button",
+      "category": "action",
+      "description": "按钮动作层级 — primary / secondary / ghost / link / danger；sm=28px / md=32px，与输入控件同尺寸对齐",
+      "status": "active",
+      "recipePath": "recipes/components/Button.md",
+      "apiPath": "recipes/components/Button.md",
+      "reactPath": "recipes/components/Button.md",
+      "htmlPath": "recipes/components/Button.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。",
+        "自然语言中的“小号/紧凑按钮”映射为 size=\"sm\"。",
+        "同一操作组最多一个主要按钮。",
+        "破坏性确认使用 variant=\"danger\"，业务页面不要手写红色按钮。",
+        "表格行操作优先使用 ghost 或 link。"
+      ]
+    },
+    {
+      "name": "Cascader",
+      "category": "input",
+      "description": "级联选择 — sm=28px / md=32px",
+      "status": "active",
+      "recipePath": "recipes/components/Cascader.md",
+      "apiPath": "recipes/components/Cascader.md",
+      "reactPath": "recipes/components/Cascader.md",
+      "htmlPath": "recipes/components/Cascader.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。",
+        "仅选择一条路径；跨分支多选与深层筛选使用 Select mode=\"auto\"，不要混用两种数组语义。"
+      ]
+    },
+    {
+      "name": "Chart",
+      "category": "data",
+      "description": "统一图表组件 — 20 种图形，系列色恒取 --th-chart-1…12，网格取 --color-data-track",
+      "status": "active",
+      "recipePath": "recipes/components/Chart.md",
+      "apiPath": "recipes/components/Chart.md",
+      "reactPath": "recipes/components/Chart.md",
+      "htmlPath": "recipes/components/Chart.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。",
+        "根据要回答的问题选择图表类型。",
+        "只使用图表 token，不借用状态色或交互色。"
+      ]
+    },
+    {
+      "name": "Checkbox",
+      "category": "input",
+      "description": "18px box — brand-blue fill, check glyph",
+      "status": "active",
+      "recipePath": "recipes/components/Checkbox.md",
+      "apiPath": "recipes/components/Checkbox.md",
+      "reactPath": "recipes/components/Checkbox.md",
+      "htmlPath": "recipes/components/Checkbox.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "CodeBlock",
+      "category": "ai",
+      "description": "IBM Plex Mono 代码块 — 可选头部标签 + 复制按钮",
+      "status": "active",
+      "recipePath": "recipes/components/CodeBlock.md",
+      "apiPath": "recipes/components/CodeBlock.md",
+      "reactPath": "recipes/components/CodeBlock.md",
+      "htmlPath": "recipes/components/CodeBlock.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Collapse",
+      "category": "display",
+      "description": "折叠面板 — FAQ、高级设置",
+      "status": "active",
+      "recipePath": "recipes/components/Collapse.md",
+      "apiPath": "recipes/components/Collapse.md",
+      "reactPath": "recipes/components/Collapse.md",
+      "htmlPath": "recipes/components/Collapse.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "CopyField",
+      "category": "display",
+      "description": "单行可复制值 — sm=28px / md=32px",
+      "status": "active",
+      "recipePath": "recipes/components/CopyField.md",
+      "apiPath": "recipes/components/CopyField.md",
+      "reactPath": "recipes/components/CopyField.md",
+      "htmlPath": "recipes/components/CopyField.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "CostBreakdown",
+      "category": "data",
+      "description": "成本构成：占比条 + 金额 + 份额，合计行使用浅层摘要背景",
+      "status": "active",
+      "recipePath": "recipes/components/CostBreakdown.md",
+      "apiPath": "recipes/components/CostBreakdown.md",
+      "reactPath": "recipes/components/CostBreakdown.md",
+      "htmlPath": "recipes/components/CostBreakdown.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "DataTable",
+      "category": "data",
+      "description": "语义化数据表格 — 无底色表头与排序图标，支持 comfortable/compact 密度、hover、斑马纹、列级热度、卡内嵌与多列 tree 层级记录",
+      "status": "active",
+      "recipePath": "recipes/components/DataTable.md",
+      "apiPath": "recipes/components/DataTable.md",
+      "reactPath": "recipes/components/DataTable.md",
+      "htmlPath": "recipes/components/DataTable.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。",
+        "外层卡片已经提供标题、边框、圆角或工具栏时使用 embedded。",
+        "高密度操作列表使用 compact 密度。",
+        "可排序表头必须保留真实按钮与 aria-sort；窄屏横向滚动由组件内部承载。",
+        "层级记录包含状态、负责人、数量、时间或操作等多列属性时使用 variant=tree；tree 只配置数据层级，不能单独启用树表。"
+      ]
+    },
+    {
+      "name": "DateRangePicker",
+      "category": "input",
+      "description": "日期范围 — sm=28px / md=32px",
+      "status": "active",
+      "recipePath": "recipes/components/DateRangePicker.md",
+      "apiPath": "recipes/components/DateRangePicker.md",
+      "reactPath": "recipes/components/DateRangePicker.md",
+      "htmlPath": "recipes/components/DateRangePicker.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Descriptions",
+      "category": "data",
+      "description": "描述列表 — 模型详情、账户信息",
+      "status": "active",
+      "recipePath": "recipes/components/Descriptions.md",
+      "apiPath": "recipes/components/Descriptions.md",
+      "reactPath": "recipes/components/Descriptions.md",
+      "htmlPath": "recipes/components/Descriptions.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Divider",
+      "category": "display",
+      "description": "分割线 — 水平 / 带文字 / 垂直 / 虚线",
+      "status": "active",
+      "recipePath": "recipes/components/Divider.md",
+      "apiPath": "recipes/components/Divider.md",
+      "reactPath": "recipes/components/Divider.md",
+      "htmlPath": "recipes/components/Divider.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Drawer",
+      "category": "feedback",
+      "description": "右侧滑出详情面板 — 令牌详情、日志详情",
+      "status": "active",
+      "recipePath": "recipes/components/Drawer.md",
+      "apiPath": "recipes/components/Drawer.md",
+      "reactPath": "recipes/components/Drawer.md",
+      "htmlPath": "recipes/components/Drawer.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Dropdown",
+      "category": "action",
+      "description": "操作菜单 — sm=28px / md=32px",
+      "status": "active",
+      "recipePath": "recipes/components/Dropdown.md",
+      "apiPath": "recipes/components/Dropdown.md",
+      "reactPath": "recipes/components/Dropdown.md",
+      "htmlPath": "recipes/components/Dropdown.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。",
+        "保持 button 触发器、menu/menuitem 语义、方向键导航、Escape 与关闭后焦点恢复能力完整。"
+      ]
+    },
+    {
+      "name": "EmptyState",
+      "category": "display",
+      "description": "Icon tile + title + description + CTA — graphic=dots/arcs/grid 提供抽象几何背景",
+      "status": "active",
+      "recipePath": "recipes/components/EmptyState.md",
+      "apiPath": "recipes/components/EmptyState.md",
+      "reactPath": "recipes/components/EmptyState.md",
+      "htmlPath": "recipes/components/EmptyState.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Form",
+      "category": "input",
+      "description": "表单校验 — 规则式校验：必填 / 格式 / 自定义",
+      "status": "active",
+      "recipePath": "recipes/components/Form.md",
+      "apiPath": "recipes/components/Form.md",
+      "reactPath": "recipes/components/Form.md",
+      "htmlPath": "recipes/components/Form.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "FormItem",
+      "category": "input",
+      "description": "rule-based validation: required / pattern / length / custom validator",
+      "status": "active",
+      "recipePath": "recipes/components/Form.md",
+      "apiPath": "recipes/components/Form.md",
+      "reactPath": "recipes/components/Form.md",
+      "htmlPath": "recipes/components/Form.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Heatgrid",
+      "category": "data",
+      "description": "活跃度/用量强度网格 — 单一暖色调阶梯，7 列成周，可固定 min/max",
+      "status": "active",
+      "recipePath": "recipes/components/Heatgrid.md",
+      "apiPath": "recipes/components/Heatgrid.md",
+      "reactPath": "recipes/components/Heatgrid.md",
+      "htmlPath": "recipes/components/Heatgrid.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "InputNumber",
+      "category": "input",
+      "description": "数字输入 — sm=28px / md=32px",
+      "status": "active",
+      "recipePath": "recipes/components/InputNumber.md",
+      "apiPath": "recipes/components/InputNumber.md",
+      "reactPath": "recipes/components/InputNumber.md",
+      "htmlPath": "recipes/components/InputNumber.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "LogoLockup",
+      "category": "identity",
+      "description": "供应商/模型标识组合 — 图标或真实 logo + 名称 + 分类色胶囊，模型广场/对比表通用",
+      "status": "active",
+      "recipePath": "recipes/components/LogoLockup.md",
+      "apiPath": "recipes/components/LogoLockup.md",
+      "reactPath": "recipes/components/LogoLockup.md",
+      "htmlPath": "recipes/components/LogoLockup.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Markdown",
+      "category": "ai",
+      "description": "Full markdown element styling + all Mermaid diagram types",
+      "status": "active",
+      "recipePath": "recipes/components/Markdown.md",
+      "apiPath": "recipes/components/Markdown.md",
+      "reactPath": "recipes/components/Markdown.md",
+      "htmlPath": "recipes/components/Markdown.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。",
+        "插入前清理不可信的 HTML 与 Mermaid SVG。"
+      ]
+    },
+    {
+      "name": "MetricStrip",
+      "category": "data",
+      "description": "指标条 — 一行装下 3–5 个 KPI，替代单数字卡堆叠",
+      "status": "active",
+      "recipePath": "recipes/components/MetricStrip.md",
+      "apiPath": "recipes/components/MetricStrip.md",
+      "reactPath": "recipes/components/MetricStrip.md",
+      "htmlPath": "recipes/components/MetricStrip.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。",
+        "使用 3–4 个有意义的指标，省略没有信息量的指标。",
+        "放在外层卡片中时使用 embedded。"
+      ]
+    },
+    {
+      "name": "Modal",
+      "category": "feedback",
+      "description": "响应式对话框，提供遮罩、标题/正文/底部插槽、焦点约束与关闭后焦点恢复",
+      "status": "active",
+      "recipePath": "recipes/components/Modal.md",
+      "apiPath": "recipes/components/Modal.md",
+      "reactPath": "recipes/components/Modal.md",
+      "htmlPath": "recipes/components/Modal.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。",
+        "保持 dialog 语义、焦点约束、Escape 与关闭后焦点恢复能力完整。"
+      ]
+    },
+    {
+      "name": "ModelCompare",
+      "category": "ai",
+      "description": "能力矩阵：模型为列、属性为行；勾/横线/文本三种取值，推荐列用 quiet tint",
+      "status": "active",
+      "recipePath": "recipes/components/ModelCompare.md",
+      "apiPath": "recipes/components/ModelCompare.md",
+      "reactPath": "recipes/components/ModelCompare.md",
+      "htmlPath": "recipes/components/ModelCompare.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "ModelDetailModal",
+      "category": "display",
+      "description": "Info / API endpoints / grouped pricing with currency toggle",
+      "status": "active",
+      "recipePath": "recipes/components/ModelDetailModal.md",
+      "apiPath": "recipes/components/ModelDetailModal.md",
+      "reactPath": "recipes/components/ModelDetailModal.md",
+      "htmlPath": "recipes/components/ModelDetailModal.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "ModelPriceCard",
+      "category": "display",
+      "description": "Vendor tile + price lines + billing tag, select/copy actions",
+      "status": "active",
+      "recipePath": "recipes/components/ModelPriceCard.md",
+      "apiPath": "recipes/components/ModelPriceCard.md",
+      "reactPath": "recipes/components/ModelPriceCard.md",
+      "htmlPath": "recipes/components/ModelPriceCard.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "NavRail",
+      "category": "navigation",
+      "description": "Full-height left rail — brand + nav + account (skeleton tier D), icon or hover-peek collapse",
+      "status": "active",
+      "recipePath": "recipes/components/NavRail.md",
+      "apiPath": "recipes/components/NavRail.md",
+      "reactPath": "recipes/components/NavRail.md",
+      "htmlPath": "recipes/components/NavRail.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。",
+        "TopNav 与 NavRail 顶部品牌行共用 --th-space-12（48px，含底部分隔线），采用 border-box 与 flex-shrink:0；组合时顶部齐平、内容垂直居中、底边对齐，不随密度或收起状态改变。"
+      ]
+    },
+    {
+      "name": "PageHeader",
+      "category": "navigation",
+      "description": "页面头 — 单行标题 + 元信息 + 操作，取代问候语区块",
+      "status": "active",
+      "recipePath": "recipes/components/PageHeader.md",
+      "apiPath": "recipes/components/PageHeader.md",
+      "reactPath": "recipes/components/PageHeader.md",
+      "htmlPath": "recipes/components/PageHeader.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。",
+        "内容区页面标题使用 PageHeader；已有 TopNav 并使用 pageTitle 时省略重复 PageHeader，元信息与页面操作放内容工具栏。不要把完整 PageHeader 嵌入 TopNav。"
+      ]
+    },
+    {
+      "name": "Pager",
+      "category": "navigation",
+      "description": "Text pagination — neutral current-page pill, ellipsis collapse",
+      "status": "active",
+      "recipePath": "recipes/components/Pager.md",
+      "apiPath": "recipes/components/Pager.md",
+      "reactPath": "recipes/components/Pager.md",
+      "htmlPath": "recipes/components/Pager.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Popconfirm",
+      "category": "action",
+      "description": "气泡确认 — 删除密钥、危险操作",
+      "status": "active",
+      "recipePath": "recipes/components/Popconfirm.md",
+      "apiPath": "recipes/components/Popconfirm.md",
+      "reactPath": "recipes/components/Popconfirm.md",
+      "htmlPath": "recipes/components/Popconfirm.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Progress",
+      "category": "data",
+      "description": "额度 / 用量进度条 — accent、warning、danger 语气 + sm 细条",
+      "status": "active",
+      "recipePath": "recipes/components/Progress.md",
+      "apiPath": "recipes/components/Progress.md",
+      "reactPath": "recipes/components/Progress.md",
+      "htmlPath": "recipes/components/Progress.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "RadioGroup",
+      "category": "input",
+      "description": "18px dot — brand-blue fill when selected",
+      "status": "active",
+      "recipePath": "recipes/components/RadioGroup.md",
+      "apiPath": "recipes/components/RadioGroup.md",
+      "reactPath": "recipes/components/RadioGroup.md",
+      "htmlPath": "recipes/components/RadioGroup.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "RingGauge",
+      "category": "data",
+      "description": "环形进度 — 配额/完成度/评分，tone=heat 时颜色随数值走热度色阶",
+      "status": "active",
+      "recipePath": "recipes/components/RingGauge.md",
+      "apiPath": "recipes/components/RingGauge.md",
+      "reactPath": "recipes/components/RingGauge.md",
+      "htmlPath": "recipes/components/RingGauge.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "ScrollArea",
+      "category": "display",
+      "description": "Overlay Scrollbar — viewport convenience wrapper, no layout width reserved",
+      "status": "active",
+      "recipePath": "recipes/components/ScrollArea.md",
+      "apiPath": "recipes/components/ScrollArea.md",
+      "reactPath": "recipes/components/ScrollArea.md",
+      "htmlPath": "recipes/components/ScrollArea.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Scrollbar",
+      "category": "display",
+      "description": "Reusable overlay scrollbar for external scrolling viewports — supports hover, always and scroll reveal",
+      "status": "active",
+      "recipePath": "recipes/components/Scrollbar.md",
+      "apiPath": "recipes/components/Scrollbar.md",
+      "reactPath": "recipes/components/Scrollbar.md",
+      "htmlPath": "recipes/components/Scrollbar.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需要自持滚动 viewport 的组件直接复用 Scrollbar，不要重新实现滚动条本体。",
+        "Scrollbar 必须挂在不滚动的定位 shell 内，targetRef 指向内部滚动 viewport。"
+      ]
+    },
+    {
+      "name": "SearchBox",
+      "category": "input",
+      "description": "搜索框 — sm=28px / md=32px，支持清除、加载、禁用和错误状态",
+      "status": "active",
+      "recipePath": "recipes/components/SearchBox.md",
+      "apiPath": "recipes/components/SearchBox.md",
+      "reactPath": "recipes/components/SearchBox.md",
+      "htmlPath": "recipes/components/SearchBox.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "关键词搜索使用 SearchBox，不要用 TextField 加裸搜索图标重画。",
+        "列表工具栏使用 size=sm；表单、详情和松弛区域使用 size=md。",
+        "搜索框负责输入、回车提交、清除、加载、禁用和错误；成功、无结果与请求失败内容由结果区组件表达。"
+      ]
+    },
+    {
+      "name": "SectionCard",
+      "category": "display",
+      "description": "标题区固定 var(--th-text-sm)/600 的通用卡片外壳 — 任何模块标题都从这里取，不再各写各的字号",
+      "status": "active",
+      "recipePath": "recipes/components/SectionCard.md",
+      "apiPath": "recipes/components/SectionCard.md",
+      "reactPath": "recipes/components/SectionCard.md",
+      "htmlPath": "recipes/components/SectionCard.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Segmented",
+      "category": "navigation",
+      "description": "分段控制器 — sm=28px / md=32px",
+      "status": "active",
+      "recipePath": "recipes/components/Segmented.md",
+      "apiPath": "recipes/components/Segmented.md",
+      "reactPath": "recipes/components/Segmented.md",
+      "htmlPath": "recipes/components/Segmented.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。",
+        "sm / md 容器背景统一使用 --color-surface-inset，选中滑块使用 --color-surface；页面与组合组件保留此默认配色，不覆盖为 --color-surface-quiet 或 --color-nav-selected。"
+      ]
+    },
+    {
+      "name": "Select",
+      "category": "input",
+      "description": "普通 / 级联 / 深层筛选 — 28px / 32px；auto 按 1 / 2–3 / ≥4 级选型，搜索与父子多选联动",
+      "status": "active",
+      "recipePath": "recipes/components/Select.md",
+      "apiPath": "recipes/components/Select.md",
+      "reactPath": "recipes/components/Select.md",
+      "htmlPath": "recipes/components/Select.md",
+      "generationRules": [
+        "实现前阅读 Select 的 API、模式契约和交互规则；直接复用正式组件，不复制试用页实现。",
+        "既有普通单选不传 mode，保持 string value / onChange；层级筛选优先 mode=\"auto\"，使用叶节点 ID 数组。",
+        "按完整 options 树最大深度选型：1 级普通单选、2–3 级级联多选、≥4 级最多两列的深层导航；根为第 1 级，搜索和浏览不得改变模式。",
+        "级联与深层默认展示第一层，勾选与浏览分离，父级选满才勾选，部分选择为空框加已选数量，禁用分支不计入。",
+        "触发器 28/32px、左右 padding 12px、内部 Tag 20px；鼠标点击无激活边框/光圈/灰底，保留键盘 focus-visible。",
+        "默认全部为空值占位，不出现在菜单中；有具体选择才显示清除按钮。搜索命中仅品牌色文字。",
+        "普通选择使用 combobox/listbox；层级选择使用具名 dialog 与 Checkbox、可达导航，提供 Escape、键盘导航、搜索定位和已选项管理。",
+        "异步加载需数据适配器保证完整子树选择，不能仅勾选已加载节点；不得假设本组件提供后端加载能力。"
+      ]
+    },
+    {
+      "name": "Skeleton",
+      "category": "feedback",
+      "description": "Shimmering placeholder blocks — line / row / card / avatar",
+      "status": "active",
+      "recipePath": "recipes/components/Skeleton.md",
+      "apiPath": "recipes/components/Skeleton.md",
+      "reactPath": "recipes/components/Skeleton.md",
+      "htmlPath": "recipes/components/Skeleton.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Slider",
+      "category": "input",
+      "description": "滑块 — 模型参数 temperature / top_p",
+      "status": "active",
+      "recipePath": "recipes/components/Slider.md",
+      "apiPath": "recipes/components/Slider.md",
+      "reactPath": "recipes/components/Slider.md",
+      "htmlPath": "recipes/components/Slider.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Sparkline",
+      "category": "data",
+      "description": "行内趋势线 — 无坐标轴/无标签，可选面积填充与末点圆点",
+      "status": "active",
+      "recipePath": "recipes/components/Sparkline.md",
+      "apiPath": "recipes/components/Sparkline.md",
+      "reactPath": "recipes/components/Sparkline.md",
+      "htmlPath": "recipes/components/Sparkline.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Statistic",
+      "category": "data",
+      "description": "统计数值 — 用量与费用总览",
+      "status": "active",
+      "recipePath": "recipes/components/Statistic.md",
+      "apiPath": "recipes/components/Statistic.md",
+      "reactPath": "recipes/components/Statistic.md",
+      "htmlPath": "recipes/components/Statistic.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "StatusChip",
+      "category": "identity",
+      "description": "Neutral chip with same-color dot — status tones (success / warning / danger / info / neutral) plus display tones (primary / purple / orange / magenta) for categorization; variant \"plain\" drops the background for a dot + toned label",
+      "status": "active",
+      "recipePath": "recipes/components/StatusChip.md",
+      "apiPath": "recipes/components/StatusChip.md",
+      "reactPath": "recipes/components/StatusChip.md",
+      "htmlPath": "recipes/components/StatusChip.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。",
+        "语义状态用 success/warning/danger/info/neutral；非状态的分类/分组用 primary/purple/orange/magenta 展示色，不要套在每个元数据字段上。",
+        "默认 variant=\"solid\"（浅灰底填充胶囊）；表格等密集场景嫌填充底太重时用 variant=\"plain\" 去背景，只留同色圆点+文字。",
+        "标签保持单行。"
+      ]
+    },
+    {
+      "name": "Steps",
+      "category": "navigation",
+      "description": "接入引导 / 流程进度 — 完成使用品牌浅底与深色勾，当前 brand-600 实心，后续置灰",
+      "status": "active",
+      "recipePath": "recipes/components/Steps.md",
+      "apiPath": "recipes/components/Steps.md",
+      "reactPath": "recipes/components/Steps.md",
+      "htmlPath": "recipes/components/Steps.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "StreamingText",
+      "category": "ai",
+      "description": "模型输出逐字流式渲染 + 光标；reduced-motion 下直接整段呈现",
+      "status": "active",
+      "recipePath": "recipes/components/StreamingText.md",
+      "apiPath": "recipes/components/StreamingText.md",
+      "reactPath": "recipes/components/StreamingText.md",
+      "htmlPath": "recipes/components/StreamingText.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Switch",
+      "category": "input",
+      "description": "36x20 toggle track — brand-blue fill when on",
+      "status": "active",
+      "recipePath": "recipes/components/Switch.md",
+      "apiPath": "recipes/components/Switch.md",
+      "reactPath": "recipes/components/Switch.md",
+      "htmlPath": "recipes/components/Switch.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Tabs",
+      "category": "navigation",
+      "description": "Underline tab row — brand-blue active indicator",
+      "status": "active",
+      "recipePath": "recipes/components/Tabs.md",
+      "apiPath": "recipes/components/Tabs.md",
+      "reactPath": "recipes/components/Tabs.md",
+      "htmlPath": "recipes/components/Tabs.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Tag",
+      "category": "identity",
+      "description": "模型标签 / 筛选条件 — 图表分类色 + 可删除",
+      "status": "active",
+      "recipePath": "recipes/components/Tag.md",
+      "apiPath": "recipes/components/Tag.md",
+      "reactPath": "recipes/components/Tag.md",
+      "htmlPath": "recipes/components/Tag.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。",
+        "用于需要快速扫读的分类；普通元数据保持为弱化文字。"
+      ]
+    },
+    {
+      "name": "TextField",
+      "category": "input",
+      "description": "输入框 — sm=28px / md=32px",
+      "status": "active",
+      "recipePath": "recipes/components/TextField.md",
+      "apiPath": "recipes/components/TextField.md",
+      "reactPath": "recipes/components/TextField.md",
+      "htmlPath": "recipes/components/TextField.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Textarea",
+      "category": "input",
+      "description": "Multi-line input — same focus ring + hint/error as Text field",
+      "status": "active",
+      "recipePath": "recipes/components/Textarea.md",
+      "apiPath": "recipes/components/Textarea.md",
+      "reactPath": "recipes/components/Textarea.md",
+      "htmlPath": "recipes/components/Textarea.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "ThinkingBlock",
+      "category": "ai",
+      "description": "AI reasoning reveal — shimmering label while active, collapsible once settled",
+      "status": "active",
+      "recipePath": "recipes/components/ThinkingBlock.md",
+      "apiPath": "recipes/components/ThinkingBlock.md",
+      "reactPath": "recipes/components/ThinkingBlock.md",
+      "htmlPath": "recipes/components/ThinkingBlock.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Timeline",
+      "category": "data",
+      "description": "时间轴 — 审计日志、发布记录",
+      "status": "active",
+      "recipePath": "recipes/components/Timeline.md",
+      "apiPath": "recipes/components/Timeline.md",
+      "reactPath": "recipes/components/Timeline.md",
+      "htmlPath": "recipes/components/Timeline.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Toast",
+      "category": "feedback",
+      "description": "Neutral default + soft-tint status notification, auto-dismiss",
+      "status": "active",
+      "recipePath": "recipes/components/Toast.md",
+      "apiPath": "recipes/components/Toast.md",
+      "reactPath": "recipes/components/Toast.md",
+      "htmlPath": "recipes/components/Toast.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "TokenMeter",
+      "category": "data",
+      "description": "输入/输出/推理/缓存 token 分段条，色取图表色阶，可对配额显示",
+      "status": "active",
+      "recipePath": "recipes/components/TokenMeter.md",
+      "apiPath": "recipes/components/TokenMeter.md",
+      "reactPath": "recipes/components/TokenMeter.md",
+      "htmlPath": "recipes/components/TokenMeter.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Tooltip",
+      "category": "feedback",
+      "description": "Dark hint bubble — hover to preview",
+      "status": "active",
+      "recipePath": "recipes/components/Tooltip.md",
+      "apiPath": "recipes/components/Tooltip.md",
+      "reactPath": "recipes/components/Tooltip.md",
+      "htmlPath": "recipes/components/Tooltip.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "TopNav",
+      "category": "navigation",
+      "description": "48px 顶栏 — 域级导航、可选 15px 紧凑页面标题",
+      "status": "active",
+      "recipePath": "recipes/components/TopNav.md",
+      "apiPath": "recipes/components/TopNav.md",
+      "reactPath": "recipes/components/TopNav.md",
+      "htmlPath": "recipes/components/TopNav.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。",
+        "已有 TopNav 的页面允许使用 pageTitle 展示页面标题，统一为 --th-text-md（15px）、600 字重的紧凑单行 h1；不将标题伪装成导航项。",
+        "使用 pageTitle 后省略重复 PageHeader；页内搜索、筛选、时间范围和页面操作仍放内容工具栏。未传 pageTitle 时保持既有用法。",
+        "TopNav 与 NavRail 顶部品牌行共用 --th-space-12（48px，含底部分隔线），采用 border-box 与 flex-shrink:0；组合时顶部齐平、内容垂直居中、底边对齐，不随密度或收起状态改变。"
+      ]
+    },
+    {
+      "name": "Transfer",
+      "category": "input",
+      "description": "穿梭框 — 分配可用模型 / 成员",
+      "status": "active",
+      "recipePath": "recipes/components/Transfer.md",
+      "apiPath": "recipes/components/Transfer.md",
+      "reactPath": "recipes/components/Transfer.md",
+      "htmlPath": "recipes/components/Transfer.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Tree",
+      "category": "data",
+      "description": "树形控件 — 权限选择 / 紧凑层级导航，级联勾选",
+      "status": "active",
+      "recipePath": "recipes/components/Tree.md",
+      "apiPath": "recipes/components/Tree.md",
+      "reactPath": "recipes/components/Tree.md",
+      "htmlPath": "recipes/components/Tree.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。",
+        "节点同时具有状态、负责人、数量、时间或操作等多列属性时改用 DataTable variant=tree。"
+      ]
+    },
+    {
+      "name": "TrendDelta",
+      "category": "data",
+      "description": "行内涨跌指示 — tone=inverse 用于成本/延迟等",
+      "status": "active",
+      "recipePath": "recipes/components/TrendDelta.md",
+      "apiPath": "recipes/components/TrendDelta.md",
+      "reactPath": "recipes/components/TrendDelta.md",
+      "htmlPath": "recipes/components/TrendDelta.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "Upload",
+      "category": "input",
+      "description": "上传 — 拖拽上传微调数据集 / 批量文件",
+      "status": "active",
+      "recipePath": "recipes/components/Upload.md",
+      "apiPath": "recipes/components/Upload.md",
+      "reactPath": "recipes/components/Upload.md",
+      "htmlPath": "recipes/components/Upload.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "UserPopover",
+      "category": "identity",
+      "description": "Account card anchored to a trigger chip — click the demo chip",
+      "status": "active",
+      "recipePath": "recipes/components/UserPopover.md",
+      "apiPath": "recipes/components/UserPopover.md",
+      "reactPath": "recipes/components/UserPopover.md",
+      "htmlPath": "recipes/components/UserPopover.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    },
+    {
+      "name": "VendorFilter",
+      "category": "identity",
+      "description": "2-col vendor chip grid with counts; size sm=28px / md=32px for filter panels",
+      "status": "active",
+      "recipePath": "recipes/components/VendorFilter.md",
+      "apiPath": "recipes/components/VendorFilter.md",
+      "reactPath": "recipes/components/VendorFilter.md",
+      "htmlPath": "recipes/components/VendorFilter.md",
+      "generationRules": [
+        "实现前先阅读标准声明与 API。",
+        "需求匹配此组件时直接复用，不要用原生元素重新实现。"
+      ]
+    }
+  ],
+  "pagePatterns": [
+    {
+      "name": "ConsoleDashboard",
+      "shell": "D",
+      "title": "InfOne 页面模式：Console Dashboard",
+      "description": "InfOne 标准 console dashboard 页面组合。",
+      "patternPath": "recipes/pages/console-dashboard.md",
+      "sourcePath": "recipes/pages/console-dashboard.md"
+    },
+    {
+      "name": "DetailPage",
+      "shell": "D",
+      "title": "InfOne 页面模式：Detail Page",
+      "description": "InfOne 标准 detail page 页面组合。",
+      "patternPath": "recipes/pages/detail-page.md",
+      "sourcePath": "recipes/pages/detail-page.md"
+    },
+    {
+      "name": "EmptyStatePage",
+      "shell": "D",
+      "title": "InfOne 页面模式：Empty State Page",
+      "description": "InfOne 标准 empty state page 页面组合。",
+      "patternPath": "recipes/pages/empty-state-page.md",
+      "sourcePath": "recipes/pages/empty-state-page.md"
+    },
+    {
+      "name": "ErrorPage",
+      "shell": "C",
+      "title": "InfOne 页面模式：Error Page",
+      "description": "InfOne 标准 error page 页面组合。",
+      "patternPath": "recipes/pages/error-page.md",
+      "sourcePath": "recipes/pages/error-page.md"
+    },
+    {
+      "name": "FormPage",
+      "shell": "D",
+      "title": "InfOne 页面模式：Form Page",
+      "description": "InfOne 标准 form page 页面组合。",
+      "patternPath": "recipes/pages/form-page.md",
+      "sourcePath": "recipes/pages/form-page.md"
+    },
+    {
+      "name": "Login",
+      "shell": "C",
+      "title": "InfOne 页面模式：Login",
+      "description": "InfOne 标准 login 页面组合。",
+      "patternPath": "recipes/pages/login.md",
+      "sourcePath": "recipes/pages/login.md"
+    },
+    {
+      "name": "ModelMarketplace",
+      "shell": "D",
+      "title": "InfOne 页面模式：Model Marketplace",
+      "description": "InfOne 标准 model marketplace 页面组合。",
+      "patternPath": "recipes/pages/model-marketplace.md",
+      "sourcePath": "recipes/pages/model-marketplace.md"
+    },
+    {
+      "name": "NavRailConsole",
+      "shell": "D",
+      "title": "InfOne 页面模式：Nav Rail Console",
+      "description": "InfOne 标准 nav rail console 页面组合。",
+      "patternPath": "recipes/pages/nav-rail-console.md",
+      "sourcePath": "recipes/pages/nav-rail-console.md"
+    },
+    {
+      "name": "NavRailTopbarConsole",
+      "shell": "D+",
+      "title": "InfOne 页面模式：Nav Rail Topbar Console",
+      "description": "InfOne 标准 nav rail topbar console 页面组合。",
+      "patternPath": "recipes/pages/nav-rail-topbar-console.md",
+      "sourcePath": "recipes/pages/nav-rail-topbar-console.md"
+    },
+    {
+      "name": "PageGenerator",
+      "shell": "D",
+      "title": "InfOne 页面模式：Page Generator",
+      "description": "InfOne 标准 page generator 页面组合。",
+      "patternPath": "recipes/pages/page-generator.md",
+      "sourcePath": "recipes/pages/page-generator.md"
+    },
+    {
+      "name": "ResultPage",
+      "shell": "B",
+      "title": "InfOne 页面模式：Result Page",
+      "description": "InfOne 标准 result page 页面组合。",
+      "patternPath": "recipes/pages/result-page.md",
+      "sourcePath": "recipes/pages/result-page.md"
+    },
+    {
+      "name": "SettingsPage",
+      "shell": "D",
+      "title": "InfOne 页面模式：Settings Page",
+      "description": "InfOne 标准 settings page 页面组合。",
+      "patternPath": "recipes/pages/settings-page.md",
+      "sourcePath": "recipes/pages/settings-page.md"
+    },
+    {
+      "name": "UsageAnalytics",
+      "shell": "D",
+      "title": "InfOne 页面模式：Usage Analytics",
+      "description": "InfOne 标准 usage analytics 页面组合。",
+      "patternPath": "recipes/pages/usage-analytics.md",
+      "sourcePath": "recipes/pages/usage-analytics.md"
+    },
+    {
+      "name": "UserList",
+      "shell": "D",
+      "title": "InfOne 页面模式：User List",
+      "description": "InfOne 标准 user list 页面组合。",
+      "patternPath": "recipes/pages/user-list.md",
+      "sourcePath": "recipes/pages/user-list.md"
+    }
+  ]
+}
+</script>
+<script>
+if(document.documentElement.getAttribute('data-theme')==='dark'){
+  for(const frame of document.querySelectorAll('.component-card iframe')){
+    const src=frame.getAttribute('src');
+    if(src&&!/[?&]theme=dark(?:&|$)/.test(src))frame.setAttribute('src',src+(src.includes('?')?'&':'?')+'theme=dark');
+  }
+}
+</script>
+<script data-infone-component-navigation>
+(()=>{
+  const navigation=document.querySelector('.component-nav');
+  if(!navigation)return;
+  navigation.addEventListener('click',event=>{
+    const link=event.target.closest('a[href^="#"]');
+    if(!link)return;
+    const target=document.getElementById(decodeURIComponent(link.hash.slice(1)));
+    if(!target)return;
+    event.preventDefault();
+    target.scrollIntoView({block:'start'});
+    if(matchMedia('(max-width: 840px)').matches)scrollBy({top:-navigation.offsetHeight,left:0});
+    try{history.replaceState(null,'',link.hash)}catch{}
+  });
+})();
+</script>
+</body>
+</html>

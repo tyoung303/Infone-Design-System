@@ -1,0 +1,45 @@
+# macOS metadata
+.DS_Store
+._*
+
+# Windows metadata
+Thumbs.db
+Desktop.ini
+
+# Agent and Harness scratch output
+.tmp/
+.harness-output/
+test-results/
+playwright-report/
+coverage/
+node_modules/
+*.artifact.json
+*.log
+*.tmp
+*.temp
+*.bak
+*.orig
+*.rej
+*~
+
+# Local editor and environment settings
+.env
+.env.*
+!.env.example
+.idea/
+.vscode/
+
+# Review screenshots and one-off probes do not belong at the package root.
+/infone/*.png
+/infone/*.jpg
+/infone/*.jpeg
+/infone/*-comparison.html
+/infone/*-preview.html
+
+# Open Design / AI conversation workspaces (may appear at any package depth)
+.od-frames/
+.od-skills/
+od-design-system/
+
+# Local Open Design entry; canonical components and examples live in infone/recipes/.
+/index.html

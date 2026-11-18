@@ -1,0 +1,30 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="Logo lockup" subtitle="供应商/模型标识组合 — 图标或真实 logo + 名称 + 规范 Tag，模型广场/对比表通用" viewport="440x260" -->
+<html lang="zh-Hans">
+<head>
+<script data-infone-theme-bootstrap>if(new URLSearchParams(location.search).get("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")</script>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../tokens.css">
+<script src="../../runtime/ds-bundle.js"></script>
+<style>body{margin:0;background:var(--th-bg)}.panel{box-sizing:border-box;padding:20px;width:400px;display:flex;flex-direction:column;gap:16px;background:var(--th-white);border:var(--th-border-card);border-radius:var(--th-radius-md)}</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="../../runtime/react.production.min.js"></script>
+<script src="../../runtime/react-dom.production.min.js"></script>
+<script src="../../runtime/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+const { LogoLockup } = window.TokenHubDesignSystem_019e20;
+function Demo() {
+  return (
+    <div className="panel">
+      <LogoLockup icon="ri-anthropic-fill" color="var(--color-fg)" name="claude-opus-4-7" meta="200K context · Anthropic" tags={[{ label: "视觉", tone: "cat1" }, { label: "工具调用", tone: "cat3" }]} />
+      <LogoLockup icon="ri-openai-fill" color="var(--color-fg)" name="gpt-4o-mini" meta="128K context · OpenAI" tags={["快速"]} />
+      <LogoLockup icon="ri-cpu-line" color="var(--th-cat-5-fg)" name="deepseek-v3" meta="64K context · DeepSeek" />
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<Demo />);
+</script>
+</body>
+</html>

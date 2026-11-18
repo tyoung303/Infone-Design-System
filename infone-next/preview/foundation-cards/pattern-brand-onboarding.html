@@ -1,0 +1,62 @@
+<!doctype html>
+<!-- @dsCard group="Patterns" name="品牌色接入规范" subtitle="产品只提供 1 个主色 — 系统方按固定明度曲线生成 50–700 梯度，并通过 3 项对比度门槛" viewport="720x430" -->
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../tokens.css">
+<link rel="stylesheet" href="../../fonts/remixicon.css">
+<style>
+body{margin:0;background:var(--th-bg);font-family:var(--th-font-cn);color:var(--color-fg);display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
+.card{width:660px;background:var(--th-white);border:var(--th-border-card);border-radius:var(--th-radius-md);box-shadow:var(--th-shadow-card);padding:20px;display:flex;flex-direction:column;gap:14px}
+h3{margin:0;font-size: 13px;font-weight:600}
+.layers{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.layer{border:0.5px solid var(--color-border);border-radius:var(--th-radius-xs);padding:10px;display:flex;flex-direction:column;gap:4px}
+.layer b{font-size:12px}
+.layer span{font-size:11px;color:var(--color-fg-muted);line-height:1.5}
+.layer.brand{border-color:var(--th-teal-100);background:var(--th-teal-50)}
+.layer.brand b{color:var(--th-teal-600)}
+.tag{font-size:10px;font-family:var(--th-font-mono);color:var(--color-fg-muted)}
+.scale{display:flex;border-radius:var(--th-radius-xs);overflow:hidden;height:34px}
+.scale i{flex:1;display:flex;align-items:flex-end;justify-content:center;font-style:normal;font-size:9px;font-family:var(--th-font-mono);padding-bottom:3px}
+.gates{display:flex;flex-direction:column;gap:6px}
+.gate{display:flex;align-items:center;gap:8px;font-size:12px}
+.gate .ri-checkbox-circle-fill{color:var(--th-teal-500);font-size:15px}
+.gate code{font-family:var(--th-font-mono);font-size:11px;background:var(--th-gray-50);padding:1px 5px;border-radius:4px}
+.steps{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--color-fg-muted);flex-wrap:wrap}
+.steps b{color:var(--color-fg);font-weight:500}
+.steps .ri-arrow-right-line{font-size:12px}
+a{color:var(--color-link);text-decoration:none}a:hover{opacity:.85}
+</style>
+</head>
+<body>
+<div class="card">
+<h3>品牌色接入 — 三层令牌，产品只碰第一层</h3>
+<div class="layers">
+<div class="layer brand"><b>① 品牌层</b><span class="tag">--brand-50…700</span><span>唯一换肤面：每产品一个 brand.css + logo</span></div>
+<div class="layer"><b>② 语义层</b><span class="tag">--color-accent / link / cta · --th-ring</span><span>组件消费的名字，自动派生，产品不许覆盖</span></div>
+<div class="layer"><b>③ 共享层</b><span class="tag">灰阶 · 字体 · 圆角 · 阴影 · 状态色</span><span>任何产品不可改 — 家族一致感的来源</span></div>
+</div>
+<div>
+<div style="font-size:12px;font-weight:500;margin-bottom:6px">产品只提供 1 个主色（500 位），系统方按固定明度曲线生成整条梯度</div>
+<div class="scale">
+<i style="background:var(--brand-50)">50</i>
+<i style="background:var(--brand-100)">100</i>
+<i style="background:var(--brand-200)">200</i>
+<i style="background:var(--brand-300)">300</i>
+<i style="background:var(--brand-400);color:#fff">400</i>
+<i style="background:var(--brand-500);color:#fff">500</i>
+<i style="background:var(--brand-600);color:#fff">600</i>
+<i style="background:var(--brand-700);color:#fff">700</i>
+</div>
+<div class="tag" style="margin-top:4px">50/100 浅底 · 200 CTA 药丸 · 500 主控件/焦点 · 600 链接与浅底文字 · 700 按下态</div>
+</div>
+<div class="gates">
+<div style="font-size:12px;font-weight:500">对比度门槛（WCAG AA，接入必过）</div>
+<div class="gate"><i class="ri-checkbox-circle-fill"></i><code>500</code> 底上的文字 ≥ 4.5:1（不达标则改用 <code>200</code> 底 + 深字 CTA 模式）</div>
+<div class="gate"><i class="ri-checkbox-circle-fill"></i><code>600</code> 在白底上 ≥ 4.5:1（链接 / 浅底文字色）</div>
+<div class="gate"><i class="ri-checkbox-circle-fill"></i><code>200</code> CTA 药丸上的标签 ≥ 4.5:1（默认近黑标签，任何色相安全）</div>
+</div>
+<div class="steps"><b>① 提交主色</b><i class="ri-arrow-right-line"></i><b>② 系统方生成并审核梯度</b><i class="ri-arrow-right-line"></i><b>③ 只含 --brand-* 的 brand.css</b><i class="ri-arrow-right-line"></i><b>④ 换 logo</b><i class="ri-arrow-right-line"></i><b>⑤ 过 3 项对比度检查</b>　·　主色只用于主按钮 / 链接 / 选中态 / 焦点环 / 进度；暗色由 color-mix 自动派生</div>
+</div>
+</body>
+</html>

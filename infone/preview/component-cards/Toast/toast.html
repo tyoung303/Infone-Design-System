@@ -1,0 +1,30 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="Toast" subtitle="Neutral default + soft-tint status notification, auto-dismiss" viewport="420x140" -->
+<html lang="zh-Hans">
+<head>
+<script data-infone-theme-bootstrap>if(new URLSearchParams(location.search).get("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")</script>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../tokens.css">
+<script src="../../runtime/ds-bundle.js"></script>
+<style>body{margin:0;background:var(--th-bg)}.panel{box-sizing:border-box;padding:24px;display:flex;flex-direction:column;gap:10px}</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="../../runtime/react.production.min.js"></script>
+<script src="../../runtime/react-dom.production.min.js"></script>
+<script src="../../runtime/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+const { Toast } = window.TokenHubDesignSystem_019e20;
+function Demo() {
+  return (
+    <div className="panel">
+      <Toast tone="success" duration={0}>令牌创建成功</Toast>
+      <Toast tone="default" duration={0}>系统将在后台继续处理</Toast>
+      <Toast tone="danger" duration={0}>密钥已失效</Toast>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<Demo />);
+</script>
+</body>
+</html>

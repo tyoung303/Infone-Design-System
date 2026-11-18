@@ -1,0 +1,69 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="Select" subtitle="普通 / 级联 / 深层筛选 — 28px / 32px，自动选型" viewport="960x1120" catalogHeight="1120" -->
+<html lang="zh-Hans">
+<head>
+<script data-infone-theme-bootstrap>if(new URLSearchParams(location.search).get("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="../../../tokens.css">
+<style>
+body{margin:0;background:var(--th-white);color:var(--color-fg);font-family:var(--th-font-cn)}
+.panel{box-sizing:border-box;padding:var(--th-space-6);max-width:960px;margin:auto}
+h1{margin:0 0 var(--th-space-4);font-size:var(--th-text-lg);font-weight:600}
+h2{margin:0 0 var(--th-space-4);font-size:var(--th-text-md);font-weight:600}
+p{margin:0 0 var(--th-space-6);color:var(--color-fg-muted);font-size:var(--th-text-xs)}
+.examples{display:flex;flex-wrap:wrap;gap:var(--th-space-6)}.example{flex:1 1 280px;min-width:0}
+section{padding-bottom:var(--th-space-6);margin-bottom:var(--th-space-6)}.tree-stage{min-height:360px}
+.example-caption{display:block;margin-bottom:var(--th-space-2);color:var(--color-fg-muted);font-size:var(--th-text-xs)}
+@media(max-width:767px){.tree-stage{min-height:420px}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="../../runtime/react.production.min.js"></script>
+<script src="../../runtime/react-dom.production.min.js"></script>
+<script src="../../runtime/ds-bundle.js"></script>
+<script>
+const {Select}=window.TokenHubDesignSystem_019e20;
+const h=React.createElement;
+const OPTIONS = [
+  {value:'engineering',label:'研发中心',children:[
+    {value:'platform',label:'平台研发'},
+    {value:'client',label:'客户端',children:[{value:'web',label:'Web 团队'},{value:'desktop',label:'桌面团队'},{value:'mobile',label:'移动团队'}]},
+    {value:'infra',label:'基础架构'},
+    {value:'legacy',label:'旧版维护',disabled:true}
+  ]},
+  {value:'product',label:'产品设计',children:[{value:'strategy',label:'产品规划'},{value:'ux',label:'交互设计'},{value:'design-system',label:'设计系统'}]},
+  {value:'operations',label:'业务运营',children:[{value:'content',label:'内容运营'},{value:'growth',label:'用户增长'},{value:'support',label:'客户服务'}]}
+];
+
+const DEEP_LABELS=['示例集团','国际业务','亚太大区','中国区','华东区域','上海分部','技术中心','平台研发部','数据平台','检索服务组','搜索工程组'];
+const deepBranch=DEEP_LABELS.reduceRight((child,label,index)=>({value:'deep-'+index,label,children:[child,{value:'deep-peer-'+index,label:'协作团队'}]}),{value:'deep-leaf',label:'搜索研发'});
+const DEEP_OPTIONS=[deepBranch,{value:'deep-design',label:'产品设计',children:[{value:'deep-ux',label:'交互设计'},{value:'deep-system',label:'设计系统'}]}];
+const FOUR_OPTIONS=[
+  {value:'four-engineering',label:'研发中心',children:[
+    {value:'four-platform',label:'平台产品',children:[
+      {value:'four-data',label:'数据服务',children:[{value:'four-stream',label:'数据流水线'},{value:'four-query',label:'查询引擎'}]},
+      {value:'four-infra',label:'基础服务',children:[{value:'four-gateway',label:'API 网关'},{value:'four-access',label:'访问控制'}]}
+    ]},
+    {value:'four-client',label:'客户端',children:[{value:'four-web',label:'Web 团队'},{value:'four-desktop',label:'桌面团队'}]}
+  ]},
+  {value:'four-product',label:'产品设计',children:[{value:'four-ux',label:'交互设计'},{value:'four-system',label:'设计系统'}]}
+];
+const FLAT_OPTIONS=OPTIONS.map(({value,label})=>({value,label}));
+
+const TWO_OPTIONS=OPTIONS.map(node=>({...node,children:node.children.flatMap(child=>child.children||[child])}));
+function Demo(){
+  const [values,setValues]=React.useState({flatSmall:'',flatMedium:'',cascadeSmall:[],cascadeMedium:['platform','web','design-system','content','growth'],deepSmall:[],deepMedium:['four-stream','four-gateway']});
+  const field=(key,label,size,options,mode='auto')=>h(Select,{mode,size,label,rootLabel:'组织',placeholder:'全部',options,value:values[key],onChange:next=>setValues(previous=>({...previous,[key]:next})),searchable:true});
+  const example=(caption,child)=>h('div',{className:'example'},h('span',{className:'example-caption'},caption),child);
+  return h('main',{className:'panel'},h('h1',null,'Select'),h('p',null,'普通选择、级联多选与深层筛选，统一复用正式 Select。'),
+    h('section',{className:'tree-stage'},h('h2',null,'深层筛选 · ≥4 级'),h('div',{className:'examples'},example('sm · 28px · 12 级',field('deepSmall','组织范围','sm',DEEP_OPTIONS)),example('md · 32px · 4 级',field('deepMedium','参与团队','md',FOUR_OPTIONS))),h('p',null,'逐级进入最多两列；搜索“搜索研发”可直达第 12 级。')),
+    h('section',{className:'tree-stage'},h('h2',null,'级联筛选 · 2–3 级'),h('div',{className:'examples'},example('sm · 28px · 2 级',field('cascadeSmall','组织范围','sm',TWO_OPTIONS)),example('md · 32px · 3 级',field('cascadeMedium','参与团队','md',OPTIONS)))),
+    h('section',null,h('h2',null,'普通选择 · 1 级'),h('div',{className:'examples'},example('sm · 28px · 可搜索',field('flatSmall','组织','sm',FLAT_OPTIONS,'single')),example('md · 32px · 原单选 API',field('flatMedium','组织','md',FLAT_OPTIONS,'single')))),
+    h('p',null,'空值显示全部；只有实际选择后才显示清除按钮。层级勾选即生效，切换路径保留选择。示例为完整静态数据。'));
+}
+ReactDOM.createRoot(document.getElementById('root')).render(h(Demo));
+</script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="SearchBox" subtitle="搜索框 — sm=28px / md=32px，含完整输入状态" viewport="760x600" -->
+<html lang="zh-Hans">
+<head>
+<script data-infone-theme-bootstrap>if(new URLSearchParams(location.search).get("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")</script>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../tokens.css">
+<script src="../../runtime/ds-bundle.js"></script>
+<style>
+body{margin:0;background:var(--th-bg)}
+.panel{box-sizing:border-box;width:712px;margin:24px;padding:16px;overflow-x:auto;background:var(--th-white);border:var(--th-border-card);border-radius:var(--th-radius-md)}
+.matrix{display:grid;grid-template-columns:96px repeat(2,minmax(0,1fr));gap:16px;align-items:start;min-width:640px}
+.matrix-head{color:var(--color-fg-muted);font-size:12px;font-weight:600}
+.state-name{padding-top:7px;color:var(--color-fg-muted);font-size:12px}
+@media(max-width:720px){.panel{width:calc(100% - 24px);margin:12px}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="../../runtime/react.production.min.js"></script>
+<script src="../../runtime/react-dom.production.min.js"></script>
+<script src="../../runtime/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+const { SearchBox } = window.TokenHubDesignSystem_019e20;
+function StateRow({ name, props }) {
+  return (
+    <React.Fragment>
+      <span className="state-name">{name}</span>
+      <SearchBox {...props} size="sm" />
+      <SearchBox {...props} size="md" />
+    </React.Fragment>
+  );
+}
+function Demo() {
+  return (
+    <div className="panel">
+      <div className="matrix">
+        <span aria-hidden="true"></span>
+        <span className="matrix-head">sm · 28px</span>
+        <span className="matrix-head">md · 32px</span>
+        <StateRow name="默认" props={{ placeholder: "搜索模型" }} />
+        <StateRow name="悬停 / 聚焦" props={{ placeholder: "移入或点击查看" }} />
+        <StateRow name="已输入" props={{ defaultValue: "DeepSeek V3" }} />
+        <StateRow name="加载" props={{ loading: true, defaultValue: "运行记录" }} />
+        <StateRow name="禁用" props={{ disabled: true, defaultValue: "不可用条件" }} />
+        <StateRow name="错误" props={{ defaultValue: "超时请求", error: "搜索服务暂不可用，请稍后重试" }} />
+        <StateRow name="带标签" props={{ label: "资源搜索", hint: "支持名称、ID 或负责人", placeholder: "输入关键词" }} />
+      </div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<Demo />);
+</script>
+</body>
+</html>

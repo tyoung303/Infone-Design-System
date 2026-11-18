@@ -1,0 +1,29 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="Avatar" subtitle="圆形头像 — 首字符 / 图片 / 兜底图标，pink / brand-blue / gray 三种底色" viewport="700x160" -->
+<html lang="zh-Hans">
+<head>
+<script data-infone-theme-bootstrap>if(new URLSearchParams(location.search).get("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")</script>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../tokens.css">
+<script src="../../runtime/ds-bundle.js"></script>
+<style>body{margin:0}.panel{box-sizing:border-box;padding:24px 26px;display:flex;gap:18px;align-items:center;background:var(--th-white);border:var(--th-border-card);border-radius:var(--th-radius-md);margin:24px}</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="../../runtime/react.production.min.js"></script>
+<script src="../../runtime/react-dom.production.min.js"></script>
+<script src="../../runtime/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+const { Avatar } = window.TokenHubDesignSystem_019e20;
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <div className="panel">
+    <Avatar name="admin" size="sm" />
+    <Avatar name="admin" />
+    <Avatar name="admin" size="lg" />
+    <Avatar name="王" tone="pink" size="lg" />
+    <Avatar tone="gray" size="lg" />
+  </div>
+);
+</script>
+</body>
+</html>

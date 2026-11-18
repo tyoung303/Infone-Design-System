@@ -1,0 +1,37 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="Model detail modal" subtitle="Info / API endpoints / grouped pricing with currency toggle" viewport="680x520" -->
+<html lang="zh-Hans">
+<head>
+<script data-infone-theme-bootstrap>if(new URLSearchParams(location.search).get("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")</script>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../tokens.css">
+<script src="../../runtime/ds-bundle.js"></script>
+<style>body{margin:0;background:var(--th-bg)}.panel{box-sizing:border-box;padding:24px;display:flex;align-items:center;justify-content:center;height:520px}</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="../../runtime/react.production.min.js"></script>
+<script src="../../runtime/react-dom.production.min.js"></script>
+<script src="../../runtime/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+const { ModelDetailModal, Button } = window.TokenHubDesignSystem_019e20;
+function Demo() {
+  const [open, setOpen] = React.useState(true);
+  const [currency, setCurrency] = React.useState("USD");
+  return (
+    <div className="panel">
+      {!open && <Button onClick={() => setOpen(true)}>查看详情</Button>}
+      <ModelDetailModal
+        open={open} onClose={() => setOpen(false)}
+        name="gpt-5.5" vendorIcon="ri-openai-fill"
+        endpoints={[{ name: "openai", path: "/v1/chat/completions", method: "POST" }, { name: "openai-response", path: "/v1/responses", method: "POST" }]}
+        prices={[{ label: "输入价格", value: currency === "USD" ? "$5.0000" : "¥36.0000" }, { label: "补全价格", value: currency === "USD" ? "$40.0000" : "¥288.0000" }]}
+        currency={currency} onCurrencyChange={setCurrency}
+      />
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<Demo />);
+</script>
+</body>
+</html>

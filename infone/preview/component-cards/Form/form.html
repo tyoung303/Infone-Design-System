@@ -1,0 +1,36 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="Form" subtitle="表单校验 — 规则式校验：必填 / 格式 / 自定义" viewport="700x430" -->
+<html lang="zh-Hans">
+<head>
+<script data-infone-theme-bootstrap>if(new URLSearchParams(location.search).get("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")</script>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../../tokens.css">
+<script src="../../runtime/ds-bundle.js"></script>
+<style>body{margin:0}.panel{box-sizing:border-box;padding:24px 26px;background:var(--th-white);border:var(--th-border-card);border-radius:var(--th-radius-md);margin:24px}</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="../../runtime/react.production.min.js"></script>
+<script src="../../runtime/react-dom.production.min.js"></script>
+<script src="../../runtime/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+const { Form, FormItem, TextField, Button, Toast } = window.TokenHubDesignSystem_019e20;
+function Demo() {
+  return (
+    <Form initialValues={{ name: "" }} onFinish={() => {}}>
+      <FormItem name="name" label="密钥名称" required rules={[{ max: 24, message: "不超过 24 个字符" }]} extra="仅用于识别，不影响调用">
+        <TextField placeholder="如 prod-gateway" />
+      </FormItem>
+      <FormItem name="email" label="告警邮箱" rules={[{ required: true }, { pattern: /^\S+@\S+\.\S+$/, message: "邮箱格式不正确" }]}>
+        <TextField placeholder="alerts@example.com" />
+      </FormItem>
+      <FormItem name="quota" label="月度配额（¥）" rules={[{ validator: (v) => v && Number(v) <= 0 ? "必须大于 0" : undefined }]}>
+        <TextField type="number" placeholder="不填则不限额" />
+      </FormItem>
+      <FormItem><Button type="submit">创建密钥</Button></FormItem>
+    </Form>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<div className="panel"><Demo /></div>);</script>
+</body>
+</html>
